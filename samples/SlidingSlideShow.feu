@@ -1,0 +1,38 @@
+<!-- 
+     Very simple FEU sample.
+     The goal of this sample is to demonstrate a very
+     simple FEU ruleset.
+
+     When the ruleset activates, we create a picture just off the right
+     edge of the screen and start sliding it left.  As soon as the 
+     image is fully on-screen, we start the next one, also sliding
+     to the left.  When each image goes off the left side of the screen,
+     it self-destructs.
+    
+     Also demonstrates the "Screen" object external reference.
+-->
+<ruleset name="SlidingSlideShow"
+         author="PartialGestalt"
+         URL=""
+         version="1.0.0"
+         feu-version-min="1"
+         description="This FEU ruleset implements a simple sliding slideshow, where a sequence of images enters the screen from the right and scrolls left."
+>
+  <path name="SlideLeft">
+    <!-- Move it over  -->
+    <step type="move" x="-100">
+    <!-- If we're fully on-screen, start a new one -->
+    <step condition="right<Screen.right" type="action" parameter="SlideSlides.create">
+    <!-- If we're off-screen, destroy ourselves -->
+    <step condition="right<Screen.left" type="destroy">
+  </path>
+  <class name="SlideSlides" 
+         source="XBMC.pictures(Export)" 
+         sequence="random" >
+    <path name="default">
+      <step type="move" parameter="absolute" x="(width+Screen.width)/2"/>
+    </path>
+  </class>
+  <!-- Start the first one -->
+  <action when="onActivate" what="SlideSlides.create"/>
+</ruleset>

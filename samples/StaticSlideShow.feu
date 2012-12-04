@@ -1,0 +1,30 @@
+<!-- 
+     Very simple FEU sample.
+     The goal of this sample is to demonstrate a very
+     simple FEU ruleset.
+
+     When the ruleset activates, we create a picture in the center
+     of the screen and start a timer.  Every time that timer expires,
+     it updates the picture in the middle of the screen by creating a
+     new object and making use of the auto-limiter.
+-->
+<ruleset name="StaticSlideShow"
+         author="PartialGestalt"
+         URL=""
+         version="1.0.0"
+         feu-version-min="1"
+         description="This FEU ruleset implements a simple static slideshow, where a picture is fitted and centered, and then replaced with a new picture."
+>
+  <class name="DisplaySlides" 
+         source="XBMC.pictures(Export)" 
+         sequence="random" max-count="1">
+    <path name="default">
+      <step type="move" parameter="absolute" x="0" y="0" z="0"/>
+    </path>
+  </class>
+  <timer name="TimedSwitcher" period="15">
+    <action when="onTimeout" what="DisplaySlides.create"/>
+  </timer>
+  <action when="onActivate" what="DisplaySlides.create"/>
+  <action when="onActivate" what="TimedSwitcher.start"/>
+</ruleset>

@@ -1,0 +1,150 @@
+
+I. <ruleset>
+
+  Base element for FEU XML document; defines ruleset metadata.
+
+    "name" - Name of the ruleset [required].
+    "author" - Author of the ruleset [required].
+    "URL" - Reference URL. [optional]
+    "version" - Version of the ruleset, used for upgrades, fixes, etc.[required]
+    "feu-version-min" - Earliest version of FEU required for operation.[optional]
+    "description" - Description of ruleset. [optional]
+
+  Required children:
+    <class>  -- At least one class must be defined, either directly, or by 
+                import.
+
+  Optional children:
+  
+     <action> --  Event handlers for certain events.
+             "onLoad" -- When a FEU ruleset is loaded
+             "onActivate" -- When screensaver or visualization is activated
+             ??? OTHERS ???
+             ?"onSongChange" -- Called whenever a song changes?
+        
+II. <action>
+
+   Define something to be done.  These are generally event handlers, but may
+   also be triggered directly from other actions.  Actions are additive -- if
+   you define multiple actions in an object for the same trigger, all those
+   actions will be triggered in sequence.
+
+   "name" - Name of the action; optional for event handlers, but required for
+            directly-triggered actions.
+
+   "when" - name of an event or other trigger.  The set of events that actually
+            happen is dependent on whose action this is (e.g. only timers have
+            an 'onTimeout' event, and only classes have 'onDestroy').
+
+   "what" - The action to take, with dot-based scope.  The leading components of
+            a "what" is an object identifier, and the last component is a 
+            method or variable.  This may be followed by '=' and an expression;
+            if the "what" is a variable, this is an assignment; if the "what"
+            is another action, this is a parameter.  Don't know how parameters
+            will be used yet, though.
+
+III. <class>
+
+  Define a class of pictures to use for FEU.  Multiple classes may exist in
+  a ruleset.
+
+  "name" - Name of class, used by actions [required]
+  "source" - Where to get images for this class.  Values are structured like a
+             function call, i.e. SOURCENAME(args).  Allowed sources are:
+               "Folder" (folder path is arg)
+               "XBMC.Pictures" (XBMC picture source name is arg)
+  "sequence" - What order to load pictures; values are:
+               "natural" [default] (natural sequence -- collating, perhaps)
+               "random" (choose randomly)
+  "max-count" - Max number of objects this class can support.  If the class is
+                asked to create more objects, older objects are destroyed to make
+                room.
+
+   Required children: 
+
+   <path> -- A default path for objects of this class.
+
+   Optional children:
+  
+   <action> -- Event handlers, for certain events:
+               "onCreate" -- When a new object for this class is created
+               "onDestroy" -- When an object of this class is destroyed
+
+   <property> -- Additional properties to attach to objects of this class
+                 (each object has a default set of properties as well.)
+
+IV. <timer>
+
+   Define a system-wide timer that can trigger an action upon expiry.
+
+   Timers do not autostart; they must be started by an action.
+
+   "name" - Name of timer, used to start or stop the timer from other actions.
+   "period" - Length of time between start and expiry, in approximate
+              number of seconds.
+   "restart" - If set to "true" (the default), the timer will re-arm and 
+              restart automatically upon expiry; if "false", the timer must
+              be manually restarted.
+
+   Required children:
+
+   <action> - Each timer must declare an 'onTimeout' action.  (Really, though,
+              why would you have a timer if you didn't want to do something?)
+   
+V. <path>
+
+   Define a path for an object to follow.  At each system tick, each object's 
+   currently-bound path is evaluated for steps to take.  An object must be 
+   bound to a path for it to be visible in the system.  
+
+   The path is really just a named container for one or more <step> elements.
+
+   + A <path> defined at the global level is available for all objects to use.
+   + A <path> defined at the class level is only available for objects of that
+     class to use.
+
+   "name" - Name of this path.
+  
+VI. <step>
+
+    The heart of FEU, the <step> element defines a single step along a path
+    for an object.  It may define an absolute or relative motion, or an
+    absolute or relative rotation, change its own path, or any of the other
+    defined available operations.
+    
+    Note that for all coordinates, the origin (0,0,0) is the center of the 
+    screen.  And the position properties of the object are measured from the
+    center of the object.
+
+    "name" - Name of this step.  Only required when this step will be referred
+             to by other steps.
+
+    "condition" - An expression that controls whether the step is taken or
+                  not.  If it evaluates to "true", the step is taken; if
+                  "false", the step is skipped.
+
+    "x", "y", "z" - Geometric components of this step.  Interpretation varies
+                    by type.
+
+    "parameter" - Parameter modifying some step behaviors.  The default 
+                  value is "relative".
+
+    "type" - Type of step.  Some valid types:
+            "move" - (default) Move the object, using the given x,y,z
+                     attributes as a speed vector, in FEU/sec.  If the 
+                     parameter attribute is "absolute", simply move the
+                     object to the given x,y,z coordinates.
+            "rotate" - (default) Rotate the object by the given coordinates, 
+                       relative to the current orientation, given as 
+                       rotational velocity in degrees/sec.  If the parameter
+                       attribute is "absolute", reorient the object to the
+                       defined orientation.
+            "scale" - Scale the object, using the given x,y values as 
+                      multipliers.  If the parameter attribute is "absolute",
+                      resize the object to the given x,y values (as FEU).
+                      Scaling preserves the aspect ratio of the image if 
+                      only one of x or y is specified.
+            "path" - Bind the object to the path named in the "parameter" 
+                     attribute.
+            "destroy" - Destroy the current object.
+            "action" - Trigger the action named in the "parameter" attribute.
