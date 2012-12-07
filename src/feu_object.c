@@ -17,6 +17,7 @@
 #ifndef _FEU_OBJECT_C_ 
 #define _FEU_OBJECT_C_
 
+#include <string.h>
 #include "feu.h"
 
 /**
@@ -42,7 +43,6 @@ feu_object_init(
 {
     /* Step 1: Simple assignments */
     this->name = NULL;
-    this->last_property = NULL;
     this->parent = NULL;
 
     /* Step 2: List inits */
@@ -75,6 +75,54 @@ feu_object_create(void)
 }
 
 /**************************************************************************//**
+ * @brief Destroy a feu object
+ *
+ * @details Destroy all children and properties.
+ *
+ * @param obj The object to destroy
+ *
+ * */
+void
+feu_object_destroy(
+    feu_object_t *obj
+)
+{
+    feu_object_t *kid;
+    feu_property_t *prop;
+
+    /* Step 0: Prep */
+    if (!obj) return;
+    if (obj->name)
+        printf("Destroying object: \"%s\"\n",obj->name);
+    else
+        printf("Destroying unnamed object @0x%p\n",obj);
+
+    /* Step 1: Recurse over all children */
+    while (NULL != (kid = feu_stack_pop(feu_object_t,siblings,obj->kids)))
+    {
+        feu_object_destroy(kid);
+    }
+
+    /* Step 2: Destroy all properties */
+    while (NULL != (prop = feu_stack_pop(feu_property_t,siblings,obj->properties)))
+    {
+        feu_property_destroy(prop);
+    }
+
+    /* Step 3: Any other local internal bits */
+        /* The "name", if any, is a pointer into the "name" property, and
+         * not a separate element.  Don't free.
+         */
+    obj->name = NULL;
+
+    /* Step 4: wipe the object */
+    memset(obj,0,sizeof(*obj));
+    free(obj);
+
+    return;
+}
+
+/**************************************************************************//**
  * @brief Initialize a feu property
  *
  * @details This method initializes all of the default fields of a feu
@@ -91,7 +139,9 @@ feu_property_init(
 {
     /* Step 1: Simple assignments */
     this->name = NULL;
-    this->type = FEU_TYPE_ERROR;
+    this->textValue = NULL;
+    this->floatValue = NULL;
+    this->floatStore = 0.0f;
 
     /* Step 2: List inits */
     INIT_FEU_LIST(&this->siblings);
@@ -117,6 +167,31 @@ feu_property_create(void)
     feu_property_init(new);
 
     return new;
+}
+
+/**************************************************************************//**
+ * @brief Destroy a feu property 
+ *
+ * @param prop The property to destroy
+ *
+ * */
+void
+feu_property_destroy(
+    feu_property_t *prop
+)
+{
+    /* Step 0: Prep */
+    if (!prop) return;
+    if (prop->name)
+        printf("Destroying property: \"%s\"\n",prop->name);
+    else
+        printf("Destroying unnamed property @0x%p\n",prop);
+
+    /* Step 1: Free it all */
+    if (prop->name) free(prop->name);
+    memset(prop,0,sizeof(*prop));
+
+    return;
 }
 
 #endif /* _FEU_OBJECT_C_ */

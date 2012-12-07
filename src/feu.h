@@ -9,6 +9,9 @@
 #ifndef _FEU_H_
 #define _FEU_H_
 
+#include <stdlib.h>
+#include <stdio.h>
+
 /**
  * Container/entry ref/deref
  */
@@ -18,7 +21,6 @@
 #define feu_container_of(ptr, type, member) ({          \
     const typeof(((type *)0)->member) * __mptr = (ptr); \
     (type *)((char *)__mptr - feu_offset_of(type, member)); })
-#endif
 
 /**
  * Singly-linked List/stack
@@ -30,6 +32,8 @@ typedef struct feu_list {
 #define FEU_LIST(_head) \
     struct feu_list _head = FEU_LIST_INIT(_head)
 #define INIT_FEU_LIST(_head) (_head)->next = NULL;
+
+typedef feu_list_t feu_list_node_t;
 
 static inline void feu_list_prepend(feu_list_t *node, feu_list_t *head)
 {
@@ -79,39 +83,26 @@ static inline struct feu_list *feu_list_pop(feu_list_t *head)
  * @param __stack The stack from which to pop.
  * */
 #define feu_stack_pop(__type, __member, __stack) ({ \
-     struct feu_list *ret = feu_list_pop(__stack); \
-     ret?feu_container_of(ret,__type,__member):NULL })
-
-/**
- * @brief Enumeration of supported property types
- */
-typedef enum feu_type_e
-{
-    FEU_TYPE_ERROR = 0,
-    FEU_TYPE_INTEGER = 1,  /* Native integer size */
-    FEU_TYPE_STRING = 2, /* String property */
-    FEU_TYPE_FLOAT = 3, /* Floating point value */
-    FEU_TYPE_MAX
-} feu_type_t;
+     struct feu_list *ret = feu_list_pop(&(__stack)); \
+     ret?feu_container_of(ret,__type,__member):NULL; })
 
 /**
  * @brief FEU property (attribute)
  * @details A FEU property is a value container, than may itself
- * be contained in other objects.  Note that we only support
- * processor-native numbers here (i.e. no 64-bit integers on
- * 32-bit platforms).
+ * be contained in other objects. 
+ * For our purposes, every property has both a string value and a
+ * numeric (float) value.  Most operations will only deal with the
+ * float value, however.
+ * If "floatValue" is non-NULL, it should point to 'floatStore'; this
+ * lets us determine if the value has been set or not.
  * Resist the urge to put a backpointer here.
  */
 typedef struct feu_property_s
 {
     char *name;      /* Name of this property */
-    feu_type_t type; /* Type of this property */
-
-    union {
-        char *textValue; /* String value of this property */
-        int   intValue;  /* Integer value of this property */
-        float floatValue; /* Floating-point value of this property */
-    } u;
+    char *textValue; /* String value of this property */
+    float *floatValue; /* Floating-point value of this property */
+    float floatStore; /* Storage for actual numeric value */
 
     feu_list_t siblings;  /* Linkage for object to whom we belong */
 } feu_property_t;
@@ -131,18 +122,25 @@ typedef struct feu_object_s
     /* Cache/stash for various bits */
     const char *name; /* If this is a named object, this member is a pointer
                          into the "name" property.  DO NOT FREE THIS. */
-    feu_property_t *last_property;  /* Last property we looked up */
 
     /* Linkages */
     struct feu_object_s *parent; /* parent object backpointer */
     feu_list_t siblings;  /* Chain of storage in parent object */
     feu_list_t garbage; /* Chain of all objects for garbage collection */
 
-    /* Properties */
-    feu_list_t properties;
+    /* Properties stack head */
+        /* Each time a property is looked up, it is placed at the head
+         * of this stack; this effectively implements a very simple cache
+         * scheme.
+         */
+    feu_list_node_t properties;
 
-    /* Child objects */
-    feu_list_t kids;
+    /* Child objects stack head */
+        /* Each time a child is looked up, it is placed at the head
+         * of this stack; this effectively implements a very simple cache
+         * scheme.
+         */
+    feu_list_node_t kids;
 } feu_object_t;
 
 
@@ -151,6 +149,10 @@ typedef struct feu_object_s
  */
 void feu_object_init(feu_object_t *);
 feu_object_t *feu_object_create(void);
+void feu_object_destroy(feu_object_t *);
+void feu_property_init(feu_property_t *);
+feu_property_t *feu_property_create(void);
+void feu_property_destroy(feu_property_t *);
 
 
 #endif /* _FEU_H_ */
