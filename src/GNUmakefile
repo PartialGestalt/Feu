@@ -16,41 +16,45 @@
 #######################################################################
 firstrule: all
 
+CLASS_SRCS=$(wildcard Feu[A-Z]*.cpp) 
+
+CLASS_HDRS=$(CLASS_SRCS:.cpp=.h)
+
 HDRS= \
-	feu.h
+	feu.h \
+	$(CLASS_HDRS)
 
 LIB=FEU.xbs
 
-LIB_SRCS= \
-	feu_object.c
+LIB_SRCS=$(CLASS_SRCS)
 
-LIB_TEMPS=$(LIB_SRCS:.c=.i) $(LIB_SRCS:.c=.s)
+LIB_TEMPS=$(LIB_SRCS:.cpp=.ii) $(LIB_SRCS:.cpp=.s)
 
-LIB_OBJS=$(LIB_SRCS:.c=.o)
+LIB_OBJS=$(LIB_SRCS:.cpp=.o)
 
-TEST=feu_test
+TEST=feutest
 
 TEST_SRCS= \
-	feu_test.c
+	feutest.cpp
 
-TEST_TEMPS=$(TEST_SRCS:.c=.i) $(TEST_SRCS:.c=.s)
+TEST_OBJS=$(TEST_SRCS:.cpp=.o)
 
-TEST_OBJS=$(TEST_SRCS:.c=.o)
+TEST_TEMPS=$(TEST_SRCS:.cpp=.ii) $(TEST_SRCS:.cpp=.s)
 
 PACKAGE=screensaver.pg.feu
 VERSION=0.8.1
 PKGROOT=pkg
 
-CINCFLAGS+=
-CDEBUGFLAGS+=-save-temps
+CPPINCFLAGS+=
+CPPDEBUGFLAGS+=-save-temps
 
-CFLAGS+=-fPIC $(CINCFLAGS) $(CDEBUGFLAGS)
+CPPFLAGS+=-fPIC $(CPPINCFLAGS) $(CPPDEBUGFLAGS)
 
-LD_LIBS+=
+LD_LIBS+=-lstdc++
 
 LDFLAGS+=$(LD_LIBS)
 
-CLEANFILES=$(LIB) $(LIB_OBJS) $(TEST_OBJS) $(PKGROOT) $(LIB_TEMPS) $(TEST_TEMPS)
+CLEANFILES=$(LIB) $(LIB_OBJS) $(TEST) $(TEST_OBJS) $(PKGROOT) $(LIB_TEMPS) $(TEST_TEMPS)
 CLOBBERFILES=$(CLEANFILES) cscope.out cscope.files
 
 .PHONY: all clean clobber fresh install pkg cscope
@@ -70,7 +74,7 @@ fresh: clean all
 
 
 $(LIB): $(LIB_OBJS)
-	$(CC) $(CFLAGS) $(LDFLAGS) -shared -o $@ $(LIB_OBJS)
+	$(CC) $(CPPFLAGS) $(LDFLAGS) -shared -o $@ $(LIB_OBJS)
 
 
 cscope: cscope.out
