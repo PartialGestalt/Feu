@@ -62,6 +62,7 @@ CLOBBERFILES=$(CLEANFILES) cscope.out cscope.files
 all: $(LIB) 
 
 test: $(TEST)
+	$(TEST)
 
 clean::
 	-rm -rf $(CLEANFILES)

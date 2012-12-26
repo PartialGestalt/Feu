@@ -8,6 +8,8 @@
  * is a codewise representation of an XML element.  It can have
  * generic attributes in the attributes map, and can have
  * a list of children.
+ *
+ * Subclasses will have precalc or shortcut members.
  */
 
 #ifndef FEUTHING_H_

@@ -12,8 +12,9 @@ int main(int argc, char **argv)
 	ft1->adopt(ft2);
 	ft2->adopt(ft3);
 
-	ft1->geneology();
+	ft2->geneology();
 
-	cout << "Done!";
+    FeuLog::i("Setup done\n");
 
+    delete ft1;
 }

@@ -5,17 +5,28 @@
  *      Author: akephart
  */
 
-#include "FeuLog.h"
-
-namespace Feu {
+#include "feu.h"
 
 FeuLog::FeuLog() {
-	// TODO Auto-generated constructor stub
-
 }
 
 FeuLog::~FeuLog() {
-	// TODO Auto-generated destructor stub
 }
 
-} /* namespace Feu */
+void FeuLog::i(string msg) {
+    cout << "[FEU Info]: " << msg;
+}
+
+void FeuLog::d(string msg) {
+#ifdef DEBUG
+    cout << "[FEU DEBUG]: " << msg;
+#endif
+}
+
+void FeuLog::w(string msg) {
+    cerr << "[FEU Warning]: " << msg;
+}
+
+void FeuLog::e(string msg) {
+    cerr << "[FEU !ERROR!]: " << msg;
+}

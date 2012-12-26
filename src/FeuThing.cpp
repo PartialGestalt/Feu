@@ -6,6 +6,7 @@
  */
 
 #include "FeuThing.h"
+#include "FeuLog.h"
 
 FeuThing::FeuThing(string name) {
 	// TODO Auto-generated constructor stub
@@ -14,7 +15,17 @@ FeuThing::FeuThing(string name) {
 }
 
 FeuThing::~FeuThing() {
-	// TODO Auto-generated destructor stub
+    // Destroy all children
+    list<FeuThing *>::iterator iter;
+    FeuLog::i("entering destructor for " + mName + "\n");
+    for (iter = mKids.begin(); iter != mKids.end(); iter++)
+    {
+        delete *iter;
+    }
+
+    // Destroy ourselves!
+    FeuLog::i("destroying myself: " + mName + "\n");
+
 }
 
 void FeuThing::adopt(FeuThing *ft_kid) {
@@ -33,6 +44,6 @@ void FeuThing::geneology() {
 	}
 
 	// Tell ourselves.
-	cout << mName;
+    FeuLog::i(mName + "\n");
 
 }
