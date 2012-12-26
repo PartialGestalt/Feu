@@ -18,7 +18,7 @@ void FeuLog::i(string msg) {
 }
 
 void FeuLog::d(string msg) {
-#ifdef DEBUG
+#ifdef FEU_DEBUG
     cout << "[FEU DEBUG]: " << msg;
 #endif
 }
