@@ -16,6 +16,8 @@
 ## implied warranty.
 ##
 #######################################################################
+## Some versions of make use the first-defined rule as the default.
+firstrule: all
 
 ##
 ## Usage: Before the 'include' line in the calling makefile, you
@@ -45,6 +47,8 @@ SAY_IT=@echo
 DO_IT=@
 endif
 
+NOTHING=@/bin/true
+
 
 ##
 ## Make implicit rules explicit
@@ -52,3 +56,44 @@ endif
 %.o:%.cpp
 	$(SAY_IT) "[ COMPILE ]" $@
 	$(DO_IT) $(CCC) $(CPPFLAGS) -c -o $@ $<
+
+
+##
+## Common rules
+##
+fresh: clean all
+
+clean::
+	$(SAY_IT) "[  CLEAN  ]" 
+	$(DO_IT) -rm -rf $(CLEANFILES)
+
+clobber::
+	$(SAY_IT) "[ CLOBBER ]"
+	$(DO_IT) -rm -rf $(CLOBBERFILES)
+
+release::
+	$(NOTHING)
+
+
+define SHAREDLIB
+	$(SAY_IT) "[SHAREDLIB]" $@
+	$(DO_IT) $(CCC) -shared -o $@ $^ $(LDFLAGS)
+endef
+
+define LINKPROG
+	$(SAY_IT) "[  LINK   ]" $@
+	$(DO_IT) $(CCC) -o $@ $^ $(LDFLAGS)
+endef
+
+
+##
+## Cscope
+##
+cscope: cscope.out
+   
+cscope.out: cscope.files
+	cscope -bi cscope.files
+
+cscope.files::
+	find . -type f -name '*.[ch]' -print | tee $@
+

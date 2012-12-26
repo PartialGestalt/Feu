@@ -5,8 +5,7 @@
  *      Author: akephart
  */
 
-#include "FeuThing.h"
-#include "FeuLog.h"
+#include "feu.h"
 
 FeuThing::FeuThing(string name) {
 	// TODO Auto-generated constructor stub

@@ -14,6 +14,11 @@
 ## implied warranty.
 ##
 #######################################################################
+
+BUILD_ROOT=..
+
+include $(BUILD_ROOT)/common.mk
+
 firstrule: all
 
 CLASS_SRCS=$(wildcard Feu[A-Z]*.cpp) 
@@ -45,15 +50,6 @@ PACKAGE=screensaver.pg.feu
 VERSION=0.8.1
 PKGROOT=pkg
 
-CPPINCFLAGS+=
-CPPDEBUGFLAGS+=-save-temps
-
-CPPFLAGS+=-fPIC $(CPPINCFLAGS) $(CPPDEBUGFLAGS)
-
-LD_LIBS+=-lstdc++
-
-LDFLAGS+=$(LD_LIBS)
-
 CLEANFILES=$(LIB) $(LIB_OBJS) $(TEST) $(TEST_OBJS) $(PKGROOT) $(LIB_TEMPS) $(TEST_TEMPS)
 CLOBBERFILES=$(CLEANFILES) cscope.out cscope.files
 
@@ -62,30 +58,10 @@ CLOBBERFILES=$(CLEANFILES) cscope.out cscope.files
 all: $(LIB) 
 
 test: $(TEST)
-	$(TEST)
-
-clean::
-	-rm -rf $(CLEANFILES)
-
-clobber::
-	-rm -rf $(CLOBBERFILES)
-
-
-fresh: clean all
-
+	./$(TEST)
 
 $(LIB): $(LIB_OBJS)
-	$(CC) $(CPPFLAGS) $(LDFLAGS) -shared -o $@ $(LIB_OBJS)
+	$(SHAREDLIB)
 
-
-cscope: cscope.out
-   
-cscope.out: cscope.files
-	cscope -bi cscope.files
-
-cscope.files::
-	find . -type f -name '*.[ch]' -print | tee $@
-
-
-$(TEST): $(LIB) $(TEST_OBJS) 
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(TEST_OBJS) $(LIB)
+$(TEST): $(TEST_OBJS) $(LIB)
+	$(LINKPROG)

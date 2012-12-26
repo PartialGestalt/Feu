@@ -21,11 +21,15 @@
 # BUILD_CONFIG must be one of "DEBUG" or "RELEASE".  This is 
 # "DEBUG" by default, but may be changed explicitly with an
 # environment variable or by building the 'release' target.
-
-ifeq ($(BUILD_CONFIG),)
-BUILD_CONFIG="DEBUG"
+ifneq ($(findstring release,$(MAKECMDGOALS)),)
+BUILD_CONFIG=RELEASE
 endif
 
+ifeq ($(BUILD_CONFIG),)
+BUILD_CONFIG=DEBUG
+endif
+
+.PHONY: release
 
 # Options for debug builds
 CPPDEBUGFLAGS=-save-temps -DFEU_DEBUG -O0
@@ -42,7 +46,17 @@ CMACHFLAGS=$(CPPMACHFLAGS)
 # Combine as appropriate
 CPPFLAGS+=$(CPPMACHFLAGS) $(CPP$(BUILD_CONFIG)FLAGS)
 
-
 # Common libs (don't use much here, most libs should
 # be in local particular makefiles.
-LDCOMMONLIBS=-lstd++
+LDCOMMONLIBS=-lstdc++
+
+# Add the current dir to runtime path search
+LDCOMMONFLAGS=-Wl,-rpath=./
+
+LDFLAGS+=$(LDCOMMONFLAGS) $(LDCOMMONLIBS)
+
+#
+# Make sure we're gcc everywhere....
+CC=gcc
+CCC=g++
+
