@@ -15,7 +15,6 @@ void FeuCalcNumber::proc(stack<FeuCalcItem *> calcStack) {
 
 FeuCalcItem *FeuCalcNumber::copy() {
     FeuCalcNumber *fcn = new FeuCalcNumber(mValue);
-    fcn->mRef = this;
     return (FeuCalcItem *)fcn;
 }
 

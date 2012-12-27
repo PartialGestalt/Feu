@@ -32,7 +32,7 @@ endif
 .PHONY: release
 
 # Options for debug builds
-CPPDEBUGFLAGS=-save-temps -DFEU_DEBUG -O0
+CPPDEBUGFLAGS=-DFEU_DEBUG -O0 #-save-temps
 CDEBUGFLAGS=$(CPPDEBUGFLAGS)
 
 # Options for release builds

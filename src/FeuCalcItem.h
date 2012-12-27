@@ -12,17 +12,15 @@
 #include <stack>
 using namespace std;
 
-class FeuCalcItem {
+class FeuCalcItem : public FeuRefCounted {
 public:
-	virtual ~FeuCalcItem() {};
-protected:
-    FeuCalcItem *mRef;  // If a copy, item this is a copy of...
+	virtual ~FeuCalcItem() = 0;
+
 public:
-	virtual void proc(stack<FeuCalcItem> calcStack);
-    virtual FeuCalcItem *copy();
-    virtual float getValue();
-    virtual void setValue(float);
-    
+	virtual void proc(stack<FeuCalcItem *> calcStack) = 0;
+    virtual FeuCalcItem *copy() = 0;
+    virtual float getValue() = 0;
+    virtual void setValue(float) = 0;
 };
 
 #endif /* _FEU_CALCITEM_H_ */
