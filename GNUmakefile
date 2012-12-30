@@ -21,8 +21,12 @@ SUBDIRS=src
 
 include $(BUILD_ROOT)/common.mk
 
-clean::
+clean:: 
 	$(DESCEND)
+
+clobber:: 
+	$(DESCEND)
+
 
 .DEFAULT:
 	$(DESCEND)
