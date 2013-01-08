@@ -58,7 +58,7 @@ CLOBBERFILES=$(CLEANFILES) cscope.out cscope.files
 all: $(LIB) 
 
 test: $(TEST)
-	./$(TEST)
+	$(VALGRINDER) ./$(TEST)
 
 $(LIB): $(LIB_OBJS)
 	$(SHAREDLIB)

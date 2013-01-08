@@ -29,6 +29,7 @@ int main(int argc, char **argv)
     //fc = new FeuCalculable("3+4*2/(1-5)^^2^^3");
     fc = new FeuCalculable("3+4*2/(1-5)");
     fc_result = fc->proc();
+    delete fc;
 
     FeuLog::i("Calculable finished, result is \"" + stringof(fc_result) + "\"\n");
     FeuLog::i("===============================================\n");

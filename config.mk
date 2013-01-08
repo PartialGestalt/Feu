@@ -23,10 +23,18 @@
 # environment variable or by building the 'release' target.
 ifneq ($(findstring release,$(MAKECMDGOALS)),)
 BUILD_CONFIG=RELEASE
+VALGRINDER:=
 endif
 
 ifeq ($(BUILD_CONFIG),)
 BUILD_CONFIG=DEBUG
+
+VALGRIND=valgrind
+ifeq (TRUE,$(if $(shell which $(VALGRIND) 2>/dev/null),TRUE,FALSE))
+VALGRINDER:=$(VALGRIND) --leak-check=full
+else
+VALGRINDER:=
+endif
 endif
 
 .PHONY: release
@@ -60,3 +68,7 @@ LDFLAGS+=$(LDCOMMONFLAGS) $(LDCOMMONLIBS)
 CC=gcc
 CCC=g++
 
+
+#
+# Debug tools
+#
