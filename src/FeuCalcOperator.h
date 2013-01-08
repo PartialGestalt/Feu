@@ -19,7 +19,7 @@ public:
 private:
 	struct feuOpInfo *mInfo;
 public:
-	void proc(stack<FeuCalcItem *> calcStack);
+	void proc(stack<FeuCalcItem *> *);
     FeuCalcItem *copy();
     float getValue();
     void setValue(float); 

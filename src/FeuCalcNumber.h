@@ -20,7 +20,7 @@ public:
 private:
 	float mValue; // A single numeric value
 public:
-	void proc(stack<FeuCalcItem *> calcStack);
+	void proc(stack<FeuCalcItem *> *);
     FeuCalcItem *copy();
     float getValue();
     void setValue(float);

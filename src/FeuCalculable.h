@@ -25,12 +25,14 @@ struct feuOpInfo {
     string op;               // String representation
     int precedence;          // Precedence
     bool leftAssociative;    // true for left-associative
-    void (*func)(stack<FeuCalcItem *>); // Implementation
+    void (*func)(stack<FeuCalcItem *> *); // Implementation
 };
 
 extern struct feuOpInfo feuOpInfoTable[];
 
-// Enumeration of supported operators
+// Enumeration of *known* operators.  The set of 
+// *supported* operators is defined in the implementation file.
+// An operator is supported iff a handler func is defined for it.
 enum {
     FEU_OP_ID_COMMA = 0,
     FEU_OP_ID_ASSIGN,

@@ -26,7 +26,8 @@ int main(int argc, char **argv)
     FeuLog::i("Starting calculable test...\n");
 
 
-    fc = new FeuCalculable("3+4*2/(1-5)^^2^^3");
+    //fc = new FeuCalculable("3+4*2/(1-5)^^2^^3");
+    fc = new FeuCalculable("3+4*2/(1-5)");
     fc_result = fc->proc();
 
     FeuLog::i("Calculable finished, result is \"" + stringof(fc_result) + "\"\n");

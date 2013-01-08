@@ -12,9 +12,10 @@ FeuCalcNumber::FeuCalcNumber(string initVal) {
     mValue = floatof(initVal);
 }
 
-void FeuCalcNumber::proc(stack<FeuCalcItem *> calcStack) {
+void FeuCalcNumber::proc(stack<FeuCalcItem *> *calcStack) {
     // For processing, we simply push onto the calculator stack
-    calcStack.push(this);
+    calcStack->push(this);
+    FeuLog::i("Pushed NUM onto calcstack, depth is now: " + stringof(calcStack->size()) + "\n");
 }
 
 FeuCalcItem *FeuCalcNumber::copy() {

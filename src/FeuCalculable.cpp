@@ -1,4 +1,12 @@
 #include "feu.h"
+#include <cmath>
+
+// Operator implementation function prototypes;
+void feu_op_add(stack<FeuCalcItem *> *);
+void feu_op_sub(stack<FeuCalcItem *> *);
+void feu_op_mult(stack<FeuCalcItem *> *);
+void feu_op_div(stack<FeuCalcItem *> *);
+void feu_op_exponent(stack<FeuCalcItem *> *);
 
 // Operator info table (lower number means higher precedence)
 struct feuOpInfo feuOpInfoTable[] = {
@@ -27,12 +35,12 @@ struct feuOpInfo feuOpInfoTable[] = {
     { FEU_OP_ID_TESTMOREEQUAL, ">=", 8, true, NULL },
     { FEU_OP_ID_SHL, "<<", 7, true, NULL },
     { FEU_OP_ID_SHR, ">>", 7, true, NULL },
-    { FEU_OP_ID_ADD, "+", 6, true, NULL },
-    { FEU_OP_ID_SUB, "-", 6, true, NULL },
-    { FEU_OP_ID_MULT, "*", 5, true, NULL },
-    { FEU_OP_ID_DIV, "/", 5, true, NULL },
+    { FEU_OP_ID_ADD, "+", 6, true, feu_op_add },
+    { FEU_OP_ID_SUB, "-", 6, true, feu_op_sub },
+    { FEU_OP_ID_MULT, "*", 5, true, feu_op_mult },
+    { FEU_OP_ID_DIV, "/", 5, true, feu_op_div },
     { FEU_OP_ID_MOD, "%", 5, true, NULL },
-    { FEU_OP_ID_EXPONENT, "^^", 4, false, NULL }, 
+    { FEU_OP_ID_EXPONENT, "^^", 4, false, feu_op_exponent }, 
     { FEU_OP_ID_INCR, "++", 3, false, NULL },
     { FEU_OP_ID_DECR, "--", 3, false, NULL },
     { FEU_OP_ID_NOTLOGIC, "!", 3, false, NULL },
@@ -43,6 +51,66 @@ struct feuOpInfo feuOpInfoTable[] = {
     { FEU_OP_ID_RPAREN, ")", 2, true, NULL },
     { FEU_OP_ID_FAILURE, "...", 0, true, NULL }
 };
+
+void feu_op_add(stack<FeuCalcItem *> *s) 
+{
+    FeuCalcItem *left, *right, *result;
+    right = s->top(); s->pop();
+    left = s->top(); s->pop();
+
+    result = new FeuCalcNumber(left->getValue() + right->getValue());
+
+    s->push(result);
+    return;
+}
+
+void feu_op_sub(stack<FeuCalcItem *> *s) 
+{
+    FeuCalcItem *left, *right, *result;
+    right = s->top(); s->pop();
+    left = s->top(); s->pop();
+
+    result = new FeuCalcNumber(left->getValue() - right->getValue());
+
+    s->push(result);
+    return;
+}
+
+void feu_op_mult(stack<FeuCalcItem *> *s) 
+{
+    FeuCalcItem *left, *right, *result;
+    right = s->top(); s->pop();
+    left = s->top(); s->pop();
+
+    result = new FeuCalcNumber(left->getValue() * right->getValue());
+
+    s->push(result);
+    return;
+}
+
+void feu_op_div(stack<FeuCalcItem *> *s) 
+{
+    FeuCalcItem *left, *right, *result;
+    right = s->top(); s->pop();
+    left = s->top(); s->pop();
+
+    result = new FeuCalcNumber(left->getValue() / right->getValue());
+
+    s->push(result);
+    return;
+}
+
+void feu_op_exponent(stack<FeuCalcItem *> *s) 
+{
+    FeuCalcItem *left, *right, *result;
+    right = s->top(); s->pop();
+    left = s->top(); s->pop();
+
+    result = new FeuCalcNumber(pow(left->getValue(),right->getValue()));
+
+    s->push(result);
+    return;
+}
 
 FeuCalculable::FeuCalculable(string expression) {
     mIsConstant = true; // May be overridden by tokenizer
@@ -210,6 +278,8 @@ void FeuCalculable::rpn() {
         } else if (isalpha((**i)[0])) {
             // Object reference, shunt as number
             mRPN.push_back(new FeuCalcReference(**i));
+            // Have at least one object reference, so not known to be constant.
+            mIsConstant = false;
         } else {
             // Anything else should be an operator
             fcop = new FeuCalcOperator(**i); 
@@ -275,6 +345,9 @@ void FeuCalculable::rpn() {
 }
 
 float FeuCalculable::proc() {
+    list<FeuCalcItem *>::iterator i;
+    FeuCalcItem *fci;
+
     // Shortcut for constants....
     mRunCount++;
     if (mIsConstant && (mRunCount > 1)) {
@@ -282,5 +355,27 @@ float FeuCalculable::proc() {
     }
 
     // No Shortcut -- actually run it
+
+    //    Make sure stack is clear
+    while (!mCalcStack.empty()) {
+        fci = mCalcStack.top();
+        mCalcStack.pop();
+        delete fci;
+    }
+
+    // Walk list of calc items, creating a duplicate and calling 
+    // each proc() routine.  The result should be left on the stack
+    // at the end.
+    for (i=mRPN.begin(); i != mRPN.end(); i++) {
+        fci = (*i)->copy();
+        fci->proc(&mCalcStack);
+    }
+
+    // There should be exactly one calcitem left on the stack.
+    // CLEAN: TODO: Validate the crap outta this
+    fci = mCalcStack.top();
+    mLastResult = fci->getValue();
+    delete fci;
+    return mLastResult;
 }
 
