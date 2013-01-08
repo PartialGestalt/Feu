@@ -8,6 +8,10 @@ FeuCalcNumber::FeuCalcNumber(float initVal) {
     mValue = initVal;
 }
 
+FeuCalcNumber::FeuCalcNumber(string initVal) {
+    mValue = floatof(initVal);
+}
+
 void FeuCalcNumber::proc(stack<FeuCalcItem *> calcStack) {
     // For processing, we simply push onto the calculator stack
     calcStack.push(this);
@@ -24,4 +28,8 @@ float FeuCalcNumber::getValue() {
 
 void FeuCalcNumber::setValue(float newVal) {
     mValue = newVal;
+}
+
+string FeuCalcNumber::toString() {
+    return stringof(mValue);
 }

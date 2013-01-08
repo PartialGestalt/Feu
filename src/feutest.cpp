@@ -20,14 +20,16 @@ int main(int argc, char **argv)
     delete ft1;
 
     FeuLog::i("Adoption test done\n");
+    FeuLog::i("===============================================\n");
 
 
     FeuLog::i("Starting calculable test...\n");
 
 
-    fc = new FeuCalculable("4 + 5/bob.hat(.9343)");
+    fc = new FeuCalculable("3+4*2/(1-5)^^2^^3");
     fc_result = fc->proc();
 
-    FeuLog::i("Calculable finished.\n");
+    FeuLog::i("Calculable finished, result is \"" + stringof(fc_result) + "\"\n");
+    FeuLog::i("===============================================\n");
 
 }

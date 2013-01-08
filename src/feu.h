@@ -10,3 +10,5 @@ using namespace std;
 #include "FeuCalcItem.h"
 #include "FeuCalculable.h"
 #include "FeuCalcNumber.h"
+#include "FeuCalcReference.h"
+#include "FeuCalcOperator.h"

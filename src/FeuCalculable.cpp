@@ -1,45 +1,47 @@
 #include "feu.h"
 
-// Operator info table
-static struct feuOpInfo feuOpInfoTable[] = {
-    { FEU_OP_ID_COMMA, ",", 17, true },
-    { FEU_OP_ID_ASSIGN, "=", 15, false },
-    { FEU_OP_ID_ADDASSIGN, "+=", 15, false },
-    { FEU_OP_ID_SUBASSIGN, "-=", 15, false },
-    { FEU_OP_ID_MULTASSIGN, "*=", 15, false },
-    { FEU_OP_ID_DIVASSIGN, "/=", 15, false },
-    { FEU_OP_ID_MODASSIGN, "%=", 15, false },
-    { FEU_OP_ID_SHLASSIGN, "<<=", 15, false },
-    { FEU_OP_ID_SHRASSIGN, ">>=", 15, false },
-    { FEU_OP_ID_ANDASSIGN, "&=", 15, false },
-    { FEU_OP_ID_XORASSIGN, "^=", 15, false },
-    { FEU_OP_ID_ORASSIGN, "|=", 15, false },
-    { FEU_OP_ID_ORLOGIC, "||", 14, true },
-    { FEU_OP_ID_ANDLOGIC, "&&", 13, true },
-    { FEU_OP_ID_ORBITS, "|", 12, true },
-    { FEU_OP_ID_XORBITS, "^", 11, true },
-    { FEU_OP_ID_ANDBITS, "&", 10, true },
-    { FEU_OP_ID_TESTEQUAL, "==", 9, true },
-    { FEU_OP_ID_TESTNOTEQUAL, "!=", 9, true },
-    { FEU_OP_ID_TESTLESS, "<", 8, true },
-    { FEU_OP_ID_TESTLESSEQUAL, "<=", 8, true },
-    { FEU_OP_ID_TESTMORE, ">", 8, true },
-    { FEU_OP_ID_TESTMOREEQUAL, ">=", 8, true },
-    { FEU_OP_ID_SHL, "<<", 7, true },
-    { FEU_OP_ID_SHR, ">>", 7, true },
-    { FEU_OP_ID_ADD, "+", 6, true },
-    { FEU_OP_ID_SUB, "-", 6, true },
-    { FEU_OP_ID_MULT, "*", 5, true },
-    { FEU_OP_ID_DIV, "/", 5, true },
-    { FEU_OP_ID_MOD, "%", 5, true },
-    { FEU_OP_ID_INCR, "++", 3, false },
-    { FEU_OP_ID_DECR, "--", 3, false },
-    { FEU_OP_ID_NOTLOGIC, "!", 3, false },
-    { FEU_OP_ID_NOTBITS, "~", 3, false },
-    { FEU_OP_ID_LSUBSCRIPT, "[", 2, true },
-    { FEU_OP_ID_RSUBSCRIPT, "]", 2, true },
-    { FEU_OP_ID_LPAREN, "(", 2, true },
-    { FEU_OP_ID_RPAREN, ")", 2, true }
+// Operator info table (lower number means higher precedence)
+struct feuOpInfo feuOpInfoTable[] = {
+    { FEU_OP_ID_COMMA, ",", 17, true, NULL },
+    { FEU_OP_ID_ASSIGN, "=", 15, false, NULL },
+    { FEU_OP_ID_ADDASSIGN, "+=", 15, false, NULL },
+    { FEU_OP_ID_SUBASSIGN, "-=", 15, false, NULL },
+    { FEU_OP_ID_MULTASSIGN, "*=", 15, false, NULL },
+    { FEU_OP_ID_DIVASSIGN, "/=", 15, false, NULL },
+    { FEU_OP_ID_MODASSIGN, "%=", 15, false, NULL },
+    { FEU_OP_ID_SHLASSIGN, "<<=", 15, false, NULL },
+    { FEU_OP_ID_SHRASSIGN, ">>=", 15, false, NULL },
+    { FEU_OP_ID_ANDASSIGN, "&=", 15, false, NULL },
+    { FEU_OP_ID_XORASSIGN, "^=", 15, false, NULL },
+    { FEU_OP_ID_ORASSIGN, "|=", 15, false, NULL },
+    { FEU_OP_ID_ORLOGIC, "||", 14, true, NULL },
+    { FEU_OP_ID_ANDLOGIC, "&&", 13, true, NULL },
+    { FEU_OP_ID_ORBITS, "|", 12, true, NULL },
+    { FEU_OP_ID_XORBITS, "^", 11, true, NULL },
+    { FEU_OP_ID_ANDBITS, "&", 10, true, NULL },
+    { FEU_OP_ID_TESTEQUAL, "==", 9, true, NULL },
+    { FEU_OP_ID_TESTNOTEQUAL, "!=", 9, true, NULL },
+    { FEU_OP_ID_TESTLESS, "<", 8, true, NULL },
+    { FEU_OP_ID_TESTLESSEQUAL, "<=", 8, true, NULL },
+    { FEU_OP_ID_TESTMORE, ">", 8, true, NULL },
+    { FEU_OP_ID_TESTMOREEQUAL, ">=", 8, true, NULL },
+    { FEU_OP_ID_SHL, "<<", 7, true, NULL },
+    { FEU_OP_ID_SHR, ">>", 7, true, NULL },
+    { FEU_OP_ID_ADD, "+", 6, true, NULL },
+    { FEU_OP_ID_SUB, "-", 6, true, NULL },
+    { FEU_OP_ID_MULT, "*", 5, true, NULL },
+    { FEU_OP_ID_DIV, "/", 5, true, NULL },
+    { FEU_OP_ID_MOD, "%", 5, true, NULL },
+    { FEU_OP_ID_EXPONENT, "^^", 4, false, NULL }, 
+    { FEU_OP_ID_INCR, "++", 3, false, NULL },
+    { FEU_OP_ID_DECR, "--", 3, false, NULL },
+    { FEU_OP_ID_NOTLOGIC, "!", 3, false, NULL },
+    { FEU_OP_ID_NOTBITS, "~", 3, false, NULL },
+    { FEU_OP_ID_LSUBSCRIPT, "[", 2, true, NULL },
+    { FEU_OP_ID_RSUBSCRIPT, "]", 2, true, NULL },
+    { FEU_OP_ID_LPAREN, "(", 2, true, NULL },
+    { FEU_OP_ID_RPAREN, ")", 2, true, NULL },
+    { FEU_OP_ID_FAILURE, "...", 0, true, NULL }
 };
 
 FeuCalculable::FeuCalculable(string expression) {
@@ -47,6 +49,7 @@ FeuCalculable::FeuCalculable(string expression) {
     mLastResult = 0.0f; // As good a default as any...
     mRunCount = 0; // No runs yet.
     mOpMap = &feuOperators;
+    FeuLog::i("Calculable is: \"", expression, "\"\n");
     // Convert input string into tokens
     this->tokenize(expression);
     // Convert infix to RPN for easy calculation
@@ -128,7 +131,20 @@ void FeuCalculable::tokenize(string formula) {
                     tokenState = FEU_TOKEN_NONE;
                     endAccum = true;
                 } else {
-                    // Continue accumulating operator
+                    string *jamtest = new string(*accum);
+                    // Possible additional character, but it
+                    // may also be two operators jammed up against
+                    // each other.  Test to see if the additional char
+                    // would make an invalid operator, and force 
+                    // a restart if so.
+                    jamtest->append(1,ch);
+                    if (0 == feuOperators.count(*jamtest)) {
+                        // Compound not found, start a new token without
+                        // changing token state.
+                        startAccum = true;
+                        FeuLog::i("FAILED\n");
+                    }
+                    delete jamtest;
                 }
                 break;
             }
@@ -179,8 +195,83 @@ void FeuCalculable::tokenize(string formula) {
 }
 
 void FeuCalculable::rpn() {
+    list<string *>::iterator i;
+    stack<FeuCalcOperator *> opstack;
+    FeuCalcOperator *fcop;
+    bool done=false;
+    FeuCalcOperator *fco_top;
     // Walk token list, using the shunting yard algorithm to organize
-    // tokens into RPN.  Then, convert each token into a FeuCalcItem.
+    // tokens into RPN.  Then, convert each token into a FeuCalcItem of
+    // the appropriate type.
+    for (i = mTokens.begin(); i != mTokens.end() ;i++) {
+        if (isdigit((**i)[0])) {
+            // Numeric token, just push to output
+            mRPN.push_back(new FeuCalcNumber(**i));
+        } else if (isalpha((**i)[0])) {
+            // Object reference, shunt as number
+            mRPN.push_back(new FeuCalcReference(**i));
+        } else {
+            // Anything else should be an operator
+            fcop = new FeuCalcOperator(**i); 
+            // How we handle the operator depends on precedence rules...
+            switch(fcop->getID()) {
+                // Left-grouping just gets pushed onto shunt
+                case FEU_OP_ID_LPAREN:
+                case FEU_OP_ID_LSUBSCRIPT:
+                    opstack.push(fcop);
+                    break;
+                // Right-grouping pops until left grouper is found
+                case FEU_OP_ID_RPAREN:  
+                case FEU_OP_ID_RSUBSCRIPT: {
+                    // Define which lgrouper we're looking for
+                    int tgt_id = (fcop->getID() == FEU_OP_ID_RPAREN)?
+                                  FEU_OP_ID_LPAREN:FEU_OP_ID_LSUBSCRIPT;
+                    done = false;
+                    while (!opstack.empty() && !done) {
+                        fco_top = opstack.top();
+                        opstack.pop();
+                        if (fco_top->getID() == tgt_id) {
+                            // What we're looking for!
+                            done = true;
+                        } else {
+                            // Move it to output 
+                            mRPN.push_back(fco_top);
+                        }
+                    }
+                    break;
+                }
+                // Everything else is strict priority rules
+                default: {
+                    done = false;
+                    while (!opstack.empty() && !done) {
+                        if (fcop->canSupplant(opstack.top())) {
+                            // New is higher priority; pop old onto output
+                            mRPN.push_back(opstack.top());
+                            opstack.pop();
+                        } else {
+                            // New is lower priority; push onto stack
+                            opstack.push(fcop);
+                            done = true;
+                        }
+                    }
+                    if (!done) opstack.push(fcop);
+                    break;
+                }
+            }
+        }
+    }
+    // Pop anything left onto output 
+    while (!opstack.empty()) {
+        mRPN.push_back(opstack.top());
+        opstack.pop();
+    }
+    // Dump RPN for fun
+    {
+        list<FeuCalcItem *>::iterator i;
+        for (i = mRPN.begin(); i != mRPN.end(); i++) {
+            FeuLog::i("RPN Token: \"",(*i)->toString(),"\"\n");
+        }
+    }
 }
 
 float FeuCalculable::proc() {

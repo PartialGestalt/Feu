@@ -18,17 +18,21 @@
 
 using namespace std;
 
+
 // Operator table
 struct feuOpInfo {
     int id;                  // ID of the operator
     string op;               // String representation
     int precedence;          // Precedence
     bool leftAssociative;    // true for left-associative
+    void (*func)(stack<FeuCalcItem *>); // Implementation
 };
+
+extern struct feuOpInfo feuOpInfoTable[];
 
 // Enumeration of supported operators
 enum {
-    FEU_OP_ID_COMMA,
+    FEU_OP_ID_COMMA = 0,
     FEU_OP_ID_ASSIGN,
     FEU_OP_ID_ADDASSIGN,
     FEU_OP_ID_SUBASSIGN,
@@ -58,6 +62,7 @@ enum {
     FEU_OP_ID_MULT,
     FEU_OP_ID_DIV,
     FEU_OP_ID_MOD,
+    FEU_OP_ID_EXPONENT,
     FEU_OP_ID_INCR,
     FEU_OP_ID_DECR,
     FEU_OP_ID_NOTLOGIC,
@@ -66,6 +71,7 @@ enum {
     FEU_OP_ID_RSUBSCRIPT,
     FEU_OP_ID_LPAREN,
     FEU_OP_ID_RPAREN,
+    FEU_OP_ID_FAILURE // Reserved for the failure case object
 }; 
 
 enum {
@@ -108,6 +114,7 @@ const feuOpMap::value_type feuOpTable[] = {
     feuOpMap::value_type("*",FEU_OP_ID_MULT),
     feuOpMap::value_type("/",FEU_OP_ID_DIV),
     feuOpMap::value_type("%",FEU_OP_ID_MOD),
+    feuOpMap::value_type("^^",FEU_OP_ID_EXPONENT),
     feuOpMap::value_type("++",FEU_OP_ID_INCR),
     feuOpMap::value_type("--",FEU_OP_ID_DECR),
     feuOpMap::value_type("!",FEU_OP_ID_NOTLOGIC),
