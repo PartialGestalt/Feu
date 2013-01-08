@@ -2,7 +2,7 @@
  * FeuRefCounted.h
  *
  * FeuRefCounted is a base class for any object that has a reference
- * count and self-destructs when the refcount goes to zero.
+ * count.
  *
  * Objects are created with a refcount of zero.
  */
@@ -18,8 +18,10 @@ private:
     int mRefCount;
 
 public:
-	static void ref_get(FeuRefCounted *);
-	static void ref_put(FeuRefCounted *);
+	void ref_get();
+	void ref_put();
+    int ref_count();
+
 };
 
 

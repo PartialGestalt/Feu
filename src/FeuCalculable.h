@@ -21,11 +21,11 @@ using namespace std;
 
 // Operator table
 struct feuOpInfo {
-    int id;                  // ID of the operator
-    string op;               // String representation
-    int precedence;          // Precedence
-    bool leftAssociative;    // true for left-associative
-    void (*func)(stack<FeuCalcItem *> *); // Implementation
+    int id;                   // ID of the operator
+    string op;                // String representation
+    int precedence;           // Precedence
+    bool leftAssociative;     // true for left-associative
+    void (*func)(FeuStack *); // Implementation
 };
 
 extern struct feuOpInfo feuOpInfoTable[];
@@ -138,9 +138,9 @@ public:
 private:
     bool mIsConstant; // No extern references, simplifies.
     float mLastResult;  // Last calculation result
-    list<FeuCalcItem *>mRPN; // Our RPN list of calcitems
+    FeuList mRPN; // Our RPN list of calcitems
     list<string *>mTokens; // List of fundamental tokens
-    stack<FeuCalcItem *>mCalcStack; // Stack for calculations
+    FeuStack mCalcStack; // Stack for calculations
     int mRunCount;
 
 public:

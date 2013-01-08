@@ -5,6 +5,8 @@ using namespace std;
 
 
 #include "FeuRefCounted.h"
+#include "FeuList.h"
+#include "FeuStack.h"
 #include "FeuLog.h"
 #include "FeuThing.h"
 #include "FeuCalcItem.h"

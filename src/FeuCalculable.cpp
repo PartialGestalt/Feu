@@ -2,11 +2,11 @@
 #include <cmath>
 
 // Operator implementation function prototypes;
-void feu_op_add(stack<FeuCalcItem *> *);
-void feu_op_sub(stack<FeuCalcItem *> *);
-void feu_op_mult(stack<FeuCalcItem *> *);
-void feu_op_div(stack<FeuCalcItem *> *);
-void feu_op_exponent(stack<FeuCalcItem *> *);
+void feu_op_add(FeuStack *);
+void feu_op_sub(FeuStack *);
+void feu_op_mult(FeuStack *);
+void feu_op_div(FeuStack *);
+void feu_op_exponent(FeuStack *);
 
 // Operator info table (lower number means higher precedence)
 struct feuOpInfo feuOpInfoTable[] = {
@@ -52,63 +52,78 @@ struct feuOpInfo feuOpInfoTable[] = {
     { FEU_OP_ID_FAILURE, "...", 0, true, NULL }
 };
 
-void feu_op_add(stack<FeuCalcItem *> *s) 
+void feu_args_binary_get(FeuStack *s, FeuCalcItem **left, FeuCalcItem **right)
+{
+    // CLEAN: TODO: NULL checks here? 
+    *right = (FeuCalcItem *)s->pop();
+    *left = (FeuCalcItem *)s->pop();
+    return;
+}
+
+void feu_args_binary_put(FeuCalcItem *left, FeuCalcItem *right)
+{
+    // Check refcount and delete if zero 
+    if (!left->ref_count()) delete left;
+    if (!right->ref_count()) delete right;
+}
+
+void feu_op_add(FeuStack *s) 
 {
     FeuCalcItem *left, *right, *result;
-    right = s->top(); s->pop();
-    left = s->top(); s->pop();
+    feu_args_binary_get(s,&left,&right);
 
     result = new FeuCalcNumber(left->getValue() + right->getValue());
 
     s->push(result);
+    feu_args_binary_put(left,right);
     return;
 }
 
-void feu_op_sub(stack<FeuCalcItem *> *s) 
+void feu_op_sub(FeuStack *s) 
 {
     FeuCalcItem *left, *right, *result;
-    right = s->top(); s->pop();
-    left = s->top(); s->pop();
+    feu_args_binary_get(s,&left,&right);
 
     result = new FeuCalcNumber(left->getValue() - right->getValue());
 
     s->push(result);
+    feu_args_binary_put(left,right);
     return;
 }
 
-void feu_op_mult(stack<FeuCalcItem *> *s) 
+void feu_op_mult(FeuStack *s) 
 {
     FeuCalcItem *left, *right, *result;
-    right = s->top(); s->pop();
-    left = s->top(); s->pop();
+    feu_args_binary_get(s,&left,&right);
 
     result = new FeuCalcNumber(left->getValue() * right->getValue());
 
     s->push(result);
+    feu_args_binary_put(left,right);
     return;
 }
 
-void feu_op_div(stack<FeuCalcItem *> *s) 
+void feu_op_div(FeuStack *s) 
 {
     FeuCalcItem *left, *right, *result;
-    right = s->top(); s->pop();
-    left = s->top(); s->pop();
+    feu_args_binary_get(s,&left,&right);
 
     result = new FeuCalcNumber(left->getValue() / right->getValue());
 
     s->push(result);
+    feu_args_binary_put(left,right);
     return;
 }
 
-void feu_op_exponent(stack<FeuCalcItem *> *s) 
+void feu_op_exponent(FeuStack *s) 
 {
     FeuCalcItem *left, *right, *result;
-    right = s->top(); s->pop();
-    left = s->top(); s->pop();
+    feu_args_binary_get(s,&left,&right);
 
     result = new FeuCalcNumber(pow(left->getValue(),right->getValue()));
 
     s->push(result);
+    feu_args_binary_put(left,right);
     return;
 }
 
@@ -127,7 +142,7 @@ FeuCalculable::FeuCalculable(string expression) {
 
 FeuCalculable::~FeuCalculable() {
     // Walk our RPN list, deleting each item
-    list<FeuCalcItem *>::iterator iter;
+    FeuList::iterator iter;
     for (iter = mRPN.begin();iter != mRPN.end(); iter++) {
         delete *iter;
     }
@@ -293,6 +308,13 @@ void FeuCalculable::rpn() {
                 // Right-grouping pops until left grouper is found
                 case FEU_OP_ID_RPAREN:  
                 case FEU_OP_ID_RSUBSCRIPT: {
+                    // CLEAN: TODO: This treats square brackets as pure
+                    // grouping, rather than as a subscript selector, and
+                    // doesn't leave a subscript operation on the stack.
+                    // Since we don't support subscripting or arrays yet,
+                    // I'm not going to worry about it.  It needs to be
+                    // fixed eventually, though.
+                    //
                     // Define which lgrouper we're looking for
                     int tgt_id = (fcop->getID() == FEU_OP_ID_RPAREN)?
                                   FEU_OP_ID_LPAREN:FEU_OP_ID_LSUBSCRIPT;
@@ -303,11 +325,15 @@ void FeuCalculable::rpn() {
                         if (fco_top->getID() == tgt_id) {
                             // What we're looking for!
                             done = true;
+                            // Destroy the left grouper
+                            delete fco_top;
                         } else {
                             // Move it to output 
                             mRPN.push_back(fco_top);
                         }
                     }
+                    // Delete the right grouper
+                    delete fcop;
                     break;
                 }
                 // Everything else is strict priority rules
@@ -337,15 +363,15 @@ void FeuCalculable::rpn() {
     }
     // Dump RPN for fun
     {
-        list<FeuCalcItem *>::iterator i;
+        FeuList::iterator i;
         for (i = mRPN.begin(); i != mRPN.end(); i++) {
-            FeuLog::i("RPN Token: \"",(*i)->toString(),"\"\n");
+            FeuLog::i("RPN Token: \"",((FeuCalcItem *)(*i))->toString(),"\"\n");
         }
     }
 }
 
 float FeuCalculable::proc() {
-    list<FeuCalcItem *>::iterator i;
+    FeuList::iterator i;
     FeuCalcItem *fci;
 
     // Shortcut for constants....
@@ -356,26 +382,24 @@ float FeuCalculable::proc() {
 
     // No Shortcut -- actually run it
 
-    //    Make sure stack is clear
-    while (!mCalcStack.empty()) {
-        fci = mCalcStack.top();
-        mCalcStack.pop();
-        delete fci;
-    }
-
-    // Walk list of calc items, creating a duplicate and calling 
-    // each proc() routine.  The result should be left on the stack
-    // at the end.
+    // Walk list of calc items, calling each proc() routine.  
+    // The result should be left on the stack at the end.
     for (i=mRPN.begin(); i != mRPN.end(); i++) {
-        fci = (*i)->copy();
         fci->proc(&mCalcStack);
     }
 
     // There should be exactly one calcitem left on the stack.
-    // CLEAN: TODO: Validate the crap outta this
-    fci = mCalcStack.top();
+    fci = (FeuCalcItem *)mCalcStack.pop();
     mLastResult = fci->getValue();
-    delete fci;
+    if (!fci->ref_count()) delete fci;
+
+    //    Make sure stack is clear
+    while (!mCalcStack.empty()) {
+        FeuLog::e("Calculable stack not empty after proc() exit.\n");
+        fci = (FeuCalcItem *)mCalcStack.pop();
+        if (!fci->ref_count()) delete fci;
+    }
+
     return mLastResult;
 }
 
