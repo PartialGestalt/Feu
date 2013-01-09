@@ -133,6 +133,7 @@ FeuCalculable::FeuCalculable(string expression) {
     mRunCount = 0; // No runs yet.
     mOpMap = &feuOperators;
     FeuLog::i("Calculable is: \"", expression, "\"\n");
+    mRPN = new FeuList();
     // Convert input string into tokens
     this->tokenize(expression);
     // Convert infix to RPN for easy calculation
@@ -141,10 +142,23 @@ FeuCalculable::FeuCalculable(string expression) {
 }
 
 FeuCalculable::~FeuCalculable() {
-    // Walk our RPN list, deleting each item
-    FeuList::iterator iter;
-    for (iter = mRPN.begin();iter != mRPN.end(); iter++) {
-        delete *iter;
+    FeuLog::i("DESTRUCT: FeuCalculable\n");
+    /* Delete the string tokens */
+    {
+        list<string *>::iterator i;
+        for (i = mTokens.begin(); i != mTokens.end(); i++) {
+            delete *i;
+        }
+    }
+    /* Delete our RPN list */
+    {
+        FeuCalcItem *fci;
+        FeuList::iterator i;
+        for (i = mRPN->begin(); i != mRPN->end(); i++) {
+            fci = (FeuCalcItem *)*i;
+            delete fci;
+        }
+        delete mRPN;
     }
 }
 
@@ -225,7 +239,6 @@ void FeuCalculable::tokenize(string formula) {
                         // Compound not found, start a new token without
                         // changing token state.
                         startAccum = true;
-                        FeuLog::i("FAILED\n");
                     }
                     delete jamtest;
                 }
@@ -289,10 +302,10 @@ void FeuCalculable::rpn() {
     for (i = mTokens.begin(); i != mTokens.end() ;i++) {
         if (isdigit((**i)[0])) {
             // Numeric token, just push to output
-            mRPN.push_back(new FeuCalcNumber(**i));
+            mRPN->push_back(new FeuCalcNumber(**i));
         } else if (isalpha((**i)[0])) {
             // Object reference, shunt as number
-            mRPN.push_back(new FeuCalcReference(**i));
+            mRPN->push_back(new FeuCalcReference(**i));
             // Have at least one object reference, so not known to be constant.
             mIsConstant = false;
         } else {
@@ -329,7 +342,7 @@ void FeuCalculable::rpn() {
                             delete fco_top;
                         } else {
                             // Move it to output 
-                            mRPN.push_back(fco_top);
+                            mRPN->push_back(fco_top);
                         }
                     }
                     // Delete the right grouper
@@ -342,7 +355,7 @@ void FeuCalculable::rpn() {
                     while (!opstack.empty() && !done) {
                         if (fcop->canSupplant(opstack.top())) {
                             // New is higher priority; pop old onto output
-                            mRPN.push_back(opstack.top());
+                            mRPN->push_back(opstack.top());
                             opstack.pop();
                         } else {
                             // New is lower priority; push onto stack
@@ -358,13 +371,13 @@ void FeuCalculable::rpn() {
     }
     // Pop anything left onto output 
     while (!opstack.empty()) {
-        mRPN.push_back(opstack.top());
+        mRPN->push_back(opstack.top());
         opstack.pop();
     }
     // Dump RPN for fun
     {
         FeuList::iterator i;
-        for (i = mRPN.begin(); i != mRPN.end(); i++) {
+        for (i = mRPN->begin(); i != mRPN->end(); i++) {
             FeuLog::i("RPN Token: \"",((FeuCalcItem *)(*i))->toString(),"\"\n");
         }
     }
@@ -384,7 +397,8 @@ float FeuCalculable::proc() {
 
     // Walk list of calc items, calling each proc() routine.  
     // The result should be left on the stack at the end.
-    for (i=mRPN.begin(); i != mRPN.end(); i++) {
+    for (i=mRPN->begin(); i != mRPN->end(); i++) {
+        fci = (FeuCalcItem *)*i;
         fci->proc(&mCalcStack);
     }
 

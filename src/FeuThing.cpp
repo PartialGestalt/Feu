@@ -11,6 +11,7 @@ FeuThing::FeuThing(string name) {
 	// TODO Auto-generated constructor stub
 	mParent = NULL;
 	mName = name;
+    FeuLog::i("CONSTRUCT: FeuThing()\n");
 }
 
 FeuThing::~FeuThing() {

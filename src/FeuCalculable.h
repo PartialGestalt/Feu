@@ -12,6 +12,7 @@
 #define _FEU_CALCULABLE_H_
 
 
+#include "feu.h"
 #include <stack>
 #include <list>
 #include "FeuCalcItem.h"
@@ -138,7 +139,7 @@ public:
 private:
     bool mIsConstant; // No extern references, simplifies.
     float mLastResult;  // Last calculation result
-    FeuList mRPN; // Our RPN list of calcitems
+    FeuList *mRPN; // Our RPN list of calcitems
     list<string *>mTokens; // List of fundamental tokens
     FeuStack mCalcStack; // Stack for calculations
     int mRunCount;

@@ -6,10 +6,12 @@
 
 FeuCalcNumber::FeuCalcNumber(float initVal) {
     mValue = initVal;
+    //FeuLog::i("CONSTRUCT: FeuCalcNumber()\n");
 }
 
 FeuCalcNumber::FeuCalcNumber(string initVal) {
     mValue = floatof(initVal);
+    //FeuLog::i("CONSTRUCT: FeuCalcNumber()\n");
 }
 
 void FeuCalcNumber::proc(FeuStack *calcStack) {

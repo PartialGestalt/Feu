@@ -4,27 +4,34 @@
 
 #include "feu.h"
 
+#if 0
 FeuStack::FeuStack() {
-    // CLEAN: TODO: need to call super()?
 }
 
 FeuStack::~FeuStack() {
-    // CLEAN: TODO: need to call super()?
+    FeuRefCounted *frc;
+
+    while (!empty()) {
+        FeuLog::i("Stack not empty in destructor\n");
+        frc = pop();
+        if (!frc->ref_count()) delete frc;
+    }
 }
+#endif
 
 void FeuStack::push(FeuRefCounted *frc) {
     // Get a ref
     frc->ref_get();
     // Super push
-    stack::push(frc);
+    stack<FeuRefCounted *>::push(frc);
 }
 
 FeuRefCounted *FeuStack::pop() {
     FeuRefCounted *frc;
     // Get the object
-    frc = stack::top();
+    frc = stack<FeuRefCounted *>::top();
     // Pop it
-    stack::pop();
+    stack<FeuRefCounted *>::pop();
     // Release our reference
     frc->ref_put();
 

@@ -17,7 +17,7 @@ FeuCalcOperator::FeuCalcOperator(string initVal) {
 void FeuCalcOperator::proc(FeuStack *calcStack) {
     if (NULL != mInfo->func) (mInfo->func)(calcStack);
     else FeuLog::w("No function to implement operator \"",mInfo->op,"\"\n");
-    FeuLog::i("Finished Op on calcstack; depth is now: " + stringof(calcStack->size()) + "\n");
+    //FeuLog::i("Finished Op on calcstack; depth is now: " + stringof(calcStack->size()) + "\n");
     return;
 }
 

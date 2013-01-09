@@ -4,13 +4,27 @@
 
 #include "feu.h"
 
+#if 0
 FeuList::FeuList() {
-    // CLEAN: TODO: need to call super()?
 }
 
 FeuList::~FeuList() {
-    // CLEAN: TODO: need to call super()?
+    FeuRefCounted *frc;
+    FeuLog::i("DESTRUCT: FeuList\n");
+    // Pop everyone off and delete if they're at zero.
+    while (!empty()) {
+        frc = list::front();
+        frc->ref_put();
+        list::pop_front();
+        if (!frc->ref_count()) {
+            FeuLog::i("List not empty. (deleting) \n");
+            delete frc;
+        } else {
+            FeuLog::i("List not empty, (refs left)\n");
+        }
+    }
 }
+#endif
 
 void FeuList::push_back(FeuRefCounted *frc) {
     // Get a ref

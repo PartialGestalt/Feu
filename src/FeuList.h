@@ -17,8 +17,10 @@ using namespace std;
 
 class FeuList : public list<FeuRefCounted *> {
 public:
+#if 0
       FeuList();
 	 ~FeuList();
+#endif
 
 public:
      void push_back(FeuRefCounted *);

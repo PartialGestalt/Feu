@@ -14,6 +14,7 @@ using namespace std;
 
 class FeuCalcItem : public FeuRefCounted {
 public:
+    FeuCalcItem();
 	virtual ~FeuCalcItem() = 0;
 
 public:
