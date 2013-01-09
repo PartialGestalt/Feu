@@ -16,7 +16,7 @@ void feu_args_binary_put(FeuCalcItem *left, FeuCalcItem *right)
 
 
 
-#define FEU_BINARY_OP(__name, __expr); \
+#define FEU_BINARY_OP(__name, __expr) \
     void feu_op_##__name(FeuStack *s) \
     { \
         FeuCalcItem *left, *right, *result; \
@@ -27,9 +27,24 @@ void feu_args_binary_put(FeuCalcItem *left, FeuCalcItem *right)
         return; \
     } 
 
+#define FEU_BINARY_SIMPLE(__name, __opstring) \
+    FEU_BINARY_OP(__name,(left->getValue() __opstring right->getValue()))
 
-FEU_BINARY_OP(     add, (left->getValue() + right->getValue())    );
-FEU_BINARY_OP(     sub, (left->getValue() - right->getValue())    );
-FEU_BINARY_OP(    mult, (left->getValue() * right->getValue())    );
-FEU_BINARY_OP(     div, (left->getValue() / right->getValue())    );
-FEU_BINARY_OP(exponent, (pow(left->getValue(),right->getValue())) );
+
+FEU_BINARY_SIMPLE(          add, +  );
+FEU_BINARY_SIMPLE(          sub, -  );
+FEU_BINARY_SIMPLE(         mult, *  );
+FEU_BINARY_SIMPLE(          div, /  );
+FEU_BINARY_SIMPLE(    testequal, == );
+FEU_BINARY_SIMPLE( testnotequal, != );
+FEU_BINARY_SIMPLE(     testless, <  );
+FEU_BINARY_SIMPLE(testlessequal, <= );
+FEU_BINARY_SIMPLE(     testmore, >  );
+FEU_BINARY_SIMPLE(testmoreequal, >= );
+FEU_BINARY_SIMPLE(      orlogic, || );
+FEU_BINARY_SIMPLE(     andlogic, && );
+
+FEU_BINARY_OP(     exponent, (pow(left->getValue(),right->getValue())) );
+FEU_BINARY_OP(       orbits, ((int)left->getValue() | (int)right->getValue()) );
+FEU_BINARY_OP(      andbits, ((int)left->getValue() & (int)right->getValue()) );
+FEU_BINARY_OP(      xorbits, ((int)left->getValue() ^ (int)right->getValue()) );

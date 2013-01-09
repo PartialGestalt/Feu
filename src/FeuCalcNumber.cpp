@@ -10,8 +10,8 @@ FeuCalcNumber::FeuCalcNumber(float initVal) {
 }
 
 FeuCalcNumber::FeuCalcNumber(string initVal) {
+    FeuLog::i("CONSTRUCT: FeuCalcNumber() from string: \"" + initVal + "\"\n");
     mValue = floatof(initVal);
-    //FeuLog::i("CONSTRUCT: FeuCalcNumber()\n");
 }
 
 void FeuCalcNumber::proc(FeuStack *calcStack) {

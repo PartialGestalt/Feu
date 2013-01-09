@@ -2,7 +2,6 @@
 
 FeuRefCounted::FeuRefCounted() {
     mRefCount = 0; // Nobody loves me yet....
-    FeuLog::i("CONSTRUCT: FeuRefcounted\n");
 }
 
 void FeuRefCounted::ref_get() {

@@ -22,6 +22,21 @@ static float floatof(string s) {
     return fout; 
 }
 
+static int intof(string s) {
+    int iout;
+    stringstream os;
+
+    // Choose base from formatting.  I hate this.
+    if (s[0] != '0') {
+        os << s;
+    } else {
+        switch (s[1]) {
+            case 'x':
+            case 'X':
+        }
+    }
+}
+
 class FeuLog {
 public:
 	FeuLog();
