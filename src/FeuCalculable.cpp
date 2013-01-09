@@ -1,5 +1,6 @@
 #include "feu.h"
 #include <cmath>
+#include "FeuOps.h" // Get op handlers
 
 // Operator implementation function prototypes;
 void feu_op_add(FeuStack *);
@@ -51,81 +52,6 @@ struct feuOpInfo feuOpInfoTable[] = {
     { FEU_OP_ID_RPAREN, ")", 2, true, NULL },
     { FEU_OP_ID_FAILURE, "...", 0, true, NULL }
 };
-
-void feu_args_binary_get(FeuStack *s, FeuCalcItem **left, FeuCalcItem **right)
-{
-    // CLEAN: TODO: NULL checks here? 
-    *right = (FeuCalcItem *)s->pop();
-    *left = (FeuCalcItem *)s->pop();
-    return;
-}
-
-void feu_args_binary_put(FeuCalcItem *left, FeuCalcItem *right)
-{
-    // Check refcount and delete if zero 
-    if (!left->ref_count()) delete left;
-    if (!right->ref_count()) delete right;
-}
-
-void feu_op_add(FeuStack *s) 
-{
-    FeuCalcItem *left, *right, *result;
-    feu_args_binary_get(s,&left,&right);
-
-    result = new FeuCalcNumber(left->getValue() + right->getValue());
-
-    s->push(result);
-    feu_args_binary_put(left,right);
-    return;
-}
-
-void feu_op_sub(FeuStack *s) 
-{
-    FeuCalcItem *left, *right, *result;
-    feu_args_binary_get(s,&left,&right);
-
-    result = new FeuCalcNumber(left->getValue() - right->getValue());
-
-    s->push(result);
-    feu_args_binary_put(left,right);
-    return;
-}
-
-void feu_op_mult(FeuStack *s) 
-{
-    FeuCalcItem *left, *right, *result;
-    feu_args_binary_get(s,&left,&right);
-
-    result = new FeuCalcNumber(left->getValue() * right->getValue());
-
-    s->push(result);
-    feu_args_binary_put(left,right);
-    return;
-}
-
-void feu_op_div(FeuStack *s) 
-{
-    FeuCalcItem *left, *right, *result;
-    feu_args_binary_get(s,&left,&right);
-
-    result = new FeuCalcNumber(left->getValue() / right->getValue());
-
-    s->push(result);
-    feu_args_binary_put(left,right);
-    return;
-}
-
-void feu_op_exponent(FeuStack *s) 
-{
-    FeuCalcItem *left, *right, *result;
-    feu_args_binary_get(s,&left,&right);
-
-    result = new FeuCalcNumber(pow(left->getValue(),right->getValue()));
-
-    s->push(result);
-    feu_args_binary_put(left,right);
-    return;
-}
 
 FeuCalculable::FeuCalculable(string expression) {
     mIsConstant = true; // May be overridden by tokenizer
