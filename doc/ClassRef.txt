@@ -19,15 +19,18 @@ I. <ruleset>
      <action> --  Event handlers for certain events.
              "onLoad" -- When a FEU ruleset is loaded
              "onActivate" -- When screensaver or visualization is activated
+             "onCreate" -- when a displayable is created from a class
+             "onDestroy" -- when a displayable is destroyed
              ??? OTHERS ???
              ?"onSongChange" -- Called whenever a song changes?
         
 II. <action>
 
    Define something to be done.  These are generally event handlers, but may
-   also be triggered directly from other actions.  Actions are additive -- if
-   you define multiple actions in an object for the same trigger, all those
-   actions will be triggered in sequence.
+   also be triggered directly from steps or other actions.  Actions are
+   additive -- if you define multiple actions in an object for the same 
+   trigger, all those actions will be triggered in sequence.  Actions defined 
+   in a class are inherited by all displayables created by that class.
 
    "name" - Name of the action; optional for event handlers, but required for
             directly-triggered actions.
@@ -45,14 +48,16 @@ II. <action>
 
 III. <class>
 
-  Define a class of pictures to use for FEU.  Multiple classes may exist in
-  a ruleset.
+  Define a class of displayable objects (pictures) to use for FEU.  Multiple 
+  classes may exist in a ruleset.
 
   "name" - Name of class, used by actions [required]
-  "source" - Where to get images for this class.  Values are structured like a
-             function call, i.e. SOURCENAME(args).  Allowed sources are:
+  "source" - Where to get images or other source data for this class.  Values 
+             are structured like a function call, i.e. SOURCENAME(args).  
+             Allowed sources are:
                "Folder" (folder path is arg)
                "XBMC.Pictures" (XBMC picture source name is arg)
+              ?? OTHERS ?? 
   "sequence" - What order to load pictures; values are:
                "natural" [default] (natural sequence -- collating, perhaps)
                "random" (choose randomly)
@@ -62,7 +67,7 @@ III. <class>
 
    Required children: 
 
-   <path> -- A default path for objects of this class.
+   <path> -- A default initial path for objects of this class.
 
    Optional children:
   

@@ -31,6 +31,7 @@
          sequence="random" >
     <path name="default">
       <step type="move" parameter="absolute" x="(width+Screen.width)/2"/>
+      <step type="setpath" parameter="SlideLeft"/>
     </path>
   </class>
   <!-- Start the first one -->
