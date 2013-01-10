@@ -19,7 +19,7 @@ public:
 private:
 	struct feuOpInfo *mInfo;
 public:
-	void proc(FeuStack *);
+	int proc(FeuStack *);
     FeuCalcItem *copy();
     float getValue();
     void setValue(float); 
@@ -27,6 +27,7 @@ public:
 
 public:
     int getID();
+    void setInfo(struct feuOpInfo *); // for overloaded operators.
     int getPrecedence();
     bool isLeftAssociative();
     bool canSupplant(FeuCalcOperator *fco); // Is this more important than fco?

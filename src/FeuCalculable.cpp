@@ -2,13 +2,6 @@
 #include <cmath>
 #include "FeuOps.h" // Get op handlers
 
-// Operator implementation function prototypes;
-void feu_op_add(FeuStack *);
-void feu_op_sub(FeuStack *);
-void feu_op_mult(FeuStack *);
-void feu_op_div(FeuStack *);
-void feu_op_exponent(FeuStack *);
-
 // Operator info table (lower number means higher precedence)
 struct feuOpInfo feuOpInfoTable[] = {
     { FEU_OP_ID_COMMA, ",", 17, true, NULL },
@@ -45,7 +38,8 @@ struct feuOpInfo feuOpInfoTable[] = {
     { FEU_OP_ID_INCR, "++", 3, false, NULL },
     { FEU_OP_ID_DECR, "--", 3, false, NULL },
     { FEU_OP_ID_NOTLOGIC, "!", 3, false, NULL },
-    { FEU_OP_ID_NOTBITS, "~", 3, false, NULL },
+    { FEU_OP_ID_NOTBITS, "~", 3, false, feu_op_notbits },
+    { FEU_OP_ID_UNARYMINUS, "-", 3, false, feu_op_unaryminus },
     { FEU_OP_ID_LSUBSCRIPT, "[", 2, true, NULL },
     { FEU_OP_ID_RSUBSCRIPT, "]", 2, true, NULL },
     { FEU_OP_ID_LPAREN, "(", 2, true, NULL },
@@ -92,6 +86,7 @@ void FeuCalculable::tokenize(string formula) {
     string::iterator iter;
     char ch, lastch=0;
     int tokenState = FEU_TOKEN_NONE;
+    int lastTokenState = FEU_TOKEN_NONE;
     string *accum = NULL;
     bool endAccum;
     bool startAccum;
@@ -102,7 +97,7 @@ void FeuCalculable::tokenize(string formula) {
         startAccum=false;
         switch (tokenState) {
             case FEU_TOKEN_NONE: {
-                if (isdigit(ch) || (ch == '.')) {
+                if (isdigit(ch) || (ch == '.') || (ch == '#')) {
                     // Starting a new number
                     tokenState = FEU_TOKEN_NUM;
                     startAccum = true;
@@ -121,11 +116,13 @@ void FeuCalculable::tokenize(string formula) {
             }
             case FEU_TOKEN_NUM: {
                 if (isxdigit(ch) || (ch == '.') ||
-                    (((ch == 'x') || (ch == 'X')) && (lastch == '0')))  {
+                    (((ch == 'x') || (ch == 'X')) && (lastch == '0')) ||
+                    (((ch == 'b') || (ch == 'B')) && (lastch == '0')) ||
+                    (((ch == 'd') || (ch == 'D')) && (lastch == '0')) )  {
                     // Add another numeric element to the accumulator
                 } else if (isalpha(ch)) {
                     // Syntax error; must have an operator between number
-                    // and object ref.
+                    // and object ref, or botched radix specifier
                     FeuLog::e("SYNTAX ERROR: Must have an operator between numbers and object references.\n");
                     // TODO: CLEAN: Throw an exception here, but in the meantime, pretend it's ok.
                     tokenState = FEU_TOKEN_REF;
@@ -142,7 +139,7 @@ void FeuCalculable::tokenize(string formula) {
                 break;
             }
             case FEU_TOKEN_OP: {
-                if (isdigit(ch) || (ch == '.')) {
+                if (isdigit(ch) || (ch == '.') || (ch == '#')) {
                     // Starting a new number after operator
                     tokenState = FEU_TOKEN_NUM;
                     startAccum = true;
@@ -222,6 +219,7 @@ void FeuCalculable::rpn() {
     FeuCalcOperator *fcop;
     bool done=false;
     FeuCalcOperator *fco_top;
+    int lastTokenType = FEU_TOKEN_NONE;
     // Walk token list, using the shunting yard algorithm to organize
     // tokens into RPN.  Then, convert each token into a FeuCalcItem of
     // the appropriate type.
@@ -229,11 +227,15 @@ void FeuCalculable::rpn() {
         if (isdigit((**i)[0])) {
             // Numeric token, just push to output
             mRPN->push_back(new FeuCalcNumber(**i));
+            // Save our token type
+            lastTokenType = FEU_TOKEN_NUM;
         } else if (isalpha((**i)[0])) {
             // Object reference, shunt as number
             mRPN->push_back(new FeuCalcReference(**i));
             // Have at least one object reference, so not known to be constant.
             mIsConstant = false;
+            // Save our token type
+            lastTokenType = FEU_TOKEN_REF;
         } else {
             // Anything else should be an operator
             fcop = new FeuCalcOperator(**i); 
@@ -278,6 +280,20 @@ void FeuCalculable::rpn() {
                 // Everything else is strict priority rules
                 default: {
                     done = false;
+                    // Start with any special handling (eg: operator overload):
+                    //
+                    // Based on previous token type, determine if a SUB is 
+                    // really a unary minus.  
+                    // A '-' that follows an operator or at the beginning 
+                    // is a unary minus.  
+                    // A '-' that follows a number or an object is a subtraction.
+                    if (fcop->getID() == FEU_OP_ID_SUB) {
+                        if (lastTokenType == FEU_TOKEN_NONE ||
+                            lastTokenType == FEU_TOKEN_OP) {
+                            fcop->setInfo(&feuOpInfoTable[FEU_OP_ID_UNARYMINUS]);
+                        }
+                    }
+                    // Now, handle common processing
                     while (!opstack.empty() && !done) {
                         if (fcop->canSupplant(opstack.top())) {
                             // New is higher priority; pop old onto output
@@ -293,6 +309,8 @@ void FeuCalculable::rpn() {
                     break;
                 }
             }
+            // Save our token type
+            lastTokenType = FEU_TOKEN_OP;
         }
     }
     // Pop anything left onto output 
@@ -325,7 +343,11 @@ float FeuCalculable::proc() {
     // The result should be left on the stack at the end.
     for (i=mRPN->begin(); i != mRPN->end(); i++) {
         fci = (FeuCalcItem *)*i;
-        fci->proc(&mCalcStack);
+        if (0 != fci->proc(&mCalcStack)) {
+            //  Something failed.
+            FeuLog::e("Error in arithmetic processing.\n");
+            break;
+        }
     }
 
     // There should be exactly one calcitem left on the stack.
@@ -335,7 +357,7 @@ float FeuCalculable::proc() {
 
     //    Make sure stack is clear
     while (!mCalcStack.empty()) {
-        FeuLog::e("Calculable stack not empty after proc() exit.\n");
+        FeuLog::w("Calculable stack not empty after proc() exit.\n");
         fci = (FeuCalcItem *)mCalcStack.pop();
         if (!fci->ref_count()) delete fci;
     }

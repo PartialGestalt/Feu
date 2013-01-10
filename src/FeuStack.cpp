@@ -28,6 +28,8 @@ void FeuStack::push(FeuRefCounted *frc) {
 
 FeuRefCounted *FeuStack::pop() {
     FeuRefCounted *frc;
+    // Err check
+    if (stack<FeuRefCounted *>::empty()) return NULL;
     // Get the object
     frc = stack<FeuRefCounted *>::top();
     // Pop it

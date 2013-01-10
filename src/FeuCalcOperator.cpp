@@ -14,11 +14,10 @@ FeuCalcOperator::FeuCalcOperator(string initVal) {
     }
 }
 
-void FeuCalcOperator::proc(FeuStack *calcStack) {
-    if (NULL != mInfo->func) (mInfo->func)(calcStack);
+int FeuCalcOperator::proc(FeuStack *calcStack) {
+    if (NULL != mInfo->func) return (mInfo->func)(calcStack);
     else FeuLog::w("No function to implement operator \"",mInfo->op,"\"\n");
-    //FeuLog::i("Finished Op on calcstack; depth is now: " + stringof(calcStack->size()) + "\n");
-    return;
+    return -1; // No handler is a problem.
 }
 
 FeuCalcItem *FeuCalcOperator::copy() {
@@ -38,6 +37,10 @@ void FeuCalcOperator::setValue(float newVal) {
 
 int FeuCalcOperator::getID() {
     return mInfo->id;
+}
+
+void FeuCalcOperator::setInfo(struct feuOpInfo *newInfo) {
+    mInfo = newInfo;
 }
 
 int FeuCalcOperator::getPrecedence() {

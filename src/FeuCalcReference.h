@@ -24,7 +24,7 @@ private:
     string mAttribute;
     float mValue;
 public:
-	void proc(FeuStack *);
+	int proc(FeuStack *);
     FeuCalcItem *copy();
     float getValue();
     void setValue(float);

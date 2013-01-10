@@ -18,7 +18,7 @@ public:
 	virtual ~FeuCalcItem() = 0;
 
 public:
-	virtual void proc(FeuStack *) = 0;
+	virtual int proc(FeuStack *) = 0;
     virtual FeuCalcItem *copy() = 0;
     virtual float getValue() = 0;
     virtual void setValue(float) = 0;

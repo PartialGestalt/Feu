@@ -26,7 +26,7 @@ struct feuOpInfo {
     string op;                // String representation
     int precedence;           // Precedence
     bool leftAssociative;     // true for left-associative
-    void (*func)(FeuStack *); // Implementation
+    int (*func)(FeuStack *);  // Implementation; return 0 on success
 };
 
 extern struct feuOpInfo feuOpInfoTable[];
@@ -61,7 +61,7 @@ enum {
     FEU_OP_ID_SHL,
     FEU_OP_ID_SHR,
     FEU_OP_ID_ADD,
-    FEU_OP_ID_SUB,
+    FEU_OP_ID_SUB,   /* The "subtraction" operator, "a-b" */
     FEU_OP_ID_MULT,
     FEU_OP_ID_DIV,
     FEU_OP_ID_MOD,
@@ -70,6 +70,7 @@ enum {
     FEU_OP_ID_DECR,
     FEU_OP_ID_NOTLOGIC,
     FEU_OP_ID_NOTBITS,
+    FEU_OP_ID_UNARYMINUS,  /* The "negative" operator "-a" */
     FEU_OP_ID_LSUBSCRIPT,
     FEU_OP_ID_RSUBSCRIPT,
     FEU_OP_ID_LPAREN,
@@ -122,6 +123,8 @@ const feuOpMap::value_type feuOpTable[] = {
     feuOpMap::value_type("--",FEU_OP_ID_DECR),
     feuOpMap::value_type("!",FEU_OP_ID_NOTLOGIC),
     feuOpMap::value_type("~",FEU_OP_ID_NOTBITS),
+    // No entry for unary minus, since it would overload SUB 
+    //feuOpMap::value_type("-",FEU_OP_ID_UNARYMINUS),
     feuOpMap::value_type("[",FEU_OP_ID_LSUBSCRIPT),
     feuOpMap::value_type("]",FEU_OP_ID_RSUBSCRIPT),
     feuOpMap::value_type("(",FEU_OP_ID_LPAREN),

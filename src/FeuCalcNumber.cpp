@@ -6,18 +6,33 @@
 
 FeuCalcNumber::FeuCalcNumber(float initVal) {
     mValue = initVal;
-    //FeuLog::i("CONSTRUCT: FeuCalcNumber()\n");
+}
+
+FeuCalcNumber::FeuCalcNumber(int initVal) {
+    mValue = (float)initVal;
 }
 
 FeuCalcNumber::FeuCalcNumber(string initVal) {
-    FeuLog::i("CONSTRUCT: FeuCalcNumber() from string: \"" + initVal + "\"\n");
-    mValue = floatof(initVal);
+    if (string::npos != initVal.find_first_of('.')) {
+        // If the string contains a decimal point, it must be decimal float...
+        //FeuLog::i("FeuCalcNumber(): Forced decimal for \""+initVal+"\".\n");
+        mValue = floatof(initVal);
+    } else if ((initVal[0] == '#')|| (initVal[0] == '0')) {
+        // If the string may have a non-decimal radix, try to convert as integer first...
+        //FeuLog::i("FeuCalcNumber(): Trying intof for \""+initVal+"\".\n");
+        mValue = (float)intof(initVal);
+    } else {
+        // Punt.
+        //FeuLog::i("FeuCalcNumber(): Trying floatof for \""+initVal+"\".\n");
+        mValue = floatof(initVal);
+    }
 }
 
-void FeuCalcNumber::proc(FeuStack *calcStack) {
+int FeuCalcNumber::proc(FeuStack *calcStack) {
     // For processing, we simply push onto the calculator stack
     calcStack->push(this);
-    FeuLog::i("Pushed NUM onto calcstack, depth is now: " + stringof(calcStack->size()) + "\n");
+    //FeuLog::i("Pushed NUM onto calcstack, depth is now: " + stringof(calcStack->size()) + "\n");
+    return 0;
 }
 
 FeuCalcItem *FeuCalcNumber::copy() {

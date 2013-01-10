@@ -16,9 +16,10 @@ FeuCalcReference::FeuCalcReference(FeuThing *thing, string attr) {
     mValue = 0.0;
 }
 
-void FeuCalcReference::proc(FeuStack *calcStack) {
+int FeuCalcReference::proc(FeuStack *calcStack) {
     // For processing, we simply push onto the calculator stack
     calcStack->push(this);
+    return 0;
 }
 
 FeuCalcItem *FeuCalcReference::copy() {

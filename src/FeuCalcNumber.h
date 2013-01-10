@@ -16,11 +16,12 @@ class FeuCalcNumber;
 class FeuCalcNumber : public FeuCalcItem {
 public:
     FeuCalcNumber(float);
+    FeuCalcNumber(int);
     FeuCalcNumber(string);
 private:
 	float mValue; // A single numeric value
 public:
-	void proc(FeuStack *);
+	int proc(FeuStack *);
     FeuCalcItem *copy();
     float getValue();
     void setValue(float);

@@ -39,16 +39,29 @@ int main(int argc, char **argv)
     FeuLog::i("===============================================\n");
 
     // 
-    // Calculable.2: Test hexadecimal and logic 
+    // Calculable.2: Test radices and logic 
     //
 
     FeuLog::i("Calculable.2 test starting...\n");
 
-    fc = new FeuCalculable("~0x3A + 0x2c");
+    fc = new FeuCalculable("~0xFFFFFFFE + 0x2c + 0b101");
     fc_result = fc->proc();
     delete fc;
 
     FeuLog::i("Calculable.2 finished, result is \"" + stringof(fc_result) + "\"\n");
+    FeuLog::i("===============================================\n");
+
+    // 
+    // Calculable.3: Test special operators
+    //
+
+    FeuLog::i("Calculable.3 test starting...\n");
+
+    fc = new FeuCalculable("-3/(-2-4)");
+    fc_result = fc->proc();
+    delete fc;
+
+    FeuLog::i("Calculable.3 finished, result is \"" + stringof(fc_result) + "\"\n");
     FeuLog::i("===============================================\n");
 
 }

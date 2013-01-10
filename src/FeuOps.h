@@ -1,10 +1,23 @@
 
+void feu_args_unary_get(FeuStack *s, FeuCalcItem **right)
+{
+    // CLEAN: TODO: NULL checks here? 
+    *right = (FeuCalcItem *)s->pop();
+    return;
+}
+
 void feu_args_binary_get(FeuStack *s, FeuCalcItem **left, FeuCalcItem **right)
 {
     // CLEAN: TODO: NULL checks here? 
     *right = (FeuCalcItem *)s->pop();
     *left = (FeuCalcItem *)s->pop();
     return;
+}
+
+void feu_args_unary_put(FeuCalcItem *right)
+{
+    // Check refcount and delete if zero 
+    if (!right->ref_count()) delete right;
 }
 
 void feu_args_binary_put(FeuCalcItem *left, FeuCalcItem *right)
@@ -15,16 +28,29 @@ void feu_args_binary_put(FeuCalcItem *left, FeuCalcItem *right)
 }
 
 
+#define FEU_UNARY_OP(__name, __expr) \
+    int feu_op_##__name(FeuStack *s) \
+    { \
+        FeuCalcItem *right, *result; \
+        feu_args_unary_get(s,&right); \
+        if (NULL == right) return -1; \
+        result = new FeuCalcNumber(__expr); \
+        s->push(result); \
+        feu_args_unary_put(right);\
+        return 0; \
+    } 
+
 
 #define FEU_BINARY_OP(__name, __expr) \
-    void feu_op_##__name(FeuStack *s) \
+    int feu_op_##__name(FeuStack *s) \
     { \
         FeuCalcItem *left, *right, *result; \
         feu_args_binary_get(s,&left,&right); \
+        if ((NULL == left) || (NULL == right)) return -1; \
         result = new FeuCalcNumber(__expr); \
         s->push(result); \
         feu_args_binary_put(left,right);\
-        return; \
+        return 0; \
     } 
 
 #define FEU_BINARY_SIMPLE(__name, __opstring) \
@@ -48,3 +74,6 @@ FEU_BINARY_OP(     exponent, (pow(left->getValue(),right->getValue())) );
 FEU_BINARY_OP(       orbits, ((int)left->getValue() | (int)right->getValue()) );
 FEU_BINARY_OP(      andbits, ((int)left->getValue() & (int)right->getValue()) );
 FEU_BINARY_OP(      xorbits, ((int)left->getValue() ^ (int)right->getValue()) );
+
+FEU_UNARY_OP(       notbits, (~((int)right->getValue())) );
+FEU_UNARY_OP(    unaryminus, (-((int)right->getValue())) );

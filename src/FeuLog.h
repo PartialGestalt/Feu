@@ -10,32 +10,9 @@
 
 #include <iostream>
 #include <sstream>
+#include <climits>
 using namespace std;
 
-template <typename T> string stringof(T t) { ostringstream os; os << t; return os.str(); }
-
-static float floatof(string s) {
-    float fout;
-    stringstream os;
-    os << s;
-    os >> fout; 
-    return fout; 
-}
-
-static int intof(string s) {
-    int iout;
-    stringstream os;
-
-    // Choose base from formatting.  I hate this.
-    if (s[0] != '0') {
-        os << s;
-    } else {
-        switch (s[1]) {
-            case 'x':
-            case 'X':
-        }
-    }
-}
 
 class FeuLog {
 public:
@@ -57,5 +34,84 @@ public:
     static void e(string,string,string);
 
 };
+
+template <typename T> string stringof(T t) { ostringstream os; os << t; return os.str(); }
+
+static float floatof(string s) {
+    float fout;
+    stringstream os;
+    os << s;
+    os >> fout; 
+    return fout; 
+}
+
+static inline int charval(char c) {
+    if (c >= '0' && c <= '9') return c-'0';
+    if (c >= 'a' && c <= 'z') return c-'a' + 10;
+    if (c >= 'A' && c <= 'Z') return c-'A' + 10;
+    return INT_MAX;
+}
+
+// Can't assume C++11 everywhere....
+static int intof(string s) {
+    int i;
+    char ch;
+    int start; // First meaningful digit
+    int radix; // 2? 10? 16? 8?
+    int digit;
+    int accum = 0;
+
+    // Step 1: Determine base
+    switch (s[0]) {
+        case '#': // HTML-style allowed in XML.
+            radix = 16;
+            start = 1;
+            break;
+        case '0':
+            // Allow 0x... and 0b...
+            switch (ch = s[1]) {
+                case 'b': case 'B':
+                    // Binary
+                    radix = 2;
+                    start = 2;
+                    break;
+                case 'x': case 'X':
+                    // Hexadecimal
+                    radix = 16;
+                    start = 2;
+                    break;
+                case 'd': case 'D':
+                    // Non-standard, but consistent and clear.
+                    radix = 10;
+                    start = 2;
+                case '0': case '1': case '2': case '3': 
+                case '4': case '5': case '6': case '7':
+                    radix = 8;
+                    start = 1;
+                default:
+                    FeuLog::e("Can't covert numeric string \"" + s + "\", invalid radix specifier \'",stringof(ch),"\' in input.\n");
+                    break;
+            }
+            break;
+        default:
+            // Normal decimal...
+            radix = 10;
+            start = 0;
+            break;
+    }
+
+    // Step 2: Convert until we finish or hit a bad character.
+    for (i=start;i < s.size();i++) {
+        digit = charval(s[i]);
+        if (digit < radix) {
+            accum *= radix;
+            accum += digit;
+        } else {
+            break;
+        }
+    }
+
+    return accum;
+}
 
 #endif /* FEULOG_H_ */
