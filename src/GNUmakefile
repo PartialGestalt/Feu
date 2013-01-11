@@ -46,16 +46,21 @@ TEST_OBJS=$(TEST_SRCS:.cpp=.o)
 
 TEST_TEMPS=$(TEST_SRCS:.cpp=.ii) $(TEST_SRCS:.cpp=.s)
 
+CALC=feucalc
+CALC_SRCS=feucalc.cpp
+CALC_OBJS=$(CALC_SRCS:.cpp=.o)
+CALC_TEMPS=$(CALC_SRCS:.cpp=.ii) $(CALC_SRCS:.cpp=.s)
+
 PACKAGE=screensaver.pg.feu
 VERSION=0.8.1
 PKGROOT=pkg
 
-CLEANFILES=$(LIB) $(LIB_OBJS) $(TEST) $(TEST_OBJS) $(PKGROOT) $(LIB_TEMPS) $(TEST_TEMPS)
+CLEANFILES=$(LIB) $(LIB_OBJS) $(TEST) $(TEST_OBJS) $(CALC) $(CALC_OBJS) $(PKGROOT) $(LIB_TEMPS) $(TEST_TEMPS) $(CALC_TEMPS)
 CLOBBERFILES=$(CLEANFILES) cscope.out cscope.files
 
 .PHONY: all clean clobber fresh install pkg cscope
 
-all: $(LIB) 
+all: $(LIB) $(TEST) $(CALC)
 
 test: $(TEST)
 	$(VALGRINDER) ./$(TEST)
@@ -64,4 +69,7 @@ $(LIB): $(LIB_OBJS)
 	$(SHAREDLIB)
 
 $(TEST): $(TEST_OBJS) $(LIB)
+	$(LINKPROG)
+
+$(CALC): $(CALC_OBJS) $(LIB)
 	$(LINKPROG)
