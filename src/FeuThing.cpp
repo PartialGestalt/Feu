@@ -15,6 +15,7 @@ FeuThing::FeuThing(TiXmlElement *ele, FeuThing *parent) {
     string name,value;
     // Basic element(s)
     mType = ele->ValueStr();
+    mName = "<unnamed>";
     // Walk Attribute list, importing as we go
     attr = ele->FirstAttribute();
     while (attr != NULL) {
@@ -22,6 +23,8 @@ FeuThing::FeuThing(TiXmlElement *ele, FeuThing *parent) {
         value = attr->ValueStr();
         FeuLog::i("   \"" + name + "\"  ==>  \"" + value + "\"\n");
         mAttributes[name] = value; // Store in our map
+        if (name == "name") mName = value;
+
 
         attr = attr->Next();
     }
@@ -43,15 +46,11 @@ FeuThing::FeuThing(string name) {
 
 FeuThing::~FeuThing() {
     list<FeuThing *>::iterator iter;
-    FeuLog::i("entering destructor for " + mName + "\n");
+    FeuLog::i("entering destructor for " + mName + "{" + mType + "}\n");
     for (iter = mKids.begin(); iter != mKids.end(); iter++)
     {
         delete *iter;
     }
-
-    // Destroy ourselves!
-    FeuLog::i("destroying myself: " + mName + "\n");
-
 }
 
 void FeuThing::adopt(FeuThing *ft_kid) {
