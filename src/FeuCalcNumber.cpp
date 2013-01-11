@@ -12,8 +12,8 @@ FeuCalcNumber::FeuCalcNumber(int initVal) {
     mValue = (float)initVal;
 }
 
-FeuCalcNumber::FeuCalcNumber(string initVal) {
-    if (string::npos != initVal.find_first_of('.')) {
+FeuCalcNumber::FeuCalcNumber(std::string initVal) {
+    if (std::string::npos != initVal.find_first_of('.')) {
         // If the string contains a decimal point, it must be decimal float...
         //FeuLog::i("FeuCalcNumber(): Forced decimal for \""+initVal+"\".\n");
         mValue = floatof(initVal);
@@ -48,6 +48,6 @@ void FeuCalcNumber::setValue(float newVal) {
     mValue = newVal;
 }
 
-string FeuCalcNumber::toString() {
+std::string FeuCalcNumber::toString() {
     return stringof(mValue);
 }

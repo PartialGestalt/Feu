@@ -18,13 +18,10 @@
 #include <map>
 #include "FeuCalcItem.h"
 
-using namespace std;
-
-
 // Operator table
 struct feuOpInfo {
     int id;                   // ID of the operator
-    string op;                // String representation
+    std::string op;           // String representation
     int precedence;           // Precedence
     bool leftAssociative;     // true for left-associative
     int (*func)(FeuStack *);  // Implementation; return 0 on success
@@ -87,7 +84,7 @@ enum {
 };
 
 // Operator precedence as a static table
-typedef map<string,int> feuOpMap;
+typedef std::map<std::string,int> feuOpMap;
 const feuOpMap::value_type feuOpTable[] = {
     feuOpMap::value_type(",",FEU_OP_ID_COMMA),
     feuOpMap::value_type("=",FEU_OP_ID_ASSIGN),
@@ -137,14 +134,14 @@ static feuOpMap feuOperators(feuOpTable, feuOpTable+feuOpCount);
 
 class FeuCalculable  {
 public:
-    FeuCalculable(string);
+    FeuCalculable(std::string);
 	~FeuCalculable();
 
 private:
     bool mIsConstant; // No extern references, simplifies.
     float mLastResult;  // Last calculation result
     FeuList *mRPN; // Our RPN list of calcitems
-    list<string *>mTokens; // List of fundamental tokens
+    std::list<std::string *>mTokens; // List of fundamental tokens
     FeuStack mCalcStack; // Stack for calculations
     int mRunCount;
 
@@ -155,7 +152,7 @@ private:
     feuOpMap *mOpMap;
 
 private:
-    void tokenize(string); // Tokenize/syntax check
+    void tokenize(std::string); // Tokenize/syntax check
     void rpn();  // Convert infix to RPN
 };
 

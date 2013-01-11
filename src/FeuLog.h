@@ -11,8 +11,6 @@
 #include <iostream>
 #include <sstream>
 #include <climits>
-using namespace std;
-
 
 class FeuLog {
 public:
@@ -20,26 +18,26 @@ public:
 	virtual ~FeuLog();
 
 public:
-    static void d(string); // Debug message; may or may not show
-    static void d(string,string); 
-    static void d(string,string,string); 
-    static void i(string); // Informational string (stdout)
-    static void i(string,string);
-    static void i(string,string,string);
-    static void w(string); // Warning notice (stderr)
-    static void w(string,string); 
-    static void w(string,string,string);
-    static void e(string); // Error condition (stderr)
-    static void e(string,string);
-    static void e(string,string,string);
+    static void d(std::string); // Debug message; may or may not show
+    static void d(std::string,std::string); 
+    static void d(std::string,std::string,std::string); 
+    static void i(std::string); // Informational string (stdout)
+    static void i(std::string,std::string);
+    static void i(std::string,std::string,std::string);
+    static void w(std::string); // Warning notice (stderr)
+    static void w(std::string,std::string); 
+    static void w(std::string,std::string,std::string);
+    static void e(std::string); // Error condition (stderr)
+    static void e(std::string,std::string);
+    static void e(std::string,std::string,std::string);
 
 };
 
-template <typename T> string stringof(T t) { ostringstream os; os << t; return os.str(); }
+template <typename T> std::string stringof(T t) { std::ostringstream os; os << t; return os.str(); }
 
-static float floatof(string s) {
+static float floatof(std::string s) {
     float fout;
-    stringstream os;
+    std::stringstream os;
     os << s;
     os >> fout; 
     return fout; 
@@ -53,7 +51,7 @@ static inline int charval(char c) {
 }
 
 // Can't assume C++11 everywhere....
-static int intof(string s) {
+static int intof(std::string s) {
     int i;
     char ch;
     int start; // First meaningful digit

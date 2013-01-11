@@ -13,9 +13,8 @@
 #define _FEU_LIST_H_
 
 #include <list>
-using namespace std;
 
-class FeuList : public list<FeuRefCounted *> {
+class FeuList : public std::list<FeuRefCounted *> {
 public:
 #if 0
       FeuList();

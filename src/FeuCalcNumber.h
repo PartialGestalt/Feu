@@ -9,7 +9,6 @@
 
 #include "FeuCalcItem.h"
 #include <stack>
-using namespace std;
 
 class FeuCalcNumber;
 
@@ -17,7 +16,7 @@ class FeuCalcNumber : public FeuCalcItem {
 public:
     FeuCalcNumber(float);
     FeuCalcNumber(int);
-    FeuCalcNumber(string);
+    FeuCalcNumber(std::string);
 private:
 	float mValue; // A single numeric value
 public:
@@ -25,7 +24,7 @@ public:
     FeuCalcItem *copy();
     float getValue();
     void setValue(float);
-    string toString();
+    std::string toString();
 };
 
 #endif /* _FEU_CALCNUMBER_H_ */

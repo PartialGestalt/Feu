@@ -14,11 +14,9 @@
 #include <iostream>
 #include "tinyxml.h"
 
-using namespace std;
-
 class FeuXML {
 public:
-	FeuXML(string filename);
+	FeuXML(std::string filename);
 	~FeuXML();
 
 private:

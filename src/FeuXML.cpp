@@ -6,7 +6,7 @@
 #include "feu.h"
 #include <tinyxml.h>
 
-FeuXML::FeuXML(string filename) {
+FeuXML::FeuXML(std::string filename) {
     // Just load/verify file
     mDoc = new TiXmlDocument(filename);
     if (mDoc != NULL) {
@@ -28,7 +28,7 @@ FeuXML::~FeuXML() {
 }
 
 FeuThing *FeuXML::convertElement(TiXmlElement *ele) {
-    string eletype = ele->ValueStr();
+    std::string eletype = ele->ValueStr();
     // Try to create a FeuThing from the XML element
     FeuLog::i("convertElement of type: \"" + eletype + "\"\n");
     // Choose class from name

@@ -12,7 +12,7 @@ FeuThing::FeuThing(TiXmlElement *ele, FeuThing *parent) {
     TiXmlAttribute *attr;
     TiXmlElement *kid;
     FeuThing *kidthing;
-    string name,value;
+    std::string name,value;
     // Basic element(s)
     mType = ele->ValueStr();
     mName = "<unnamed>";
@@ -38,14 +38,14 @@ FeuThing::FeuThing(TiXmlElement *ele, FeuThing *parent) {
     }
 }
 
-FeuThing::FeuThing(string name) {
+FeuThing::FeuThing(std::string name) {
 	mParent = NULL;
 	mName = name;
     FeuLog::i("CONSTRUCT: FeuThing()\n");
 }
 
 FeuThing::~FeuThing() {
-    list<FeuThing *>::iterator iter;
+    std::list<FeuThing *>::iterator iter;
     FeuLog::i("entering destructor for " + mName + "{" + mType + "}\n");
     for (iter = mKids.begin(); iter != mKids.end(); iter++)
     {
@@ -63,12 +63,18 @@ void FeuThing::adopt(FeuThing *ft_kid) {
 
 void FeuThing::geneology() {
 	// Recurse to all children
-	list<FeuThing *>::iterator iter;
+    std::list<FeuThing *>::iterator iter;
 	for (iter = mKids.begin(); iter != mKids.end(); iter++) {
 		(**iter).geneology();
 	}
 
 	// Tell ourselves.
     FeuLog::i(mName + "\n");
+
+}
+
+
+FeuThing *FeuThing::findThing(FeuThing *context, std::string objectSpecifier)
+{
 
 }

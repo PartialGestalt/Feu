@@ -70,7 +70,7 @@ FEU_BINARY_SIMPLE(testmoreequal, >= );
 FEU_BINARY_SIMPLE(      orlogic, || );
 FEU_BINARY_SIMPLE(     andlogic, && );
 
-FEU_BINARY_OP(     exponent, (pow(left->getValue(),right->getValue())) );
+FEU_BINARY_OP(     exponent, (std::pow(left->getValue(),right->getValue())) );
 FEU_BINARY_OP(       orbits, ((int)left->getValue() | (int)right->getValue()) );
 FEU_BINARY_OP(      andbits, ((int)left->getValue() & (int)right->getValue()) );
 FEU_BINARY_OP(      xorbits, ((int)left->getValue() ^ (int)right->getValue()) );

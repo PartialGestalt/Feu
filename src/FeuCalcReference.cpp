@@ -4,13 +4,13 @@
 
 #include "feu.h"
 
-FeuCalcReference::FeuCalcReference(string initVal) {
+FeuCalcReference::FeuCalcReference(std::string initVal) {
     // CLEAN: TODO: Lookup thing from name
     mAttribute = initVal;
     mValue = 0.0;
 }
 
-FeuCalcReference::FeuCalcReference(FeuThing *thing, string attr) {
+FeuCalcReference::FeuCalcReference(FeuThing *thing, std::string attr) {
     mThing = thing;
     mAttribute = attr;
     mValue = 0.0;
@@ -37,6 +37,6 @@ void FeuCalcReference::setValue(float newVal) {
     mValue = newVal;
 }
 
-string FeuCalcReference::toString() {
+std::string FeuCalcReference::toString() {
     return mAttribute;
 }

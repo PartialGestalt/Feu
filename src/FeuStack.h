@@ -10,9 +10,8 @@
 #define _FEU_STACK_H_
 
 #include <stack>
-using namespace std;
 
-class FeuStack : public stack<FeuRefCounted *> {
+class FeuStack : public std::stack<FeuRefCounted *> {
 public:
 #if 0
       FeuStack();

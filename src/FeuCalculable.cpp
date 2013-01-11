@@ -47,7 +47,7 @@ struct feuOpInfo feuOpInfoTable[] = {
     { FEU_OP_ID_FAILURE, "...", 0, true, NULL }
 };
 
-FeuCalculable::FeuCalculable(string expression) {
+FeuCalculable::FeuCalculable(std::string expression) {
     mIsConstant = true; // May be overridden by tokenizer
     mLastResult = 0.0f; // As good a default as any...
     mRunCount = 0; // No runs yet.
@@ -65,7 +65,7 @@ FeuCalculable::~FeuCalculable() {
     FeuLog::i("DESTRUCT: FeuCalculable\n");
     /* Delete the string tokens */
     {
-        list<string *>::iterator i;
+        std::list<std::string *>::iterator i;
         for (i = mTokens.begin(); i != mTokens.end(); i++) {
             delete *i;
         }
@@ -82,12 +82,12 @@ FeuCalculable::~FeuCalculable() {
     }
 }
 
-void FeuCalculable::tokenize(string formula) {
-    string::iterator iter;
+void FeuCalculable::tokenize(std::string formula) {
+    std::string::iterator iter;
     char ch, lastch=0;
     int tokenState = FEU_TOKEN_NONE;
     int lastTokenState = FEU_TOKEN_NONE;
-    string *accum = NULL;
+    std::string *accum = NULL;
     bool endAccum;
     bool startAccum;
 
@@ -151,7 +151,7 @@ void FeuCalculable::tokenize(string formula) {
                     tokenState = FEU_TOKEN_NONE;
                     endAccum = true;
                 } else {
-                    string *jamtest = new string(*accum);
+                    std::string *jamtest = new std::string(*accum);
                     // Possible additional character, but it
                     // may also be two operators jammed up against
                     // each other.  Test to see if the additional char
@@ -192,7 +192,7 @@ void FeuCalculable::tokenize(string formula) {
         }
         if (startAccum == true) {
             // Only explicit starts allowed
-            accum = new string;
+            accum = new std::string;
         }
         if (!isspace(ch) && (NULL != accum)) {
             accum->append(1,ch);
@@ -204,9 +204,9 @@ void FeuCalculable::tokenize(string formula) {
 
     // Dump it for fun
     {
-        string a = "Token: \"";
-        string b = "\"\n";
-        list<string *>::iterator i;
+        std::string a = "Token: \"";
+        std::string b = "\"\n";
+        std::list<std::string *>::iterator i;
         for (i = mTokens.begin(); i != mTokens.end(); i++) {
             FeuLog::i(a + **i + b);
         }
@@ -214,8 +214,8 @@ void FeuCalculable::tokenize(string formula) {
 }
 
 void FeuCalculable::rpn() {
-    list<string *>::iterator i;
-    stack<FeuCalcOperator *> opstack;
+    std::list<std::string *>::iterator i;
+    std::stack<FeuCalcOperator *> opstack;
     FeuCalcOperator *fcop;
     bool done=false;
     FeuCalcOperator *fco_top;

@@ -9,13 +9,12 @@
 
 #include "FeuCalcItem.h"
 #include <stack>
-using namespace std;
 
 class FeuCalcOperator;
 
 class FeuCalcOperator : public FeuCalcItem {
 public:
-    FeuCalcOperator(string);
+    FeuCalcOperator(std::string);
 private:
 	struct feuOpInfo *mInfo;
 public:
@@ -23,7 +22,7 @@ public:
     FeuCalcItem *copy();
     float getValue();
     void setValue(float); 
-    string toString();
+    std::string toString();
 
 public:
     int getID();

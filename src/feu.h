@@ -1,7 +1,6 @@
 
 #ifndef _FEU_H_
 #define _FEU_H_
-using namespace std;
 
 #include <iostream>
 

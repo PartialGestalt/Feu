@@ -11,24 +11,23 @@
 #include "FeuCalcItem.h"
 #include "FeuThing.h"
 #include <stack>
-using namespace std;
 
 class FeuCalcReference;
 
 class FeuCalcReference : public FeuCalcItem {
 public:
-    FeuCalcReference(string);
-    FeuCalcReference(FeuThing *,string);
+    FeuCalcReference(std::string);
+    FeuCalcReference(FeuThing *,std::string);
 private:
 	FeuThing *mThing;
-    string mAttribute;
+    std::string mAttribute;
     float mValue;
 public:
 	int proc(FeuStack *);
     FeuCalcItem *copy();
     float getValue();
     void setValue(float);
-    string toString();
+    std::string toString();
 };
 
 #endif /* _FEU_CALCREFERENCE_H_ */

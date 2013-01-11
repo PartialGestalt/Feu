@@ -4,8 +4,8 @@
 
 #include "feu.h"
 
-FeuCalcOperator::FeuCalcOperator(string initVal) {
-    map<string,int>::iterator i = feuOperators.find(initVal);
+FeuCalcOperator::FeuCalcOperator(std::string initVal) {
+    std::map<std::string,int>::iterator i = feuOperators.find(initVal);
     if (i == feuOperators.end()) {
         // CLEAN: TODO: Throw an exception here.
         mInfo = &feuOpInfoTable[FEU_OP_ID_FAILURE];
@@ -63,6 +63,6 @@ bool FeuCalcOperator::canSupplant(FeuCalcOperator *fco) {
     return false;
 }
 
-string FeuCalcOperator::toString() {
+std::string FeuCalcOperator::toString() {
     return (mInfo->op);
 }
