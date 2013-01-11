@@ -20,11 +20,11 @@
 >
   <path name="SlideLeft">
     <!-- Move it over  -->
-    <step type="move" x="-100">
+    <step type="move" x="-100"/>
     <!-- If we're fully on-screen, start a new one -->
-    <step condition="right<Screen.right" type="action" parameter="SlideSlides.create">
+    <step condition="right<Screen.right" type="action" parameter="SlideSlides.create"/>
     <!-- If we're off-screen, destroy ourselves -->
-    <step condition="right<Screen.left" type="destroy">
+    <step condition="right<Screen.left" type="destroy"/>
   </path>
   <class name="SlideSlides" 
          source="XBMC.pictures(Export)" 
