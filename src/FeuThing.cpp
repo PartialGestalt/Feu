@@ -6,16 +6,42 @@
  */
 
 #include "feu.h"
+#include <tinyxml.h>
+
+FeuThing::FeuThing(TiXmlElement *ele, FeuThing *parent) {
+    TiXmlAttribute *attr;
+    TiXmlElement *kid;
+    FeuThing *kidthing;
+    string name,value;
+    // Basic element(s)
+    mType = ele->ValueStr();
+    // Walk Attribute list, importing as we go
+    attr = ele->FirstAttribute();
+    while (attr != NULL) {
+        name = stringof(attr->Name());
+        value = attr->ValueStr();
+        FeuLog::i("   \"" + name + "\"  ==>  \"" + value + "\"\n");
+        mAttributes[name] = value; // Store in our map
+
+        attr = attr->Next();
+    }
+
+    // Walk child list, descending as we go
+    kid = ele->FirstChildElement();
+    while (kid != NULL) {
+        kidthing = FeuXML::convertElement(kid);
+        if (kidthing != NULL) adopt(kidthing);
+        kid = kid->NextSiblingElement();
+    }
+}
 
 FeuThing::FeuThing(string name) {
-	// TODO Auto-generated constructor stub
 	mParent = NULL;
 	mName = name;
     FeuLog::i("CONSTRUCT: FeuThing()\n");
 }
 
 FeuThing::~FeuThing() {
-    // Destroy all children
     list<FeuThing *>::iterator iter;
     FeuLog::i("entering destructor for " + mName + "\n");
     for (iter = mKids.begin(); iter != mKids.end(); iter++)

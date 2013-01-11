@@ -15,6 +15,7 @@
 #include "feu.h"
 #include <stack>
 #include <list>
+#include <map>
 #include "FeuCalcItem.h"
 
 using namespace std;

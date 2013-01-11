@@ -7,6 +7,7 @@ int main(int argc, char **argv)
     FeuCalculable  *fc;
     float fc_result;
 
+#if 0
     // 
     // Adoption.1: Test basic FeuThing adoption
     //
@@ -24,11 +25,13 @@ int main(int argc, char **argv)
 
     FeuLog::i("Adoption.1 test done\n");
     FeuLog::i("===============================================\n");
+#endif
 
     // 
     // Calculable.1: Test basic arithmetic
     //
 
+#if 0
     FeuLog::i("Calculable.1 test starting...\n");
     //fc = new FeuCalculable("3+4*2/(1-5)^^2^^3");
     fc = new FeuCalculable("3+4*(2/(1-5) + 4)");
@@ -37,11 +40,12 @@ int main(int argc, char **argv)
 
     FeuLog::i("Calculable.1 finished, result is \"" + stringof(fc_result) + "\"\n");
     FeuLog::i("===============================================\n");
+#endif
 
     // 
     // Calculable.2: Test radices and logic 
     //
-
+#if 0
     FeuLog::i("Calculable.2 test starting...\n");
 
     fc = new FeuCalculable("~0xFFFFFFFE + 0x2c + 0b101");
@@ -50,11 +54,13 @@ int main(int argc, char **argv)
 
     FeuLog::i("Calculable.2 finished, result is \"" + stringof(fc_result) + "\"\n");
     FeuLog::i("===============================================\n");
+#endif
 
     // 
     // Calculable.3: Test special operators
     //
 
+#if 0
     FeuLog::i("Calculable.3 test starting...\n");
 
     fc = new FeuCalculable("-3/(-2-4)");
@@ -63,5 +69,22 @@ int main(int argc, char **argv)
 
     FeuLog::i("Calculable.3 finished, result is \"" + stringof(fc_result) + "\"\n");
     FeuLog::i("===============================================\n");
+#endif
 
+    // TODO: More operator tests.
+
+    // 
+    // Ruleset.1: Load a ruleset
+    //
+
+    {
+        FeuXML *fux;
+
+        FeuLog::i("Ruleset.1 test starting...\n");
+
+        fux = new FeuXML("../samples/SlidingSlideShow.feu");
+
+        FeuLog::i("Ruleset.1 finished\n");
+        FeuLog::i("===============================================\n");
+    }
 }
