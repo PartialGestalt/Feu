@@ -37,6 +37,8 @@ LIB_TEMPS=$(LIB_SRCS:.cpp=.ii) $(LIB_SRCS:.cpp=.s)
 
 LIB_OBJS=$(LIB_SRCS:.cpp=.o)
 
+LIB_LDFLAGS=-ltinyxml
+
 TEST=feutest
 
 TEST_SRCS= \
@@ -66,7 +68,7 @@ test: $(TEST)
 	$(VALGRINDER) ./$(TEST)
 
 $(LIB): $(LIB_OBJS)
-	$(SHAREDLIB)
+	$(SHAREDLIB) $(LIB_LDFLAGS)
 
 $(TEST): $(TEST_OBJS) $(LIB)
 	$(LINKPROG)
