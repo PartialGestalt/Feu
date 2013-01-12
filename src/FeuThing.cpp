@@ -41,7 +41,6 @@ FeuThing::FeuThing(TiXmlElement *ele, FeuThing *parent) {
 FeuThing::FeuThing(std::string name) {
 	mParent = NULL;
 	mName = name;
-    FeuLog::i("CONSTRUCT: FeuThing()\n");
 }
 
 FeuThing::~FeuThing() {
@@ -73,8 +72,32 @@ void FeuThing::geneology() {
 
 }
 
-
-FeuThing *FeuThing::findThing(FeuThing *context, std::string objectSpecifier)
-{
-
+float FeuThing::getAttributeValue(std::string attr) {
+    // Basic mode ; just use string from XML and convert
+    if (mAttributes.count(attr))  {
+        // Has it; convert to return 
+        return floatof(mAttributes[attr]);
+    }
+    // Not found?!?!  Warn and return zero.
+    FeuLog::w("FeuThing:: Attempt to access nonexistent attribute \"" + attr + "\".\n");
+    return 0.0;
 }
+
+void FeuThing::setAttributeValue(std::string attr, float value) {
+    // Check for attr to update
+    if (0 == mAttributes.count(attr)) {
+        FeuLog::w("FeuThing:: Attempt to set value of nonexistent attribute \"" + attr + "\".\n");
+        return;
+    }
+
+    // Got it.  Change the string backing store
+    mAttributes[attr] = stringof(value);
+
+    return;
+}
+
+FeuThing *FeuThing::findThing(FeuThing *context, FeuSpecifier *spec)
+{
+    
+}
+

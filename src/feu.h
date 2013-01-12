@@ -17,8 +17,9 @@
 #include "FeuCalcOperator.h"
 // XML Objects
 #include "FeuXML.h"
+#include "FeuSpecifier.h"
 #include "FeuThing.h"
-//#include "FeuRuleset.h"
+#include "FeuThingStep.h"
 
 
 #endif /* _FEU_H_ */

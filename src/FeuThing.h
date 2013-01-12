@@ -19,7 +19,10 @@
 #include <list>
 #include <string>
 #include <iostream>
+#include <vector>
 #include <tinyxml.h>
+#include "FeuSpecifier.h"
+#include "FeuThing.h"
 
 class FeuThing {
 public:
@@ -41,7 +44,9 @@ public:
 	void geneology();
 
 public:
-    static FeuThing *findThing(FeuThing *context, std::string objectSpecifier);
+    static FeuThing *findThing(FeuThing *context, FeuSpecifier *objectSpecifier);
+    virtual float getAttributeValue(std::string);
+    virtual void setAttributeValue(std::string,float value);
 
 };
 

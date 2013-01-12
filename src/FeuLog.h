@@ -66,6 +66,11 @@ static int intof(std::string s) {
             start = 1;
             break;
         case '0':
+            // CLEAN: TODO: Validate lengths of the string
+            // while using radix prefixes!!
+            if (s.size() == 1) {
+                return 0;
+            }
             // Allow 0x... and 0b...
             switch (ch = s[1]) {
                 case 'b': case 'B':
@@ -87,7 +92,7 @@ static int intof(std::string s) {
                     radix = 8;
                     start = 1;
                 default:
-                    FeuLog::e("Can't covert numeric string \"" + s + "\", invalid radix specifier \'",stringof(ch),"\' in input.\n");
+                    FeuLog::e("Can't convert numeric string \"" + s + "\", invalid radix specifier \'",stringof(ch),"\' in input.\n");
                     break;
             }
             break;

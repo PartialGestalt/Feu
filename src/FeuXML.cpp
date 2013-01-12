@@ -32,14 +32,10 @@ FeuThing *FeuXML::convertElement(TiXmlElement *ele) {
     // Try to create a FeuThing from the XML element
     FeuLog::i("convertElement of type: \"" + eletype + "\"\n");
     // Choose class from name
-#if 0
-    if (eletype == "ruleset") {
-        return new FeuRuleset(ele);
+    if (eletype == "step") {
+        return new FeuThingStep(ele);
     } else {
-#endif
         // Anything unknown gets a plain FeuThing
         return new FeuThing(ele);
-#if 0
     }
-#endif
 }

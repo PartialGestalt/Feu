@@ -12,11 +12,11 @@
 #define _FEU_CALCULABLE_H_
 
 
-#include "feu.h"
 #include <stack>
 #include <list>
 #include <map>
-#include "FeuCalcItem.h"
+
+#include "FeuThing.h"
 
 // Operator table
 struct feuOpInfo {
@@ -134,10 +134,11 @@ static feuOpMap feuOperators(feuOpTable, feuOpTable+feuOpCount);
 
 class FeuCalculable  {
 public:
-    FeuCalculable(std::string);
+    FeuCalculable(std::string, FeuThing *thing = NULL);
 	~FeuCalculable();
 
 private:
+    FeuThing *mParentThing; // FeuThing of which we're a part.
     bool mIsConstant; // No extern references, simplifies.
     float mLastResult;  // Last calculation result
     FeuList *mRPN; // Our RPN list of calcitems

@@ -16,8 +16,8 @@ class FeuCalcReference;
 
 class FeuCalcReference : public FeuCalcItem {
 public:
-    FeuCalcReference(std::string);
-    FeuCalcReference(FeuThing *,std::string);
+    FeuCalcReference();
+    FeuCalcReference(std::string, FeuThing *contextThing = NULL);
 private:
 	FeuThing *mThing;
     std::string mAttribute;

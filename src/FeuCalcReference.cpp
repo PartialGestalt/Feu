@@ -4,16 +4,21 @@
 
 #include "feu.h"
 
-FeuCalcReference::FeuCalcReference(std::string initVal) {
-    // CLEAN: TODO: Lookup thing from name
-    mAttribute = initVal;
+FeuCalcReference::FeuCalcReference() {
+    mThing = NULL;
     mValue = 0.0;
+    return;
 }
 
-FeuCalcReference::FeuCalcReference(FeuThing *thing, std::string attr) {
-    mThing = thing;
-    mAttribute = attr;
-    mValue = 0.0;
+FeuCalcReference::FeuCalcReference(std::string initVal, FeuThing *contextThing) {
+    // "contextThing" is the object we will belong to, which defines the scope
+    // and context.  "mThing" is the object whose value we will use during
+    // calculations.
+    FeuSpecifier fs = FeuSpecifier(initVal);
+    mThing = FeuThing::findThing(contextThing,&fs);
+    mAttribute = fs.mAttribute;
+    mValue = mThing?mThing->getAttributeValue(mAttribute):0.0;
+    return;
 }
 
 int FeuCalcReference::proc(FeuStack *calcStack) {
@@ -23,7 +28,11 @@ int FeuCalcReference::proc(FeuStack *calcStack) {
 }
 
 FeuCalcItem *FeuCalcReference::copy() {
-    FeuCalcReference *fcr = new FeuCalcReference(mThing,mAttribute);
+    FeuCalcReference *fcr = new FeuCalcReference();
+
+    fcr->mValue = mValue;
+    fcr->mThing = mThing;
+    fcr->mAttribute = mAttribute;
     return (FeuCalcItem *)fcr;
 }
 
