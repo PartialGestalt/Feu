@@ -82,7 +82,7 @@ int main(int argc, char **argv)
 
         FeuLog::i("Ruleset.1 test starting...\n");
 
-        fux = new FeuXML("../samples/SlidingSlideShow.feu");
+        fux = new FeuXML("../samples/ParseTest.feu");
         delete fux;
 
         FeuLog::i("Ruleset.1 finished\n");
