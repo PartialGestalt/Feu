@@ -1,12 +1,16 @@
 /*
- * FeuXML.cpp
+ * FeuRuleset.cpp
  *
+ * The FeuRuleset is the toplevel object for a Feu ruleset.
  */
 
 #include "feu.h"
 #include <tinyxml.h>
 
-FeuXML::FeuXML(std::string filename) {
+FeuRuleset *lastRuleset = NULL;
+
+
+FeuRuleset::FeuRuleset(std::string filename) {
     // Just load/verify file
     mDoc = new TiXmlDocument(filename);
     if (mDoc != NULL) {
@@ -22,12 +26,12 @@ FeuXML::FeuXML(std::string filename) {
     }
 }
 
-FeuXML::~FeuXML() {
+FeuRuleset::~FeuRuleset() {
     delete mRoot;
     delete mDoc;
 }
 
-FeuThing *FeuXML::convertElement(TiXmlElement *ele) {
+FeuThing *FeuRuleset::convertElement(TiXmlElement *ele) {
     std::string eletype = ele->ValueStr();
     // Try to create a FeuThing from the XML element
     FeuLog::i("convertElement of type: \"" + eletype + "\"\n");

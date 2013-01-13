@@ -96,8 +96,16 @@ void FeuThing::setAttributeValue(std::string attr, float value) {
     return;
 }
 
+FeuThing *FeuThing::findGlobalThing(FeuThing *context, FeuSpecifier, *spec) {
+    // A "global" is a direct child of the root element.
+}
+
 FeuThing *FeuThing::findThing(FeuThing *context, FeuSpecifier *spec)
 {
-    
+    // For now, things are either global or 'this'.
+    if (spec->isSelf()) return context;
+
+    // Look in global space....
+    return findGlobalThing(context,spec);
 }
 

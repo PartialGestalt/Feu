@@ -35,3 +35,6 @@ void FeuSpecifier::splitComponents(std::string s,std::vector<std::string> v, cha
     return;
 }
 
+bool FeuSepecifier::isSelf() {
+    return (mObject == "this");
+}

@@ -45,6 +45,7 @@ public:
 
 public:
     static FeuThing *findThing(FeuThing *context, FeuSpecifier *objectSpecifier);
+    static FeuThing *findGlobalThing(FeuThing *context, FeuSpecifier *objectSpecifier);
     virtual float getAttributeValue(std::string);
     virtual void setAttributeValue(std::string,float value);
 

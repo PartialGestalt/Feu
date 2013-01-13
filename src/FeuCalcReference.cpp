@@ -11,12 +11,17 @@ FeuCalcReference::FeuCalcReference() {
 }
 
 FeuCalcReference::FeuCalcReference(std::string initVal, FeuThing *contextThing) {
-    // "contextThing" is the object we will belong to, which defines the scope
-    // and context.  "mThing" is the object whose value we will use during
+    // "contextThing", if given, is the object we will belong to, which defines 
+    // the scope and context.  "mThing" is the object whose value we will use during
     // calculations.
+        // Parse the string into object specifier format
     FeuSpecifier fs = FeuSpecifier(initVal);
-    mThing = FeuThing::findThing(contextThing,&fs);
+        // If the reference is a global, this resolves now; if the reference
+        // is local, it won't resolve yet.
+    mThing = FeuThing::findGlobalThing(contextThing,&fs);
     mAttribute = fs.mAttribute;
+        // If we've resolved a reference, go ahead and extract the current
+        // value.
     mValue = mThing?mThing->getAttributeValue(mAttribute):0.0;
     return;
 }

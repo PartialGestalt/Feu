@@ -1,16 +1,16 @@
 /*
- * FeuThingStep.h
+ * FeuThingScreen.h
  *
- * FeuThingStep is a class for the <step> XML element
+ * FeuThingScreen is a class for the <step> XML element
  */
 
-#ifndef FEUTHINGSTEP_H_
-#define FEUTHINGSTEP_H_
+#ifndef FEUTHINGSCREEN_H_
+#define FEUTHINGSCREEN_H_
 
-class FeuThingStep : public FeuThing {
+class FeuThingScreen : public FeuThing {
 public:
-    FeuThingStep(TiXmlElement *, FeuThing *parent = NULL);
-	~FeuThingStep();
+    FeuThingScreen(TiXmlElement *, FeuThing *parent = NULL);
+	~FeuThingScreen();
 
 private:
     FeuCalculable *mCondition; // From the "condition" attribute
@@ -26,4 +26,4 @@ public:
 
 
 
-#endif /* FEUTHINGSTEP_H_ */
+#endif /* FEUTHINGSCREEN_H_ */

@@ -153,6 +153,7 @@ private:
     feuOpMap *mOpMap;
 
 private:
+    void setParentThing(FeuThing *);  // Mark us as belonging to a thing
     void tokenize(std::string); // Tokenize/syntax check
     void rpn();  // Convert infix to RPN
 };

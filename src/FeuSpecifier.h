@@ -21,6 +21,9 @@ public:
 
 private:
     static void splitComponents(std::string, std::vector<std::string> v, char delim);
+    
+public:
+    bool isSelf(); // This this specifier a "self" reference?
 
 };
 

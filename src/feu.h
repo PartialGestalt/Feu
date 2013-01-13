@@ -15,11 +15,14 @@
 #include "FeuCalcNumber.h"
 #include "FeuCalcReference.h"
 #include "FeuCalcOperator.h"
-// XML Objects
+// XML Objects (real and virtual)
 #include "FeuXML.h"
 #include "FeuSpecifier.h"
 #include "FeuThing.h"
+#include "FeuThingScreen.h"
 #include "FeuThingStep.h"
+// Displayables
+// #include "FeuDisplayable.h"
 
 
 #endif /* _FEU_H_ */

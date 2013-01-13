@@ -366,3 +366,6 @@ float FeuCalculable::proc() {
     return mLastResult;
 }
 
+void FeuCalculable::setParentThing(FeuThing *thing) {
+    mParentThing = thing;
+}
