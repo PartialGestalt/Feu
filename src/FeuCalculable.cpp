@@ -232,7 +232,7 @@ void FeuCalculable::rpn() {
             lastTokenType = FEU_TOKEN_NUM;
         } else if (isalpha((**i)[0])) {
             // Object reference, shunt as number
-            mRPN->push_back(new FeuCalcReference(**i,mParentThing));
+            mRPN->push_back(new FeuCalcReference(**i,NULL));
             // Have at least one object reference, so not known to be constant.
             mIsConstant = false;
             // Save our token type

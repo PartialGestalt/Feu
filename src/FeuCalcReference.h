@@ -19,6 +19,7 @@ public:
     FeuCalcReference();
     FeuCalcReference(std::string, FeuThing *contextThing = NULL);
 private:
+    FeuSpecifier mSpecifier; // Parse once for faster lookups...
 	FeuThing *mThing;
     std::string mAttribute;
     float mValue;
