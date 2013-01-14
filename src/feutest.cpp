@@ -94,9 +94,10 @@ int main(int argc, char **argv)
 
         FeuLog::i("Ruleset.2 test starting...\n");
 
-        feu->onLoad();        // Run the "onLoad" handlers
+        feu->runEvent("onLoad");     // Run the "onLoad" handlers
+        feu->runEvent("onActivate"); // Run the "onActivate" handlers
         for (i=0;i<10;i++) {
-            feu->onFrame();  // Run a single frame.
+            feu->run();  // Run a single frame.
         }
 
 

@@ -24,21 +24,22 @@
 #include "Feu.h"
 #include "FeuSpecifier.h"
 
+class FeuThingAction;
+
 class FeuThing {
 public:
 	FeuThing(Feu *, std::string name);
     FeuThing(Feu *, TiXmlElement *, FeuThing *parent = NULL);
 	virtual ~FeuThing();
 
-protected:
+public:
     Feu *mFeu;  // The main document
 	FeuThing *mParent;
     std::string mType; // object class name (element type)
     std::map<std::string,std::string> mAttributes; // Raw attributes from XML
     std::list<FeuThing *> mKids; // Child XML element things
-
-public:
     std::string mName; // My own special name
+    std::map<std::string,std::list<FeuThingAction *> > mActions; // Actions, indexed by "what"
 
 public:
 	void adopt(FeuThing *ft_kid);
@@ -50,6 +51,7 @@ public:
 public:
     static FeuThing *findThing(Feu *, FeuThing *context, FeuSpecifier *objectSpecifier);
     static FeuThing *findGlobalThing(Feu *, FeuSpecifier *objectSpecifier);
+    void addAction(std::string, FeuThingAction *);
     virtual float getAttributeValue(std::string);
     virtual void setAttributeValue(std::string,float value);
 

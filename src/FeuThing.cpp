@@ -33,7 +33,7 @@ FeuThing::FeuThing(Feu *feu, TiXmlElement *ele, FeuThing *parent) {
     // Walk child list, descending as we go
     kid = ele->FirstChildElement();
     while (kid != NULL) {
-        kidthing = Feu::convertElement(feu,kid);
+        kidthing = Feu::convertElement(feu,kid,this);
         if (kidthing != NULL) adopt(kidthing);
         kid = kid->NextSiblingElement();
     }
@@ -139,3 +139,6 @@ FeuThing *FeuThing::findThing(Feu *feu, FeuThing *context, FeuSpecifier *spec)
     // Walk up the chain?
 }
 
+void FeuThing::addAction(std::string when, FeuThingAction *action) {
+    mActions[when].push_back(action);
+}
