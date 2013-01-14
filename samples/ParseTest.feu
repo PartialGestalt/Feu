@@ -10,18 +10,19 @@
          feu-version-min="1"
          description="This FEU ruleset doesn't do anything useful"
 >
+  <path name="BasePath">
+    <step type="move" condition="Screen.width < 1000" parameter="absolute" x="xspeed" y="0" z="0"/>
+  </path>
   <class name="DisplaySlides" 
          source="XBMC.pictures(Export)" 
-         sequence="random" max-count="1">
+         sequence="random" max-count="1"
+         path="BasePath">
     <!-- Initialize common parameters; this allows each object of -->
     <!-- this class to get a uniqe set of random values, but have -->
     <!-- those values constant for the lifetime of the object.    -->
     <parameter name="xspeed" value="Random.get"/>
     <parameter name="yspeed" value="Random.get"/>
     <parameter name="zspeed" value="Random.get"/>
-    <path name="default">
-      <step type="move" condition="Screen.width < 1000" parameter="absolute" x="xspeed" y="0" z="0"/>
-    </path>
   </class>
   <!-- Make one on startup -->
   <action when="onActivate" what="DisplaySlides.create"/>

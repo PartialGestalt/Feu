@@ -26,13 +26,14 @@
     <!-- If we're off-screen, destroy ourselves -->
     <step condition="right<Screen.left" type="destroy"/>
   </path>
+  <path name="SlideSlidesPath">
+    <step type="move" parameter="absolute" x="(width+Screen.width)/2"/>
+    <step type="setpath" parameter="SlideLeft"/>
+  </path>
   <class name="SlideSlides" 
          source="XBMC.pictures(Export)" 
-         sequence="random" >
-    <path name="default">
-      <step type="move" parameter="absolute" x="(width+Screen.width)/2"/>
-      <step type="setpath" parameter="SlideLeft"/>
-    </path>
+         sequence="random" 
+         path="SlideSlidesPath" >
   </class>
   <!-- Start the first one -->
   <action when="onActivate" what="SlideSlides.create"/>

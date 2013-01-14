@@ -15,12 +15,13 @@
          feu-version-min="1"
          description="This FEU ruleset implements a simple static slideshow, where a picture is fitted and centered, and then replaced with a new picture."
 >
+  <path name="DisplaySlidesPath">
+    <step type="move" parameter="absolute" x="0" y="0" z="0"/>
+  </path>
   <class name="DisplaySlides" 
          source="XBMC.pictures(Export)" 
-         sequence="random" max-count="1">
-    <path name="default">
-      <step type="move" parameter="absolute" x="0" y="0" z="0"/>
-    </path>
+         sequence="random" max-count="1"
+         path="DisplaySlidesPath">
   </class>
   <timer name="TimedSwitcher" period="15">
     <action when="onTimeout" what="DisplaySlides.create"/>
