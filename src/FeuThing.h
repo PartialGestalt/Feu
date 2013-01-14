@@ -25,6 +25,14 @@
 #include "FeuSpecifier.h"
 
 class FeuThingAction;
+class FeuThing;
+
+struct feuMethod {
+    std::string name;  // Name of the method
+    bool isReturning;  // Does method return a value?
+    int argCount;      // Expected # of args
+    float (func)(FeuThing *contextThing, std::list<float>args); // Implementer
+};
 
 class FeuThing {
 public:
@@ -40,6 +48,7 @@ public:
     std::list<FeuThing *> mKids; // Child XML element things
     std::string mName; // My own special name
     std::map<std::string,std::list<FeuThingAction *> > mActions; // Actions, indexed by "what"
+    std::map<std::string,struct feuMethod> mMethods; // Methods supported by this FeuThing
 
 public:
 	void adopt(FeuThing *ft_kid);
