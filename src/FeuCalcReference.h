@@ -17,8 +17,9 @@ class FeuCalcReference;
 
 class FeuCalcReference : public FeuCalcItem {
 public:
-    FeuCalcReference(std::string, FeuThing *contextThing = NULL);
+    FeuCalcReference(Feu *, std::string, FeuThing *contextThing = NULL);
 private:
+    Feu *mFeu;
     FeuSpecifier mSpecifier; // Parse once for faster lookups...
     std::string mInitial;
 	FeuThing *mThing;

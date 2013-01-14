@@ -4,14 +4,15 @@
 
 #include "feu_all.h"
 
-FeuCalcReference::FeuCalcReference(std::string initVal, FeuThing *contextThing) : mSpecifier(initVal) {
+FeuCalcReference::FeuCalcReference(Feu *feu, std::string initVal, FeuThing *contextThing) : mSpecifier(initVal) {
+    mFeu = feu;
     // "contextThing", if given, is the object we will belong to, which defines 
     // the scope and context.  "mThing" is the object whose value we will use during
     // calculations.
     mInitial = initVal;
         // If the reference is a global, this resolves now; if the reference
         // is local, it won't resolve yet.
-    mThing = FeuThing::findGlobalThing(contextThing,&mSpecifier);
+    mThing = FeuThing::findGlobalThing(feu,&mSpecifier);
     mAttribute = mSpecifier.mAttribute;
         // If we've resolved a reference, go ahead and extract the current
         // value.
@@ -26,7 +27,7 @@ int FeuCalcReference::proc(FeuStack *calcStack) {
 }
 
 FeuCalcItem *FeuCalcReference::copy() {
-    return new FeuCalcReference(mInitial,mThing);
+    return new FeuCalcReference(mFeu,mInitial,mThing);
 }
 
 float FeuCalcReference::getValue() {

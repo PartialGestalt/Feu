@@ -47,7 +47,8 @@ struct feuOpInfo feuOpInfoTable[] = {
     { FEU_OP_ID_FAILURE, "...", 0, true, NULL }
 };
 
-FeuCalculable::FeuCalculable(std::string expression, FeuThing *parentThing) {
+FeuCalculable::FeuCalculable(Feu *feu, std::string expression, FeuThing *parentThing) {
+    mFeu = feu;
     mParentThing = parentThing;
     mIsConstant = true; // May be overridden by tokenizer
     mLastResult = 0.0f; // As good a default as any...
@@ -232,7 +233,7 @@ void FeuCalculable::rpn() {
             lastTokenType = FEU_TOKEN_NUM;
         } else if (isalpha((**i)[0])) {
             // Object reference, shunt as number
-            mRPN->push_back(new FeuCalcReference(**i,NULL));
+            mRPN->push_back(new FeuCalcReference(mFeu,**i,NULL));
             // Have at least one object reference, so not known to be constant.
             mIsConstant = false;
             // Save our token type

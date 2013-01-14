@@ -9,7 +9,7 @@
 
 class FeuThingStep : public FeuThing {
 public:
-    FeuThingStep(TiXmlElement *, FeuThing *parent = NULL);
+    FeuThingStep(Feu *feu, TiXmlElement *, FeuThing *parent = NULL);
 	~FeuThingStep();
 
 private:

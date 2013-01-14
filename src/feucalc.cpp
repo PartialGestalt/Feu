@@ -15,7 +15,7 @@ int main(int argc, char **argv)
     expr = new std::string(argv[1]);
     FeuLog::i("Calculating result of expression: \""+*expr+"\"\n");
 
-    fc = new FeuCalculable(*expr);
+    fc = new FeuCalculable(NULL,*expr);
 
     fc_result = fc->proc();
 

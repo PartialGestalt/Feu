@@ -13,6 +13,7 @@
 #include <string>
 #include <iostream>
 #include "tinyxml.h"
+#include "FeuThing.h"
 
 class Feu {
 public:
@@ -27,7 +28,7 @@ private:
     void parseRuleset();
 
 public:
-    static FeuThing *convertElement(TiXmlElement *ele);
+    static FeuThing *convertElement(Feu *feu,TiXmlElement *ele);
 };
 
 

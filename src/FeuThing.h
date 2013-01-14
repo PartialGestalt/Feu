@@ -15,22 +15,25 @@
 #ifndef FEUTHING_H_
 #define FEUTHING_H_
 
+class FeuThing;
+
 #include <map>
 #include <list>
 #include <string>
 #include <iostream>
 #include <vector>
 #include <tinyxml.h>
+#include "Feu.h"
 #include "FeuSpecifier.h"
-#include "FeuThing.h"
 
 class FeuThing {
 public:
-	FeuThing(std::string name);
-    FeuThing(TiXmlElement *, FeuThing *parent = NULL);
+	FeuThing(Feu *, std::string name);
+    FeuThing(Feu *, TiXmlElement *, FeuThing *parent = NULL);
 	virtual ~FeuThing();
 
 protected:
+    Feu *mFeu;  // The main document
 	FeuThing *mParent;
     std::string mType; // object class name (element type)
     std::map<std::string,std::string> mAttributes; // Raw attributes from XML
@@ -44,8 +47,8 @@ public:
 	void geneology();
 
 public:
-    static FeuThing *findThing(FeuThing *context, FeuSpecifier *objectSpecifier);
-    static FeuThing *findGlobalThing(FeuThing *context, FeuSpecifier *objectSpecifier);
+    static FeuThing *findThing(Feu *, FeuThing *context, FeuSpecifier *objectSpecifier);
+    static FeuThing *findGlobalThing(Feu *, FeuSpecifier *objectSpecifier);
     virtual float getAttributeValue(std::string);
     virtual void setAttributeValue(std::string,float value);
 

@@ -8,7 +8,7 @@
 #include "feu_all.h"
 #include <tinyxml.h>
 
-FeuThingStep::FeuThingStep(TiXmlElement *ele, FeuThing *parent) : FeuThing(ele,parent) {
+FeuThingStep::FeuThingStep(Feu *feu, TiXmlElement *ele, FeuThing *parent) : FeuThing(feu,ele,parent) {
     // Base class init goes here.
     // Set defaults for any missing attributes
     if (!mAttributes.count("condition")) {
@@ -27,10 +27,10 @@ FeuThingStep::FeuThingStep(TiXmlElement *ele, FeuThing *parent) : FeuThing(ele,p
     // CLEAN: TODO: These don't really go here.  These should be
     // attached to the picture things.  We're just doing this here
     // for testing....
-    mCondition = new FeuCalculable(mAttributes["condition"],this);
-    mX = new FeuCalculable(mAttributes["x"],this);
-    mY = new FeuCalculable(mAttributes["y"],this);
-    mZ = new FeuCalculable(mAttributes["z"],this);
+    mCondition = new FeuCalculable(feu,mAttributes["condition"],this);
+    mX = new FeuCalculable(feu,mAttributes["x"],this);
+    mY = new FeuCalculable(feu,mAttributes["y"],this);
+    mZ = new FeuCalculable(feu,mAttributes["z"],this);
 }
 
 FeuThingStep::~FeuThingStep() {

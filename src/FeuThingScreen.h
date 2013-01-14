@@ -9,7 +9,7 @@
 
 class FeuThingScreen : public FeuThing {
 public:
-    FeuThingScreen(int,int);
+    FeuThingScreen(Feu *,int,int);
     ~FeuThingScreen();
 };
 

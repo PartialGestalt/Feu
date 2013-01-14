@@ -8,12 +8,13 @@
 #include "feu_all.h"
 #include <tinyxml.h>
 
-FeuThing::FeuThing(TiXmlElement *ele, FeuThing *parent) {
+FeuThing::FeuThing(Feu *feu, TiXmlElement *ele, FeuThing *parent) {
     TiXmlAttribute *attr;
     TiXmlElement *kid;
     FeuThing *kidthing;
     std::string name,value;
     // Basic element(s)
+    mFeu = feu;
     mType = ele->ValueStr();
     mName = "<unnamed>";
     // Walk Attribute list, importing as we go
@@ -32,13 +33,14 @@ FeuThing::FeuThing(TiXmlElement *ele, FeuThing *parent) {
     // Walk child list, descending as we go
     kid = ele->FirstChildElement();
     while (kid != NULL) {
-        kidthing = Feu::convertElement(kid);
+        kidthing = Feu::convertElement(feu,kid);
         if (kidthing != NULL) adopt(kidthing);
         kid = kid->NextSiblingElement();
     }
 }
 
-FeuThing::FeuThing(std::string name) {
+FeuThing::FeuThing(Feu *feu, std::string name) {
+    mFeu = feu;
 	mParent = NULL;
 	mName = name;
 }
@@ -96,16 +98,19 @@ void FeuThing::setAttributeValue(std::string attr, float value) {
     return;
 }
 
-FeuThing *FeuThing::findGlobalThing(FeuThing *context, FeuSpecifier *spec) {
+FeuThing *FeuThing::findGlobalThing(Feu *feu, FeuSpecifier *spec) {
     // A "global" is a direct child of the root element.
+    // Look at feu->mRoot
 }
 
-FeuThing *FeuThing::findThing(FeuThing *context, FeuSpecifier *spec)
+FeuThing *FeuThing::findThing(Feu *feu, FeuThing *context, FeuSpecifier *spec)
 {
     // For now, things are either global or 'this'.
     if (spec->isSelf()) return context;
 
     // Look in global space....
-    return findGlobalThing(context,spec);
+    return findGlobalThing(feu,spec);
+
+    // Walk up the chain?
 }
 

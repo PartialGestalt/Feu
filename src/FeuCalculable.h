@@ -134,10 +134,11 @@ static feuOpMap feuOperators(feuOpTable, feuOpTable+feuOpCount);
 
 class FeuCalculable  {
 public:
-    FeuCalculable(std::string, FeuThing *thing = NULL);
+    FeuCalculable(Feu *, std::string, FeuThing *thing = NULL);
 	~FeuCalculable();
 
 private:
+    Feu *mFeu; // Document to which we belong
     FeuThing *mParentThing; // FeuThing of which we're a part.
     bool mIsConstant; // No extern references, simplifies.
     float mLastResult;  // Last calculation result
