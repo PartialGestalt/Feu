@@ -9,6 +9,7 @@
 #include "FeuLog.h"
 #include "FeuList.h"
 #include "FeuStack.h"
+#include "FeuThing.h"
 // Calculables
 #include "FeuCalculable.h"
 #include "FeuCalcItem.h"
@@ -16,13 +17,13 @@
 #include "FeuCalcReference.h"
 #include "FeuCalcOperator.h"
 // XML Objects (real and virtual)
-#include "Feu.h"
 #include "FeuSpecifier.h"
-#include "FeuThing.h"
 #include "FeuThingScreen.h"
 #include "FeuThingStep.h"
+#include "FeuThing.h"
 // Displayables
 // #include "FeuDisplayable.h"
 
 
+#include "Feu.h"
 #endif /* _FEU_ALL_H_ */

@@ -13,7 +13,9 @@
 #include <string>
 #include <iostream>
 #include "tinyxml.h"
-#include "FeuThing.h"
+
+class FeuThing;
+class FeuThingScreen;
 
 class Feu {
 public:
@@ -23,12 +25,17 @@ public:
 private:
     TiXmlDocument *mDoc;
     FeuThing *mRoot;
-
-private:
-    void parseRuleset();
+    FeuThingScreen *mScreen;
 
 public:
+    // Utilities
     static FeuThing *convertElement(Feu *feu,TiXmlElement *ele);
+
+public:
+    // Action handlers
+    void onLoad();
+    void onActivate();
+    void onFrame();
 };
 
 

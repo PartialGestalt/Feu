@@ -24,6 +24,9 @@ Feu::Feu(std::string filename) {
     if (mDoc && mDoc->RootElement()) {
         mRoot = convertElement(this,mDoc->RootElement());
     }
+    // Create a Screen superglobal (at the front of the list)
+    mScreen = new FeuThingScreen(this,1280,1024);
+    mRoot->adopt_front(mScreen);
 }
 
 Feu::~Feu() {
@@ -42,4 +45,16 @@ FeuThing *Feu::convertElement(Feu *feu, TiXmlElement *ele) {
         // Anything unknown gets a plain FeuThing
         return new FeuThing(feu, ele);
     }
+}
+
+void Feu::onLoad() {
+    FeuLog::i("Running 'onLoad' handlers...\n");
+}
+
+void Feu::onActivate() {
+    FeuLog::i("Running 'onActivate' handlers...\n");
+}
+
+void Feu::onFrame() {
+    FeuLog::i("Running a single frame...\n");
 }

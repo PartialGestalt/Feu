@@ -7,6 +7,8 @@
 #ifndef FEUTHINGSCREEN_H_
 #define FEUTHINGSCREEN_H_
 
+#include "FeuThing.h"
+
 class FeuThingScreen : public FeuThing {
 public:
     FeuThingScreen(Feu *,int,int);

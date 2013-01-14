@@ -79,13 +79,28 @@ int main(int argc, char **argv)
 
     {
         Feu *feu;
+        int i;
 
         FeuLog::i("Ruleset.1 test starting...\n");
 
         feu = new Feu("../samples/ParseTest.feu");
-        delete feu;
 
-        FeuLog::i("Ruleset.1 finished\n");
+        FeuLog::i("Ruleset.1 loaded\n");
+        FeuLog::i("===============================================\n");
+
+    // 
+    // Ruleset.2: Run a ruleset for some number of frames
+    //
+
+        FeuLog::i("Ruleset.2 test starting...\n");
+
+        feu->onLoad();        // Run the "onLoad" handlers
+        for (i=0;i<10;i++) {
+            feu->onFrame();  // Run a single frame.
+        }
+
+
+        FeuLog::i("Ruleset.2 ran 10 frames\n");
         FeuLog::i("===============================================\n");
     }
 }

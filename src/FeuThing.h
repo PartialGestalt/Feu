@@ -15,8 +15,6 @@
 #ifndef FEUTHING_H_
 #define FEUTHING_H_
 
-class FeuThing;
-
 #include <map>
 #include <list>
 #include <string>
@@ -44,7 +42,10 @@ public:
 
 public:
 	void adopt(FeuThing *ft_kid);
+	void adopt_front(FeuThing *ft_kid);
 	void geneology();
+    std::list<FeuThing *>::iterator firstChild();
+    std::list<FeuThing *>::iterator endChild();
 
 public:
     static FeuThing *findThing(Feu *, FeuThing *context, FeuSpecifier *objectSpecifier);
