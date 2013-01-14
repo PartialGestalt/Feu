@@ -2,24 +2,17 @@
  * FeuCalcReference.cpp
  */
 
-#include "feu.h"
+#include "feu_all.h"
 
-FeuCalcReference::FeuCalcReference() {
-    mThing = NULL;
-    mValue = 0.0;
-    return;
-}
-
-FeuCalcReference::FeuCalcReference(std::string initVal, FeuThing *contextThing) {
+FeuCalcReference::FeuCalcReference(std::string initVal, FeuThing *contextThing) : mSpecifier(initVal) {
     // "contextThing", if given, is the object we will belong to, which defines 
     // the scope and context.  "mThing" is the object whose value we will use during
     // calculations.
-        // Parse the string into object specifier format
-    FeuSpecifier fs = FeuSpecifier(initVal);
+    mInitial = initVal;
         // If the reference is a global, this resolves now; if the reference
         // is local, it won't resolve yet.
-    mThing = FeuThing::findGlobalThing(contextThing,&fs);
-    mAttribute = fs.mAttribute;
+    mThing = FeuThing::findGlobalThing(contextThing,&mSpecifier);
+    mAttribute = mSpecifier.mAttribute;
         // If we've resolved a reference, go ahead and extract the current
         // value.
     mValue = mThing?mThing->getAttributeValue(mAttribute):0.0;
@@ -33,12 +26,7 @@ int FeuCalcReference::proc(FeuStack *calcStack) {
 }
 
 FeuCalcItem *FeuCalcReference::copy() {
-    FeuCalcReference *fcr = new FeuCalcReference();
-
-    fcr->mValue = mValue;
-    fcr->mThing = mThing;
-    fcr->mAttribute = mAttribute;
-    return (FeuCalcItem *)fcr;
+    return new FeuCalcReference(mInitial,mThing);
 }
 
 float FeuCalcReference::getValue() {
@@ -52,5 +40,5 @@ void FeuCalcReference::setValue(float newVal) {
 }
 
 std::string FeuCalcReference::toString() {
-    return mAttribute;
+    return mInitial;
 }

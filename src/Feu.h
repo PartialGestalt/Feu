@@ -1,12 +1,12 @@
 /*
- * FeuRuleset.h
+ * Feu.h
  *
- * FeuRuleset handles the loading of a ruleset file into
+ * Feu handles the loading of a ruleset file into
  * our specific objects.
  */
 
-#ifndef FEURULESET_H_
-#define FEURULESET_H_
+#ifndef FEU_H_
+#define FEU_H_
 
 #include <map>
 #include <list>
@@ -14,10 +14,10 @@
 #include <iostream>
 #include "tinyxml.h"
 
-class FeuRuleset {
+class Feu {
 public:
-	FeuRuleset(std::string filename);
-	~FeuRuleset();
+	Feu(std::string filename);
+	~Feu();
 
 private:
     TiXmlDocument *mDoc;
@@ -32,4 +32,4 @@ public:
 
 
 
-#endif /* FEURULESET_H_ */
+#endif /* FEU_H_ */

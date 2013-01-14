@@ -2,7 +2,7 @@
  * FeuCalcOperator.cpp
  */
 
-#include "feu.h"
+#include "feu_all.h"
 
 FeuCalcOperator::FeuCalcOperator(std::string initVal) {
     std::map<std::string,int>::iterator i = feuOperators.find(initVal);

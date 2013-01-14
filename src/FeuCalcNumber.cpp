@@ -2,7 +2,7 @@
  * FeuCalcNumber.cpp
  */
 
-#include "feu.h"
+#include "feu_all.h"
 
 FeuCalcNumber::FeuCalcNumber(float initVal) {
     mValue = initVal;

@@ -1,6 +1,6 @@
 
-#ifndef _FEU_H_
-#define _FEU_H_
+#ifndef _FEU_ALL_H_
+#define _FEU_ALL_H_
 
 #include <iostream>
 
@@ -16,7 +16,7 @@
 #include "FeuCalcReference.h"
 #include "FeuCalcOperator.h"
 // XML Objects (real and virtual)
-#include "FeuXML.h"
+#include "Feu.h"
 #include "FeuSpecifier.h"
 #include "FeuThing.h"
 #include "FeuThingScreen.h"
@@ -25,4 +25,4 @@
 // #include "FeuDisplayable.h"
 
 
-#endif /* _FEU_H_ */
+#endif /* _FEU_ALL_H_ */

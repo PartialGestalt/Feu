@@ -5,7 +5,7 @@
  *      Author: akephart
  */
 
-#include "feu.h"
+#include "feu_all.h"
 #include <tinyxml.h>
 
 FeuThing::FeuThing(TiXmlElement *ele, FeuThing *parent) {
@@ -32,7 +32,7 @@ FeuThing::FeuThing(TiXmlElement *ele, FeuThing *parent) {
     // Walk child list, descending as we go
     kid = ele->FirstChildElement();
     while (kid != NULL) {
-        kidthing = FeuXML::convertElement(kid);
+        kidthing = Feu::convertElement(kid);
         if (kidthing != NULL) adopt(kidthing);
         kid = kid->NextSiblingElement();
     }
@@ -96,7 +96,7 @@ void FeuThing::setAttributeValue(std::string attr, float value) {
     return;
 }
 
-FeuThing *FeuThing::findGlobalThing(FeuThing *context, FeuSpecifier, *spec) {
+FeuThing *FeuThing::findGlobalThing(FeuThing *context, FeuSpecifier *spec) {
     // A "global" is a direct child of the root element.
 }
 

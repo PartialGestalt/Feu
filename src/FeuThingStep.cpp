@@ -5,7 +5,7 @@
  *      Author: akephart
  */
 
-#include "feu.h"
+#include "feu_all.h"
 #include <tinyxml.h>
 
 FeuThingStep::FeuThingStep(TiXmlElement *ele, FeuThing *parent) : FeuThing(ele,parent) {

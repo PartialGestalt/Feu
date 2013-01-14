@@ -1,4 +1,4 @@
-#include "feu.h"
+#include "feu_all.h"
 
 FeuSpecifier::FeuSpecifier(std::string objectSpec) {
     size_t dotpos = objectSpec.find_first_of('.');
@@ -35,6 +35,6 @@ void FeuSpecifier::splitComponents(std::string s,std::vector<std::string> v, cha
     return;
 }
 
-bool FeuSepecifier::isSelf() {
+bool FeuSpecifier::isSelf() {
     return (mObject == "this");
 }

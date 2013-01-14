@@ -4,7 +4,7 @@
  * Global FeuThing representing the Screen superglobal.
  */
 
-#include "feu.h"
+#include "feu_all.h"
 #include <tinyxml.h>
 
 FeuThingScreen::FeuThingScreen(int width, int height) : FeuThing((std::string)"Screen") {
@@ -12,4 +12,7 @@ FeuThingScreen::FeuThingScreen(int width, int height) : FeuThing((std::string)"S
     mAttributes["width"] = stringof(width);
     mAttributes["height"] = stringof(height);
     return;
+}
+
+FeuThingScreen::~FeuThingScreen() {
 }

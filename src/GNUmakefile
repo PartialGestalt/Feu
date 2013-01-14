@@ -21,7 +21,7 @@ include $(BUILD_ROOT)/common.mk
 
 firstrule: all
 
-CLASS_SRCS=$(wildcard Feu[A-Z]*.cpp) 
+CLASS_SRCS=$(wildcard Feu[A-Z]*.cpp) Feu.cpp
 
 CLASS_HDRS=$(CLASS_SRCS:.cpp=.h)
 

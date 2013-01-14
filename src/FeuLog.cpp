@@ -5,7 +5,7 @@
  *      Author: akephart
  */
 
-#include "feu.h"
+#include "feu_all.h"
 
 FeuLog::FeuLog() {
 }

@@ -1,4 +1,4 @@
-#include "feu.h"
+#include "feu_all.h"
 #include <iostream>
 
 int main(int argc, char **argv)
@@ -78,12 +78,12 @@ int main(int argc, char **argv)
     //
 
     {
-        FeuXML *fux;
+        Feu *feu;
 
         FeuLog::i("Ruleset.1 test starting...\n");
 
-        fux = new FeuRuleset("../samples/ParseTest.feu");
-        delete fux;
+        feu = new Feu("../samples/ParseTest.feu");
+        delete feu;
 
         FeuLog::i("Ruleset.1 finished\n");
         FeuLog::i("===============================================\n");

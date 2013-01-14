@@ -10,16 +10,17 @@
 
 #include "FeuCalcItem.h"
 #include "FeuThing.h"
+#include "FeuSpecifier.h"
 #include <stack>
 
 class FeuCalcReference;
 
 class FeuCalcReference : public FeuCalcItem {
 public:
-    FeuCalcReference();
     FeuCalcReference(std::string, FeuThing *contextThing = NULL);
 private:
     FeuSpecifier mSpecifier; // Parse once for faster lookups...
+    std::string mInitial;
 	FeuThing *mThing;
     std::string mAttribute;
     float mValue;

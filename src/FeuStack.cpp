@@ -2,7 +2,7 @@
  * FeuStack.cpp
  */
 
-#include "feu.h"
+#include "feu_all.h"
 
 #if 0
 FeuStack::FeuStack() {

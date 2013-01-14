@@ -1,4 +1,4 @@
-#include "feu.h"
+#include "feu_all.h"
 #include <iostream>
 
 int main(int argc, char **argv)
