@@ -101,6 +101,7 @@ int main(int argc, char **argv)
 
 
         FeuLog::i("Ruleset.2 ran 10 frames\n");
+        delete feu;
         FeuLog::i("===============================================\n");
     }
 }

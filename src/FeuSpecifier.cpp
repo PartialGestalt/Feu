@@ -1,7 +1,10 @@
 #include "feu_all.h"
 
 FeuSpecifier::FeuSpecifier(std::string objectSpec) {
-    size_t dotpos = objectSpec.find_first_of('.');
+    size_t dotpos;
+
+    //FeuLog::i("[FeuSpecifier]: decoding \"" + objectSpec + "\".\n");
+    dotpos = objectSpec.find_first_of('.');
 
     mVector = std::vector<std::string>();
     // Special case handling for 'this' references
@@ -16,7 +19,7 @@ FeuSpecifier::FeuSpecifier(std::string objectSpec) {
     // Normal handling, at least one object component
     dotpos = objectSpec.find_last_of('.');
     mObject = objectSpec.substr(0,dotpos);
-    splitComponents(objectSpec,mVector,'.');    
+    splitComponents(objectSpec,&mVector,'.');    
     mAttribute = mVector[mVector.size() - 1];
 
     return;
@@ -25,12 +28,12 @@ FeuSpecifier::FeuSpecifier(std::string objectSpec) {
 FeuSpecifier::~FeuSpecifier() {
 }
 
-void FeuSpecifier::splitComponents(std::string s,std::vector<std::string> v, char delimiter) 
+void FeuSpecifier::splitComponents(std::string s,std::vector<std::string> *v, char delimiter) 
 {
     std::stringstream ss(s);
     std::string component;
     while (std::getline(ss,component,delimiter)) {
-        v.push_back(component);
+        v->push_back(component);
     }
     return;
 }

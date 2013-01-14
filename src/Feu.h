@@ -30,6 +30,7 @@ private:
 public:
     // Utilities
     static FeuThing *convertElement(Feu *feu,TiXmlElement *ele);
+    FeuThing *getRoot();
 
 public:
     // Action handlers

@@ -10,7 +10,7 @@
 Feu *lastRuleset = NULL;
 
 
-Feu::Feu(std::string filename) {
+Feu::Feu(std::string filename) : mRoot(NULL) {
     // Just load/verify file
     mDoc = new TiXmlDocument(filename);
     if (mDoc != NULL) {
@@ -32,6 +32,11 @@ Feu::Feu(std::string filename) {
 Feu::~Feu() {
     delete mRoot;
     delete mDoc;
+}
+
+
+FeuThing *Feu::getRoot() {
+    return mRoot;
 }
 
 FeuThing *Feu::convertElement(Feu *feu, TiXmlElement *ele) {
@@ -58,3 +63,5 @@ void Feu::onActivate() {
 void Feu::onFrame() {
     FeuLog::i("Running a single frame...\n");
 }
+
+

@@ -22,15 +22,22 @@ private:
     Feu *mFeu;
     FeuSpecifier mSpecifier; // Parse once for faster lookups...
     std::string mInitial;
-	FeuThing *mThing;
+	FeuThing *mThing;  // Object whose value we're dealing with
+    FeuThing *mContext; // Context object
     std::string mAttribute;
     float mValue;
+
 public:
 	int proc(FeuStack *);
     FeuCalcItem *copy();
     float getValue();
     void setValue(float);
     std::string toString();
+    void setContext(FeuThing *);
+
+private:
+    void resolveReference();
+
 };
 
 #endif /* _FEU_CALCREFERENCE_H_ */

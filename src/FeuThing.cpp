@@ -106,8 +106,26 @@ void FeuThing::setAttributeValue(std::string attr, float value) {
     return;
 }
 
+std::list<FeuThing *>::iterator FeuThing::firstChild() {
+    return mKids.begin();
+}
+
+std::list<FeuThing *>::iterator FeuThing::endChild() {
+    return mKids.end();
+}
+
 FeuThing *FeuThing::findGlobalThing(Feu *feu, FeuSpecifier *spec) {
     // A "global" is a direct child of the root element.
+    std::list<FeuThing *>::iterator i;
+
+    // Check for initialization
+    if (!feu->getRoot()) return NULL;
+
+    // Search list
+    for (i = feu->getRoot()->mKids.begin(); i != feu->getRoot()->mKids.end(); i++) {
+        if ((*i)->mName == spec->mObject) return (*i);
+    }
+    return NULL;
 }
 
 FeuThing *FeuThing::findThing(Feu *feu, FeuThing *context, FeuSpecifier *spec)
