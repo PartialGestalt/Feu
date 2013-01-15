@@ -4,8 +4,8 @@
  * FeuCalcOperator is FeuCalcItem that manages an operator
  */
 
-#ifndef _FEU_CALCOPERATOR_H_
-#define _FEU_CALCOPERATOR_H_
+#ifndef _FEU_CALC_OPERATOR_H_
+#define _FEU_CALC_OPERATOR_H_
 
 #include "FeuCalcItem.h"
 #include <stack>
@@ -32,4 +32,4 @@ public:
     bool canSupplant(FeuCalcOperator *fco); // Is this more important than fco?
 };
 
-#endif /* _FEU_CALCOPERATOR_H_ */
+#endif /* _FEU_CALC_OPERATOR_H_ */

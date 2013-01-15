@@ -5,8 +5,8 @@
  *      Author: akephart
  */
 
-#ifndef FEULOG_H_
-#define FEULOG_H_
+#ifndef _FEU_LOG_H_
+#define _FEU_LOG_H_
 
 #include <iostream>
 #include <sstream>
@@ -117,4 +117,4 @@ static int intof(std::string s) {
     return accum;
 }
 
-#endif /* FEULOG_H_ */
+#endif /* _FEU_LOG_H_ */

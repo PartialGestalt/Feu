@@ -5,8 +5,8 @@
  * attribute.
  */
 
-#ifndef FEUSPECIFIER_H_
-#define FEUSPECIFIER_H_
+#ifndef _FEU_SPECIFIER_H_
+#define _FEU_SPECIFIER_H_
 
 
 class FeuSpecifier {
@@ -29,4 +29,4 @@ public:
 
 
 
-#endif /* FEUSPECIFIER_H_ */
+#endif /* _FEU_SPECIFIER_H_ */

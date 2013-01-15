@@ -4,8 +4,8 @@
  * FeuThingAction is a class for the <action> XML element
  */
 
-#ifndef FEUTHINGACTION_H_
-#define FEUTHINGACTION_H_
+#ifndef _FEU_THING_ACTION_H_
+#define _FEU_THING_ACTION_H_
 
 #include "FeuThing.h"
 
@@ -25,4 +25,4 @@ public:
 
 
 
-#endif /* FEUTHINGACTION_H_ */
+#endif /* _FEU_THING_ACTION_H_ */

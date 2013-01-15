@@ -1,3 +1,5 @@
+#ifndef _FEU_OPS_H_
+#define _FEU_OPS_H_
 
 void feu_args_unary_get(FeuStack *s, FeuCalcItem **right)
 {
@@ -77,3 +79,5 @@ FEU_BINARY_OP(      xorbits, ((int)left->getValue() ^ (int)right->getValue()) );
 
 FEU_UNARY_OP(       notbits, (~((int)right->getValue())) );
 FEU_UNARY_OP(    unaryminus, (-((int)right->getValue())) );
+
+#endif /* _FEU_OPS_H_ */

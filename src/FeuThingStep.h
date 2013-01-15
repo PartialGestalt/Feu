@@ -4,8 +4,8 @@
  * FeuThingStep is a class for the <step> XML element
  */
 
-#ifndef FEUTHINGSTEP_H_
-#define FEUTHINGSTEP_H_
+#ifndef _FEU_THING_STEP_H_
+#define _FEU_THING_STEP_H_
 
 class FeuThingStep : public FeuThing {
 public:
@@ -26,4 +26,4 @@ public:
 
 
 
-#endif /* FEUTHINGSTEP_H_ */
+#endif /* _FEU_THING_STEP_H_ */

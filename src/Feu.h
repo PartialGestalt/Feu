@@ -5,8 +5,8 @@
  * our specific objects.
  */
 
-#ifndef FEU_H_
-#define FEU_H_
+#ifndef _FEU_H_
+#define _FEU_H_
 
 #include <map>
 #include <list>
@@ -47,4 +47,4 @@ public:
 
 
 
-#endif /* FEU_H_ */
+#endif /* _FEU_H_ */

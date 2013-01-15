@@ -12,8 +12,8 @@
  * Subclasses will have precalc or shortcut members.
  */
 
-#ifndef FEUTHING_H_
-#define FEUTHING_H_
+#ifndef _FEU_THING_H_
+#define _FEU_THING_H_
 
 #include <map>
 #include <list>
@@ -68,4 +68,4 @@ public:
 
 
 
-#endif /* FEUTHING_H_ */
+#endif /* _FEU_THING_H_ */

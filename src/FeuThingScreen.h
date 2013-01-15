@@ -4,8 +4,8 @@
  * FeuThingScreen is a class for the <step> XML element
  */
 
-#ifndef FEUTHINGSCREEN_H_
-#define FEUTHINGSCREEN_H_
+#ifndef _FEU_THING_SCREEN_H_
+#define _FEU_THING_SCREEN_H_
 
 #include "FeuThing.h"
 
@@ -17,4 +17,4 @@ public:
 
 
 
-#endif /* FEUTHINGSCREEN_H_ */
+#endif /* _FEU_THING_SCREEN_H_ */

@@ -2,11 +2,11 @@
  * FeuCalcReference.h
  *
  * FeuCalcReference is a FeuCalcItem that manages a single object
- * attribute reference.
+ * attribute or function reference.
  */
 
-#ifndef _FEU_CALCREFERENCE_H_
-#define _FEU_CALCREFERENCE_H_
+#ifndef _FEU_CALC_REFERENCE_H_
+#define _FEU_CALC_REFERENCE_H_
 
 #include "FeuCalcItem.h"
 #include "FeuThing.h"
@@ -40,4 +40,4 @@ private:
 
 };
 
-#endif /* _FEU_CALCREFERENCE_H_ */
+#endif /* _FEU_CALC_REFERENCE_H_ */

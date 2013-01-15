@@ -4,8 +4,8 @@
  * FeuCalcNumber is FeuCalcItem that manages a single constant.
  */
 
-#ifndef _FEU_CALCNUMBER_H_
-#define _FEU_CALCNUMBER_H_
+#ifndef _FEU_CALC_NUMBER_H_
+#define _FEU_CALC_NUMBER_H_
 
 #include "FeuCalcItem.h"
 #include <stack>
@@ -27,4 +27,4 @@ public:
     std::string toString();
 };
 
-#endif /* _FEU_CALCNUMBER_H_ */
+#endif /* _FEU_CALC_NUMBER_H_ */

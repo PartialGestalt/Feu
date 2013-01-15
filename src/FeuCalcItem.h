@@ -6,8 +6,8 @@
  *
  */
 
-#ifndef _FEU_CALCITEM_H_
-#define _FEU_CALCITEM_H_
+#ifndef _FEU_CALC_ITEM_H_
+#define _FEU_CALC_ITEM_H_
 
 #include <stack>
 
@@ -24,4 +24,4 @@ public:
     virtual std::string toString() = 0;
 };
 
-#endif /* _FEU_CALCITEM_H_ */
+#endif /* _FEU_CALC_ITEM_H_ */
