@@ -60,6 +60,7 @@ FeuCalculable::FeuCalculable(Feu *feu, std::string expression, FeuThing *parentT
     this->tokenize(expression);
     // Convert infix to RPN for easy calculation
     //     (also releases all token memory)
+#error "Delay RPN shunt conversion until after full load, so we can properly identify function tokens."
     this->rpn();
 }
 
