@@ -63,7 +63,6 @@ public:
     void addAction(std::string, FeuThingAction *);
     virtual float getAttributeValue(std::string);
     virtual void setAttributeValue(std::string,float value);
-
 };
 
 

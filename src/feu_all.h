@@ -15,6 +15,7 @@
 #include "FeuCalcItem.h"
 #include "FeuCalcNumber.h"
 #include "FeuCalcReference.h"
+#include "FeuCalcMethod.h"
 #include "FeuCalcOperator.h"
 // XML Objects (real and virtual)
 #include "FeuSpecifier.h"

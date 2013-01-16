@@ -15,6 +15,7 @@ class FeuCalcOperator;
 class FeuCalcOperator : public FeuCalcItem {
 public:
     FeuCalcOperator(std::string);
+    FeuCalcOperator(int);
 private:
 	struct feuOpInfo *mInfo;
 public:

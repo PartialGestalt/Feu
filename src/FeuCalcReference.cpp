@@ -12,6 +12,7 @@ FeuCalcReference::FeuCalcReference(Feu *feu, std::string initVal, FeuThing *cont
     mInitial = initVal;
     mContext = contextThing;
     mAttribute = mSpecifier.mAttribute;
+    mIsMethod = false; // Will get updated later if true...
     mThing = NULL;
         // If we're not in the initial load, and the reference is a global, 
         // this resolves now; if the reference is local (or relative) or 
@@ -40,7 +41,7 @@ void FeuCalcReference::setContext(FeuThing *context) {
 void FeuCalcReference::resolveReference() {
     // If we're not resolved yet, do it here....
     // NOTE: We must have a context pointer if we're not a global!!!
-    if (NULL == mThing) {
+    if (!mThing) {
         if (mContext) { 
             // We're running in context; do full lookup
             mThing = FeuThing::findThing(mFeu,mContext,&mSpecifier);
@@ -48,6 +49,11 @@ void FeuCalcReference::resolveReference() {
             // No context set! If global fails, this is an error.
             mThing = FeuThing::findGlobalThing(mFeu,&mSpecifier);
         }
+    }
+    // If this is a self-reference (i.e. just attribute) we can defer
+    // until runtime processing.
+    if (!mThing && !mSpecifier.isSelf()) {
+        FeuLog::w("Failed to resolve object reference \"" + mInitial + "\"\n");
     }
 }
 

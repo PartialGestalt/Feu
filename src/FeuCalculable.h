@@ -73,6 +73,8 @@ enum {
     FEU_OP_ID_RSUBSCRIPT,
     FEU_OP_ID_LPAREN,
     FEU_OP_ID_RPAREN,
+    FEU_OP_ID_FUNCTION, // All function calls share this ID
+    FEU_OP_ID_ENDARG, // End of argument list
     FEU_OP_ID_FAILURE // Reserved for the failure case object
 }; 
 
@@ -148,6 +150,7 @@ private:
     int mRunCount;
 
 public:
+    void rpn();  // Convert infix to RPN
 	float proc(); // Run the calculation, return the result
 
 private:
@@ -156,7 +159,6 @@ private:
 private:
     void setParentThing(FeuThing *);  // Mark us as belonging to a thing
     void tokenize(std::string); // Tokenize/syntax check
-    void rpn();  // Convert infix to RPN
 };
 
 #endif /* _FEU_CALCULABLE_H_ */

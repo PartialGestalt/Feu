@@ -18,6 +18,7 @@ class FeuCalcReference;
 class FeuCalcReference : public FeuCalcItem {
 public:
     FeuCalcReference(Feu *, std::string, FeuThing *contextThing = NULL);
+
 private:
     Feu *mFeu;
     FeuSpecifier mSpecifier; // Parse once for faster lookups...
@@ -26,6 +27,9 @@ private:
     FeuThing *mContext; // Context object
     std::string mAttribute;
     float mValue;
+
+public:
+    bool mIsMethod; // true if this is a method
 
 public:
 	int proc(FeuStack *);

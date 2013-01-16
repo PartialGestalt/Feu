@@ -24,9 +24,18 @@ Feu::Feu(std::string filename) : mRoot(NULL),mFilename(filename) {
     if (mDoc && mDoc->RootElement()) {
         mRoot = convertElement(this,mDoc->RootElement(),NULL);
     }
-    // Create a Screen superglobal (at the front of the list)
+    // Create superglobals (at the front of the list)
     mScreen = new FeuThingScreen(this,1280,1024);
     mRoot->adopt_front(mScreen);
+
+    // Finally, do deferred calculable resolution and preprocessing
+
+    {
+        std::list<FeuCalculable *>::iterator i;
+        for (i=mCalculables.begin(); i != mCalculables.end(); i++) {
+            (*i)->rpn();
+        }
+    }
 }
 
 Feu::~Feu() {
@@ -68,4 +77,8 @@ void Feu::runEvent(std::string eventName) {
 
 void Feu::run() {
     FeuLog::i("[FEU]: Running a single frame.\n");
+}
+
+void Feu::registerCalculable(FeuCalculable *feucalc) {
+    mCalculables.push_back(feucalc);
 }

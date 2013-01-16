@@ -14,6 +14,11 @@ FeuCalcOperator::FeuCalcOperator(std::string initVal) {
     }
 }
 
+FeuCalcOperator::FeuCalcOperator(int idVal) {
+    // Constructor for creating by ID
+    mInfo = &feuOpInfoTable[idVal];
+}
+
 int FeuCalcOperator::proc(FeuStack *calcStack) {
     if (NULL != mInfo->func) return (mInfo->func)(calcStack);
     else FeuLog::w("No function to implement operator \"",mInfo->op,"\"\n");
@@ -54,8 +59,11 @@ bool FeuCalcOperator::isLeftAssociative() {
 bool FeuCalcOperator::canSupplant(FeuCalcOperator *fco) {
     int fcoPrec = fco->getPrecedence();
     int fcoID = fco->getID();
-    // Grouping elements can't ever be superceded
-    if (fcoID == FEU_OP_ID_LPAREN || fcoID == FEU_OP_ID_LSUBSCRIPT) return false;
+    // Functions and grouping elements can't ever be superceded by normal 
+    // operators.
+    if (fcoID == FEU_OP_ID_FUNCTION || 
+        fcoID == FEU_OP_ID_LPAREN   || 
+        fcoID == FEU_OP_ID_LSUBSCRIPT) return false;
     if (mInfo->precedence < fcoPrec) return false;
     if (mInfo->precedence > fcoPrec) return true;
     // If equal, it comes down to left-associativity.

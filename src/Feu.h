@@ -17,6 +17,7 @@
 class FeuThing;
 class FeuThingScreen;
 class FeuThingPath;
+class FeuCalculable;
 
 class Feu {
 public:
@@ -30,6 +31,7 @@ private:
     TiXmlDocument *mDoc;
     FeuThing *mRoot;
     FeuThingScreen *mScreen;
+    std::list<FeuCalculable *>mCalculables; // For deferred resolution
     //std::list<FeuThingClass *>mClasses; // Classes
     //std::list<FeuThingPath *>mPaths; // Toplevel paths
     //std::list<FeuThingParameter *>mParameters; // Toplevel parameters
@@ -38,6 +40,7 @@ public:
     // Utilities
     static FeuThing *convertElement(Feu *feu,TiXmlElement *ele, FeuThing *parent);
     FeuThing *getRoot();
+    void registerCalculable(FeuCalculable *);
 
 public:
     // Action handlers

@@ -44,6 +44,8 @@ struct feuOpInfo feuOpInfoTable[] = {
     { FEU_OP_ID_RSUBSCRIPT, "]", 2, true, NULL },
     { FEU_OP_ID_LPAREN, "(", 2, true, NULL },
     { FEU_OP_ID_RPAREN, ")", 2, true, NULL },
+    { FEU_OP_ID_FUNCTION, "(.)(.)", 1, true, NULL },
+    { FEU_OP_ID_ENDARG, "@", 1, true, NULL },
     { FEU_OP_ID_FAILURE, "...", 0, true, NULL }
 };
 
@@ -58,10 +60,9 @@ FeuCalculable::FeuCalculable(Feu *feu, std::string expression, FeuThing *parentT
     mRPN = new FeuList();
     // Convert input string into tokens
     this->tokenize(expression);
-    // Convert infix to RPN for easy calculation
-    //     (also releases all token memory)
-#error "Delay RPN shunt conversion until after full load, so we can properly identify function tokens."
-    this->rpn();
+
+    // Register with the core for deferred RPNification
+    feu->registerCalculable(this);
 }
 
 FeuCalculable::~FeuCalculable() {
@@ -223,6 +224,7 @@ void FeuCalculable::rpn() {
     bool done=false;
     FeuCalcOperator *fco_top;
     int lastTokenType = FEU_TOKEN_NONE;
+    int funcDepth = 0; // How many functions are pending?
     // Walk token list, using the shunting yard algorithm to organize
     // tokens into RPN.  Then, convert each token into a FeuCalcItem of
     // the appropriate type.
@@ -233,7 +235,7 @@ void FeuCalculable::rpn() {
             // Save our token type
             lastTokenType = FEU_TOKEN_NUM;
         } else if (isalpha((**i)[0])) {
-            // Object reference, shunt as number
+            // If simple object attribute reference, push as a number
             mRPN->push_back(new FeuCalcReference(mFeu,**i,NULL));
             // Have at least one object reference, so not known to be constant.
             mIsConstant = false;
@@ -244,8 +246,33 @@ void FeuCalculable::rpn() {
             fcop = new FeuCalcOperator(**i); 
             // How we handle the operator depends on precedence rules...
             switch(fcop->getID()) {
-                // Left-grouping just gets pushed onto shunt
-                case FEU_OP_ID_LPAREN:
+                // Left-grouping gets pushed onto shunt, unless we're starting
+                // a function call
+                case FEU_OP_ID_LPAREN: {
+                    // If the previous token was an object reference, this
+                    // paren means that we should treat the previous token
+                    // as a function call.  Pop it from the output list and
+                    // create an Operator-compatible container to put it on
+                    // the opstack; then, push an ENDARG marker and the 
+                    // LPAREN onto the opstack.
+                    if (lastTokenType == FEU_TOKEN_REF) {
+                        FeuCalcReference *methodRef;
+                        FeuCalcMethod *methodOp;
+
+                        // Pull ref off output stack
+                        methodRef = (FeuCalcReference *)mRPN->back();
+                        mRPN->pop_back();
+                        // Add bonus "End of arguments" marker
+                        mRPN->push_back(new FeuCalcOperator(FEU_OP_ID_ENDARG));
+                        // Create/push a pseudo-operator
+                        methodOp = new FeuCalcMethod(methodRef);
+                        opstack.push(methodOp);
+                        // Not that we have one (more) function on the stack
+                        funcDepth++;
+                    }
+                    opstack.push(fcop);
+                    break;
+                }
                 case FEU_OP_ID_LSUBSCRIPT:
                     opstack.push(fcop);
                     break;
@@ -271,12 +298,56 @@ void FeuCalculable::rpn() {
                             done = true;
                             // Destroy the left grouper
                             delete fco_top;
+                            
+                            // If the target was a left paren, and
+                            // the next top is a function, pull it 
+                            // off and push to the output list
+                            fco_top = opstack.top();
+                            if ((tgt_id == FEU_OP_ID_LPAREN) &&
+                                (fco_top->getID() == FEU_OP_ID_FUNCTION)) {
+                                FeuCalcMethod *fcMeth;
+                                FeuCalcReference *fcRef;
+
+                                // Pull from opstack
+                                opstack.pop(); 
+                                funcDepth--;
+                                // Extract FeuCalcReference
+                                fcMeth = (FeuCalcMethod *)fco_top;
+                                fcRef = fcMeth->mRef;
+                                delete fcMeth;
+                                // Push onto output
+                                mRPN->push_back(fcRef);
+                            }
                         } else {
                             // Move it to output 
                             mRPN->push_back(fco_top);
                         }
                     }
                     // Delete the right grouper
+                    delete fcop;
+                    break;
+                }
+                case FEU_OP_ID_COMMA: {
+                    // Commas should only come into play when a function is
+                    // on the stack....
+                    if (!funcDepth) {
+                        FeuLog::w("Comma found without function call.\n");
+                    }
+                    // Pop down to the LPAREN (but don't pop the LPAREN)
+                    done = false;
+                    while (!opstack.empty() && !done) {
+                        fco_top = opstack.top();
+
+                        if (fco_top->getID() == FEU_OP_ID_LPAREN) {
+                            // What we're looking for!
+                            done = true;
+                        } else {
+                            // Move it to output 
+                            opstack.pop();
+                            mRPN->push_back(fco_top);
+                        }
+                    }
+                    // delete the comma (never goes into RPN list)
                     delete fcop;
                     break;
                 }
