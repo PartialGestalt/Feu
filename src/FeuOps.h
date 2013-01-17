@@ -31,7 +31,7 @@ void feu_args_binary_put(FeuCalcItem *left, FeuCalcItem *right)
 
 
 #define FEU_UNARY_OP(__name, __expr) \
-    int feu_op_##__name(FeuStack *s) \
+    int feu_op_##__name(FeuStack *s, FeuCalcOperator *op) \
     { \
         FeuCalcItem *right, *result; \
         feu_args_unary_get(s,&right); \
@@ -44,7 +44,7 @@ void feu_args_binary_put(FeuCalcItem *left, FeuCalcItem *right)
 
 
 #define FEU_BINARY_OP(__name, __expr) \
-    int feu_op_##__name(FeuStack *s) \
+    int feu_op_##__name(FeuStack *s, FeuCalcOperator *op) \
     { \
         FeuCalcItem *left, *right, *result; \
         feu_args_binary_get(s,&left,&right); \

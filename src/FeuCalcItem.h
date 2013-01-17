@@ -11,13 +11,15 @@
 
 #include <stack>
 
+class FeuThing;
+
 class FeuCalcItem : public FeuRefCounted {
 public:
     FeuCalcItem();
 	virtual ~FeuCalcItem() = 0;
 
 public:
-	virtual int proc(FeuStack *) = 0;
+	virtual int proc(FeuStack *, FeuThing *contextThing = NULL) = 0;
     virtual FeuCalcItem *copy() = 0;
     virtual float getValue() = 0;
     virtual void setValue(float) = 0;

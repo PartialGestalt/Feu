@@ -19,8 +19,8 @@ FeuCalcOperator::FeuCalcOperator(int idVal) {
     mInfo = &feuOpInfoTable[idVal];
 }
 
-int FeuCalcOperator::proc(FeuStack *calcStack) {
-    if (NULL != mInfo->func) return (mInfo->func)(calcStack);
+int FeuCalcOperator::proc(FeuStack *calcStack, FeuThing *contextThing) {
+    if (NULL != mInfo->func) return (mInfo->func)(calcStack,this);
     else FeuLog::w("No function to implement operator \"",mInfo->op,"\"\n");
     return -1; // No handler is a problem.
 }

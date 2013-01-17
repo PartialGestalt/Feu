@@ -32,7 +32,7 @@ public:
     bool mIsMethod; // true if this is a method
 
 public:
-	int proc(FeuStack *);
+	int proc(FeuStack *, FeuThing *contextThing = NULL);
     FeuCalcItem *copy();
     float getValue();
     void setValue(float);

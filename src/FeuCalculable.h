@@ -17,6 +17,7 @@
 #include <map>
 
 #include "FeuThing.h"
+class FeuCalcOperator;
 
 // Operator table
 struct feuOpInfo {
@@ -24,7 +25,7 @@ struct feuOpInfo {
     std::string op;           // String representation
     int precedence;           // Precedence
     bool leftAssociative;     // true for left-associative
-    int (*func)(FeuStack *);  // Implementation; return 0 on success
+    int (*func)(FeuStack *,FeuCalcOperator *);  // Implementation; return 0 on success
 };
 
 extern struct feuOpInfo feuOpInfoTable[];
@@ -141,7 +142,6 @@ public:
 
 private:
     Feu *mFeu; // Document to which we belong
-    FeuThing *mParentThing; // FeuThing of which we're a part.
     bool mIsConstant; // No extern references, simplifies.
     float mLastResult;  // Last calculation result
     FeuList *mRPN; // Our RPN list of calcitems
@@ -149,16 +149,16 @@ private:
     FeuStack mCalcStack; // Stack for calculations
     int mRunCount;
 
+private:
+    void tokenize(std::string); // Tokenize/syntax check
+
 public:
     void rpn();  // Convert infix to RPN
-	float proc(); // Run the calculation, return the result
+	float proc(FeuThing *contextThing = NULL); // Run it, return the result
 
 private:
     feuOpMap *mOpMap;
 
-private:
-    void setParentThing(FeuThing *);  // Mark us as belonging to a thing
-    void tokenize(std::string); // Tokenize/syntax check
 };
 
 #endif /* _FEU_CALCULABLE_H_ */

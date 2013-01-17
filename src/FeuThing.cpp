@@ -142,3 +142,11 @@ FeuThing *FeuThing::findThing(Feu *feu, FeuThing *context, FeuSpecifier *spec)
 void FeuThing::addAction(std::string when, FeuThingAction *action) {
     mActions[when].push_back(action);
 }
+
+bool FeuThing::hasAttribute(std::string attrName) {
+    return (mAttributes.count(attrName) != 0);
+}
+
+bool FeuThing::hasMethod(std::string methName) {
+    return (mMethods.count(methName) != 0);
+}

@@ -57,6 +57,8 @@ FeuThing *Feu::convertElement(Feu *feu, TiXmlElement *ele, FeuThing *parent) {
         return new FeuThingStep(feu, ele, parent);
     } else if (eletype == "action") {
         return new FeuThingAction(feu,ele,parent);
+    } else if (eletype == "class") {
+        return new FeuThingClass(feu,ele,parent);
     } else {
         // Anything unknown gets a plain FeuThing
         return new FeuThing(feu, ele, parent );
@@ -70,7 +72,9 @@ void Feu::runEvent(std::string eventName) {
     for (i=mRoot->mActions[eventName].begin(); 
          i != mRoot->mActions[eventName].end(); 
          i++) {
-       FeuLog::i("\t Handler: \"" + ((FeuThing *)*i)->mAttributes["what"] + "\"\n");
+       FeuThingAction *thing = *i;
+       FeuLog::i("\t Handler: \"" + thing->mAttributes["what"] + "\"\n");
+       thing->proc();
     }
 
 }

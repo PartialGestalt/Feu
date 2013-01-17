@@ -19,6 +19,7 @@
 #include "FeuCalcOperator.h"
 // XML Objects (real and virtual)
 #include "FeuSpecifier.h"
+#include "FeuThingClass.h"
 #include "FeuThingAction.h"
 #include "FeuThingScreen.h"
 #include "FeuThingStep.h"

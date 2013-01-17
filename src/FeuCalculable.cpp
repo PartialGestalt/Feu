@@ -2,6 +2,8 @@
 #include <cmath>
 #include "FeuOps.h" // Get op handlers
 
+int feu_op_endarg(FeuStack *calcStack, FeuCalcOperator *op);
+
 // Operator info table (lower number means higher precedence)
 struct feuOpInfo feuOpInfoTable[] = {
     { FEU_OP_ID_COMMA, ",", 17, true, NULL },
@@ -45,13 +47,12 @@ struct feuOpInfo feuOpInfoTable[] = {
     { FEU_OP_ID_LPAREN, "(", 2, true, NULL },
     { FEU_OP_ID_RPAREN, ")", 2, true, NULL },
     { FEU_OP_ID_FUNCTION, "(.)(.)", 1, true, NULL },
-    { FEU_OP_ID_ENDARG, "@", 1, true, NULL },
+    { FEU_OP_ID_ENDARG, "@end", 1, true, feu_op_endarg },
     { FEU_OP_ID_FAILURE, "...", 0, true, NULL }
 };
 
 FeuCalculable::FeuCalculable(Feu *feu, std::string expression, FeuThing *parentThing) {
     mFeu = feu;
-    mParentThing = parentThing;
     mIsConstant = true; // May be overridden by tokenizer
     mLastResult = 0.0f; // As good a default as any...
     mRunCount = 0; // No runs yet.
@@ -401,7 +402,7 @@ void FeuCalculable::rpn() {
     }
 }
 
-float FeuCalculable::proc() {
+float FeuCalculable::proc(FeuThing *contextThing) {
     FeuList::iterator i;
     FeuCalcItem *fci;
 
@@ -417,19 +418,25 @@ float FeuCalculable::proc() {
     // The result should be left on the stack at the end.
     for (i=mRPN->begin(); i != mRPN->end(); i++) {
         fci = (FeuCalcItem *)*i;
-        if (0 != fci->proc(&mCalcStack)) {
+        FeuLog::i("CALCITEM: \"" + fci->toString() + "\"\n");
+        if (0 != fci->proc(&mCalcStack,contextThing)) {
             //  Something failed.
             FeuLog::e("Error in arithmetic processing.\n");
             break;
         }
     }
 
-    // There should be exactly one calcitem left on the stack.
+    // Pull top item off stack (if any) for result to return
     fci = (FeuCalcItem *)mCalcStack.pop();
-    mLastResult = fci->getValue();
-    if (!fci->ref_count()) delete fci;
+    if (fci) {
+        mLastResult = fci->getValue();
+        if (!fci->ref_count()) delete fci;
+    } else {
+        // Nothing left on stack; fake up a zero.
+        mLastResult = 0.0;
+    }
 
-    //    Make sure stack is clear
+    // Clear any items left on the stack (not necessarily an error).
     while (!mCalcStack.empty()) {
         FeuLog::w("Calculable stack not empty after proc() exit.\n");
         fci = (FeuCalcItem *)mCalcStack.pop();
@@ -439,6 +446,10 @@ float FeuCalculable::proc() {
     return mLastResult;
 }
 
-void FeuCalculable::setParentThing(FeuThing *thing) {
-    mParentThing = thing;
+int feu_op_endarg(FeuStack *s, FeuCalcOperator *op) {
+    // The "endarg" is an operator that doesn't do any operations;
+    // it just sits on the stack as a marker for an upcoming function.
+    s->push(op);
+
+    return 0;
 }

@@ -18,6 +18,7 @@ private:
     FeuCalculable *mWhat; // From the "what" attribute
 
 public:
+    float proc(FeuThing *contextThing = NULL); // Run the action handler
     virtual float getAttributeValue(std::string);
     virtual void  setAttributeValue(std::string,float);
 

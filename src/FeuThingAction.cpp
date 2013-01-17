@@ -45,3 +45,8 @@ void FeuThingAction::setAttributeValue(std::string attr, float value) {
 
     return;
 }
+
+float FeuThingAction::proc(FeuThing *contextThing) {
+    // Run our preloaded calculable
+    return mWhat->proc(contextThing);
+}

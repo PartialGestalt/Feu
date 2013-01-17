@@ -11,6 +11,7 @@
 #include <stack>
 
 class FeuCalcOperator;
+class FeuThing;
 
 class FeuCalcOperator : public FeuCalcItem {
 public:
@@ -19,7 +20,7 @@ public:
 private:
 	struct feuOpInfo *mInfo;
 public:
-	int proc(FeuStack *);
+	int proc(FeuStack *, FeuThing *contextThing = NULL);
     FeuCalcItem *copy();
     float getValue();
     void setValue(float); 

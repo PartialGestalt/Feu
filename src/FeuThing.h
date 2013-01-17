@@ -27,11 +27,19 @@
 class FeuThingAction;
 class FeuThing;
 
+
+#define FEU_THING_DEFAULT_ATTR(__name,__value) \
+do { \
+    if (!mAttributes.count(__name)) { \
+        mAttributes[__name] = __value; \
+    } \
+} while (0)
+
 struct feuMethod {
     std::string name;  // Name of the method
     bool isReturning;  // Does method return a value?
     int argCount;      // Expected # of args
-    float (func)(FeuThing *contextThing, std::list<float>args); // Implementer
+    float (*func)(FeuThing *contextThing, std::list<float>*argv); // Implementer
 };
 
 class FeuThing {
@@ -48,7 +56,7 @@ public:
     std::list<FeuThing *> mKids; // Child XML element things
     std::string mName; // My own special name
     std::map<std::string,std::list<FeuThingAction *> > mActions; // Actions, indexed by "what"
-    std::map<std::string,struct feuMethod> mMethods; // Methods supported by this FeuThing
+    std::map<std::string,struct feuMethod *> mMethods; // Methods supported by this FeuThing
 
 public:
 	void adopt(FeuThing *ft_kid);
@@ -61,6 +69,8 @@ public:
     static FeuThing *findThing(Feu *, FeuThing *context, FeuSpecifier *objectSpecifier);
     static FeuThing *findGlobalThing(Feu *, FeuSpecifier *objectSpecifier);
     void addAction(std::string, FeuThingAction *);
+    bool hasAttribute(std::string);
+    bool hasMethod(std::string);
     virtual float getAttributeValue(std::string);
     virtual void setAttributeValue(std::string,float value);
 };

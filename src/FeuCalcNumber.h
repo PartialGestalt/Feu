@@ -10,7 +10,8 @@
 #include "FeuCalcItem.h"
 #include <stack>
 
-class FeuCalcNumber;
+
+class FeuThing;
 
 class FeuCalcNumber : public FeuCalcItem {
 public:
@@ -20,7 +21,7 @@ public:
 private:
 	float mValue; // A single numeric value
 public:
-	int proc(FeuStack *);
+	int proc(FeuStack *, FeuThing *contextThing = NULL);
     FeuCalcItem *copy();
     float getValue();
     void setValue(float);

@@ -28,10 +28,9 @@ FeuCalcNumber::FeuCalcNumber(std::string initVal) {
     }
 }
 
-int FeuCalcNumber::proc(FeuStack *calcStack) {
+int FeuCalcNumber::proc(FeuStack *calcStack, FeuThing *contextThing) {
     // For processing, we simply push onto the calculator stack
     calcStack->push(this);
-    //FeuLog::i("Pushed NUM onto calcstack, depth is now: " + stringof(calcStack->size()) + "\n");
     return 0;
 }
 
