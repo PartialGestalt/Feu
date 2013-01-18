@@ -68,6 +68,7 @@ public:
 public:
     static FeuThing *findThing(Feu *, FeuThing *context, FeuSpecifier *objectSpecifier);
     static FeuThing *findGlobalThing(Feu *, FeuSpecifier *objectSpecifier);
+    static FeuThing *findGlobalThing(Feu *, std::string objectName);
     void addAction(std::string, FeuThingAction *);
     bool hasAttribute(std::string);
     bool hasMethod(std::string);

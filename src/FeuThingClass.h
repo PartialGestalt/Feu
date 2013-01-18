@@ -14,8 +14,10 @@ public:
     FeuThingClass(Feu *feu, TiXmlElement *, FeuThing *parent);
 	~FeuThingClass();
 
-private:
+public:
     FeuThing *mDefaultPath;
+    int mSeqNum;  // Seuquence ordinal.
+
 
 public:
     virtual float getAttributeValue(std::string);

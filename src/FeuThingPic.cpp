@@ -22,8 +22,8 @@ FeuThingPic::FeuThingPic(Feu *feu, FeuThingClass *parent, std::string name) : Fe
 }
 
 FeuThingPic::~FeuThingPic() {
-    // Deregister
-    //mFeu->deregisterPic(this);
+    // Deregister 
+    mFeu->unregisterPic(this);
 }
 
 float FeuThingPic::getAttributeValue(std::string attr) {
@@ -53,4 +53,13 @@ void FeuThingPic::setAttributeValue(std::string attr, float value) {
     mAttributes[attr] = stringof(value);
 
     return;
+}
+
+void FeuThingPic::runFrame() {
+    bool done = false;
+
+    // Step 1: If we're not on a path, there's nothing to do.
+    if (!mPath) return;
+
+    // Step 2: Cycle through all the steps in our current path
 }

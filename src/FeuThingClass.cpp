@@ -30,13 +30,34 @@ FeuThingClass::FeuThingClass(Feu *feu, TiXmlElement *ele, FeuThing *parent) : Fe
     for (i=0;classMethods[i].func != NULL; i++) {
         mMethods[classMethods[i].name] = &classMethods[i];
     }
+
+    mSeqNum = 0;
+
+    // Setup default path
+    mDefaultPath = FeuThing::findGlobalThing(mFeu,mAttributes["path"]);
+
 }
 
 FeuThingClass::~FeuThingClass() {
 }
 
 static float feu_class_create(FeuThing *contextThing,std::vector<float> *argv) {
+    FeuThingPic *pic;
+    FeuThingClass *c = (FeuThingClass *)contextThing;
+    std::string picName=std::string("mName") + stringof(c->mSeqNum++);
+
     FeuLog::i("In <Class>.create()\n");
+    // Step 1: Create a pic 
+    pic = new FeuThingPic(c->mFeu,c,picName);
+
+    // Step 2: Puth the pic on a path.
+    if (!c->mDefaultPath) {
+        c->mDefaultPath = FeuThing::findGlobalThing(mFeu,c->mAttributes["path"]);
+    }
+    pic->mPath = c->mDefaultPath;
+
+    // Step 3: Register with core
+    if (pic) mFeu->registerPic(pic);
 }
 
 float FeuThingClass::getAttributeValue(std::string attr) {

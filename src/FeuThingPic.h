@@ -42,13 +42,15 @@ private:
     //                  "back"    Z coordinate of backmost part of pic
 
 private:
-    Feu *mFeu;               // The ROOT of IT ALL!
     FeuThingClass *mParent;  // From whence we came...
+
+public:
     FeuThingPath *mPath;     // The path we're currently on.
     FeuPicData *mData;       // Class-specific container
 
 
 public:
+    void runFrame();
     virtual float getAttributeValue(std::string);
     virtual void  setAttributeValue(std::string,float);
 

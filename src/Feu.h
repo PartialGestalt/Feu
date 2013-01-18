@@ -19,6 +19,7 @@ class FeuThingScreen;
 class FeuThingRandom;
 class FeuThingPath;
 class FeuCalculable;
+class FeuThingPic;
 
 class Feu {
 public:
@@ -34,15 +35,15 @@ private:
     FeuThingScreen *mScreen;
     FeuThingRandom *mRandom;
     std::list<FeuCalculable *>mCalculables; // For deferred resolution
-    //std::list<FeuThingClass *>mClasses; // Classes
-    //std::list<FeuThingPath *>mPaths; // Toplevel paths
-    //std::list<FeuThingParameter *>mParameters; // Toplevel parameters
+    std::list<FeuThingPic *>mPics; // The list of live displayables
 
 public:
     // Utilities
     static FeuThing *convertElement(Feu *feu,TiXmlElement *ele, FeuThing *parent);
     FeuThing *getRoot();
     void registerCalculable(FeuCalculable *);
+    int registerPic(FeuThingPic *);
+    int unregisterPic(FeuThingPic *);
 
 public:
     // Action handlers

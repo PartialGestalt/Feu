@@ -128,6 +128,20 @@ FeuThing *FeuThing::findGlobalThing(Feu *feu, FeuSpecifier *spec) {
     return NULL;
 }
 
+FeuThing *FeuThing::findGlobalThing(Feu *feu, std::string objName) {
+    // A "global" is a direct child of the root element.
+    std::list<FeuThing *>::iterator i;
+
+    // Check for initialization
+    if (!feu->getRoot()) return NULL;
+
+    // Search list
+    for (i = feu->getRoot()->mKids.begin(); i != feu->getRoot()->mKids.end(); i++) {
+        if ((*i)->mName == objName) return (*i);
+    }
+    return NULL;
+}
+
 FeuThing *FeuThing::findThing(Feu *feu, FeuThing *context, FeuSpecifier *spec)
 {
     // For now, things are either global or 'this'.

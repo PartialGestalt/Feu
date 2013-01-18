@@ -60,6 +60,8 @@ FeuThing *Feu::convertElement(Feu *feu, TiXmlElement *ele, FeuThing *parent) {
         return new FeuThingAction(feu,ele,parent);
     } else if (eletype == "class") {
         return new FeuThingClass(feu,ele,parent);
+    } else if (eletype == "path") {
+        return new FeuThingPath(feu,ele,parent);
     } else {
         // Anything unknown gets a plain FeuThing
         return new FeuThing(feu, ele, parent );
@@ -87,3 +89,23 @@ void Feu::run() {
 void Feu::registerCalculable(FeuCalculable *feucalc) {
     mCalculables.push_back(feucalc);
 }
+
+int Feu::registerPic(FeuThingPic *pic) {
+    if (!pic) return 0;
+    mPics.push_back(pic);
+    return 1;  // Return # of elements added
+}
+
+int Feu::unregisterPic(FeuThingPic *pic) {
+    std::list<FeuThingPic *>::iterator i;
+    // Scan list for picture 
+    for (i = mPics.begin(); i != mPics.end(); i++) {
+        if (*i == pic) {
+            mPics.erase(i);
+            return 1; // Return # erased
+        }
+    }
+
+    return 0;
+}
+
