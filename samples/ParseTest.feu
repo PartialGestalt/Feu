@@ -17,13 +17,16 @@
          source="XBMC.pictures(Export)" 
          sequence="random" max-count="1"
          path="BasePath">
-    <!-- Initialize common parameters; this allows each object of -->
-    <!-- this class to get a uniqe set of random values, but have -->
-    <!-- those values constant for the lifetime of the object.    -->
-    <parameter name="xspeed" value="Random.get()"/>
-    <parameter name="yspeed" value="Random.get()"/>
-    <parameter name="zspeed" value="Random.get()"/>
+    <!-- Initialize class-specific properties; this allows each    -->
+    <!-- object of this class to get a uniqe set of random values, -->
+    <!-- but have those values constant for the lifetime of the    -->
+    <!--  object.                                                  -->
+    <property name="xspeed" value="Random.get()"/>
+    <property name="yspeed" value="Random.get()"/>
+    <property name="zspeed" value="Random.get()"/>
   </class>
-  <!-- Make one on startup -->
+  <!-- Seed randomizer when the file is loaded -->
+  <action when="onLoad" what="Random.seed(123)"/>
+  <!-- Create an object when we start up -->
   <action when="onActivate" what="DisplaySlides.create"/>
 </ruleset>

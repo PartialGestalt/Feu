@@ -86,7 +86,7 @@ int FeuCalcReference::proc(FeuStack *calcStack, FeuThing *contextThing) {
             FeuCalcOperator *op;
             int argcount = 0;
             bool done = false;
-            std::list<float> *argv = new std::list<float>();
+            std::vector<float> *argv = new std::vector<float>();
             // Yo La Tengo.  Build arg list and call handler.
             while (!calcStack->empty() && !done) {
                 item = (FeuCalcItem *)calcStack->pop();
@@ -105,7 +105,7 @@ int FeuCalcReference::proc(FeuStack *calcStack, FeuThing *contextThing) {
                     // NOTE: The push_front reorders the stack into natural
                     // arg order for the method function.
                     argcount++;
-                    argv->push_front(item->getValue());
+                    argv->insert(argv->begin(),item->getValue());
                 }
                 // Possibly delete item
                 if (!item->ref_count()) delete item;

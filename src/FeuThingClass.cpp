@@ -11,7 +11,7 @@
 /*
  * Method table
  */
-float feu_class_create(FeuThing *,std::list<float> *);
+static float feu_class_create(FeuThing *,std::vector<float> *);
 
 static feuMethod classMethods[] = {
     { "create", false, 0, feu_class_create },
@@ -35,7 +35,7 @@ FeuThingClass::FeuThingClass(Feu *feu, TiXmlElement *ele, FeuThing *parent) : Fe
 FeuThingClass::~FeuThingClass() {
 }
 
-float feu_class_create(FeuThing *contextThing,std::list<float> *argv) {
+static float feu_class_create(FeuThing *contextThing,std::vector<float> *argv) {
     FeuLog::i("In <Class>.create()\n");
 }
 

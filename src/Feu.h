@@ -16,6 +16,7 @@
 
 class FeuThing;
 class FeuThingScreen;
+class FeuThingRandom;
 class FeuThingPath;
 class FeuCalculable;
 
@@ -31,6 +32,7 @@ private:
     TiXmlDocument *mDoc;
     FeuThing *mRoot;
     FeuThingScreen *mScreen;
+    FeuThingRandom *mRandom;
     std::list<FeuCalculable *>mCalculables; // For deferred resolution
     //std::list<FeuThingClass *>mClasses; // Classes
     //std::list<FeuThingPath *>mPaths; // Toplevel paths

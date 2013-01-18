@@ -22,7 +22,9 @@
 #include "FeuThingClass.h"
 #include "FeuThingAction.h"
 #include "FeuThingScreen.h"
+#include "FeuThingRandom.h"
 #include "FeuThingStep.h"
+#include "FeuThingPic.h"
 #include "FeuThing.h"
 // Displayables
 // #include "FeuDisplayable.h"

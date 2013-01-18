@@ -27,9 +27,10 @@ Feu::Feu(std::string filename) : mRoot(NULL),mFilename(filename) {
     // Create superglobals (at the front of the list)
     mScreen = new FeuThingScreen(this,1280,1024);
     mRoot->adopt_front(mScreen);
+    mRandom = new FeuThingRandom(this,(int)time(NULL));
+    mRoot->adopt_front(mRandom);
 
     // Finally, do deferred calculable resolution and preprocessing
-
     {
         std::list<FeuCalculable *>::iterator i;
         for (i=mCalculables.begin(); i != mCalculables.end(); i++) {
@@ -39,7 +40,7 @@ Feu::Feu(std::string filename) : mRoot(NULL),mFilename(filename) {
 }
 
 Feu::~Feu() {
-    delete mRoot;
+    delete mRoot; // Also deletes all superglobals
     delete mDoc;
 }
 

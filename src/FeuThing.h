@@ -39,7 +39,7 @@ struct feuMethod {
     std::string name;  // Name of the method
     bool isReturning;  // Does method return a value?
     int argCount;      // Expected # of args
-    float (*func)(FeuThing *contextThing, std::list<float>*argv); // Implementer
+    float (*func)(FeuThing *contextThing, std::vector<float>*argv); // Implementor
 };
 
 class FeuThing {
