@@ -15,7 +15,7 @@ public:
 	~FeuThingClass();
 
 public:
-    FeuThing *mDefaultPath;
+    FeuThingPath *mDefaultPath;
     int mSeqNum;  // Seuquence ordinal.
 
 
