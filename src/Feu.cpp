@@ -40,11 +40,13 @@ Feu::Feu(std::string filename) : mRoot(NULL),mFilename(filename) {
 }
 
 Feu::~Feu() {
-    std::list<FeuThingPic *>::iterator i;
+    FeuThingPic *pic;
 
     // Delete any pics left around
-    for (i=mPics.begin(); i != mPics.end(); i++) {
-        delete *i;
+    while (!mPics.empty()) {
+        pic = mPics.front();
+        mPics.pop_front();
+        delete pic;
     }
 
     delete mRoot; // Also deletes all superglobals
