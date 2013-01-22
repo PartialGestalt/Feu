@@ -67,7 +67,7 @@ FeuCalculable::FeuCalculable(Feu *feu, std::string expression, FeuThing *parentT
 }
 
 FeuCalculable::~FeuCalculable() {
-    FeuLog::i("DESTRUCT: FeuCalculable\n");
+    //FeuLog::i("DESTRUCT: FeuCalculable\n");
     /* Delete the string tokens */
     {
         std::list<std::string *>::iterator i;

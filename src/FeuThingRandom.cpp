@@ -33,6 +33,9 @@ FeuThingRandom::FeuThingRandom(Feu *feu, int seed) : FeuThing(feu, (std::string)
     for (i=0;randomMethods[i].func != NULL; i++) {
         mMethods[randomMethods[i].name] = &randomMethods[i];
     }
+
+    // Other bits
+    mType = "internal";
     return;
 }
 

@@ -13,6 +13,7 @@ FeuThingPic::FeuThingPic(Feu *feu, FeuThingClass *parent, std::string name) : Fe
     mAlpha = 1.0;
     mParent = parent;
     mPath = NULL;  // Must be set by parent FeuThingClass.
+    mType = "displayable";
 
     // After creation, the parent FeuThingClass must:
     //   1. Append any class-specific properties (using addProperty())
