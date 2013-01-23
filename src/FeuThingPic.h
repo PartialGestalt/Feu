@@ -16,7 +16,7 @@ public:
     FeuThingPic(Feu *feu, FeuThingClass *parent, std::string name);
 	~FeuThingPic();
 
-private:
+public:
     //  Well-known properties
     //    Member        Property  Description
     //------------------------------------------

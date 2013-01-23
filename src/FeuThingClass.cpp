@@ -56,8 +56,18 @@ static float feu_class_create(FeuThing *contextThing,std::vector<float> *argv) {
     }
     pic->mPath = c->mDefaultPath;
 
+    // Step 3: Fill in other new bits
+    pic->mXpos = pic->mYpos = pic->mZpos = 0.0;
+    pic->mXrot = pic->mYrot = pic->mZrot = 0.0;
+    pic->mWidth = mFeu->mScreen->mWidth;
+    pic->mHeight = mFeu->mScreen->mHeight;
+    pic->mDepth = 0;
+    pic->mAlpha = 1.0;
+    pic->mOrdinal = c->mSeqNum++;
+
+
     // Step 3: Register with core
-    if (pic && pic->mFeu) pic->mFeu->registerPic(pic);
+    if (pic->mFeu) pic->mFeu->registerPic(pic);
 }
 
 float FeuThingClass::getAttributeValue(std::string attr) {

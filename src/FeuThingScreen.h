@@ -13,6 +13,10 @@ class FeuThingScreen : public FeuThing {
 public:
     FeuThingScreen(Feu *,int,int);
     ~FeuThingScreen();
+
+public:
+    float mWidth;
+    float mHeight;
 };
 
 

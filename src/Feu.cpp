@@ -93,7 +93,12 @@ void Feu::runEvent(std::string eventName) {
 }
 
 void Feu::run() {
+    std::list<FeuThingPic *>::iterator i;
     FeuLog::i("[FEU]: Running a single frame.\n");
+    // Loop over all live displayables, and call their run method
+    for (i=mPics.begin(); i != mPics.end(); i++) {
+        (*i)->runFrame();
+    }
 }
 
 void Feu::registerCalculable(FeuCalculable *feucalc) {

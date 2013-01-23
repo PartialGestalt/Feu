@@ -29,7 +29,22 @@ FeuThingPic::~FeuThingPic() {
 
 float FeuThingPic::getAttributeValue(std::string attr) {
     // Step 1: One of our well-known shortcut values?
-    // Use a switch on first char for 
+    // Use a switch on first char for things we keep as floats
+    switch(attr[0]) {
+        case 'x': 
+            if (attr == "x") return mXpos;
+            break;
+        case 'y':
+            if (attr == "y") return mYpos;
+            break;
+        case 'z':
+            if (attr == "z") return mYpos;
+            break;
+        case 'r':
+            if (attr == "rx") return mXrot;
+            if (attr == "ry") return mYrot;
+            if (attr == "rz") return mZrot;
+    }
     
     // Step 2: One of our class-defined parameters?
 

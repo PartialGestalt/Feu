@@ -32,10 +32,12 @@ public:
 private:
     TiXmlDocument *mDoc;
     FeuThing *mRoot;
-    FeuThingScreen *mScreen;
-    FeuThingRandom *mRandom;
     std::list<FeuCalculable *>mCalculables; // For deferred resolution
     std::list<FeuThingPic *>mPics; // The list of live displayables
+
+public:
+    FeuThingScreen *mScreen;
+    FeuThingRandom *mRandom;
 
 public:
     // Utilities
@@ -48,7 +50,7 @@ public:
 public:
     // Action handlers
     void runEvent(std::string); // Handle an event
-    void run(); // Run once
+    void run(); // Run one frame
 };
 
 

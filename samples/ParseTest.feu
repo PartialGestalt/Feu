@@ -28,5 +28,5 @@
   <!-- Seed randomizer when the file is loaded -->
   <action when="onLoad" what="Random.seed(123)"/>
   <!-- Create an object when we start up -->
-  <action when="onActivate" what="DisplaySlides.create"/>
+  <action when="onActivate" what="DisplaySlides.create()"/>
 </ruleset>

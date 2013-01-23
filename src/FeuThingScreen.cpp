@@ -12,6 +12,8 @@ FeuThingScreen::FeuThingScreen(Feu *feu, int width, int height) : FeuThing(feu, 
     mAttributes["width"] = stringof(width);
     mAttributes["height"] = stringof(height);
     // Other custom bits
+    mWidth = (float)width;
+    mHeight = (float)height;
     mType="internal";
     return;
 }
