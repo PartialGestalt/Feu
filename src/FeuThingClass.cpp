@@ -44,7 +44,7 @@ FeuThingClass::~FeuThingClass() {
 static float feu_class_create(FeuThing *contextThing,std::vector<float> *argv) {
     FeuThingPic *pic;
     FeuThingClass *c = (FeuThingClass *)contextThing;
-    std::string picName=std::string(c->mName) + stringof(c->mSeqNum++);
+    std::string picName=std::string(c->mName) + stringof(c->mSeqNum);
 
     FeuLog::i("In <Class>.create()\n");
     // Step 1: Create a pic 
@@ -63,11 +63,15 @@ static float feu_class_create(FeuThing *contextThing,std::vector<float> *argv) {
     pic->mHeight = c->mFeu->mScreen->mHeight;
     pic->mDepth = 0;
     pic->mAlpha = 1.0;
-    pic->mOrdinal = c->mSeqNum++;
+    pic->mOrdinal = c->mSeqNum;
 
 
-    // Step 3: Register with core
+    // Step 4: Register with core
     if (pic->mFeu) pic->mFeu->registerPic(pic);
+
+
+    // Step 5: Bump our ordinal sequence number
+    c->mSeqNum++;
 }
 
 float FeuThingClass::getAttributeValue(std::string attr) {

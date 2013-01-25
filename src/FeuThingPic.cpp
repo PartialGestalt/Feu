@@ -67,6 +67,12 @@ void FeuThingPic::runFrame() {
                 break;
         }
     }
+
+    // Step 3: update non-step values
+    mAge++;
+
+    // Debug: dump the pic
+    dump();
 }
 
 void FeuThingPic::doStep_move(FeuThingStep *step) {
@@ -112,4 +118,21 @@ void FeuThingPic::doStep_place(FeuThingStep *step) {
         mBack = mFront + mDepth;
     }
     return;
+}
+
+void FeuThingPic::dump() {
+    std::map<std::string,float *>::iterator ifast;
+    std::map<std::string,std::string>::iterator islow;
+
+    FeuLog::i("FeuThingPic: \"" + mName + "\"\n");
+    FeuLog::i("\tFast values:\n");
+    for (ifast = mValues.begin(); ifast != mValues.end(); ifast++) {
+        FeuLog::i("\t\t" + (*ifast).first + " = " + stringof(*((*ifast).second)) + "\n");
+    }
+
+    FeuLog::i("\tSlow values:\n");
+    for (islow = mAttributes.begin(); islow != mAttributes.end(); islow++) {
+        FeuLog::i("\t\t" + (*islow).first + " = " + (*islow).second + "\n");
+    }
+    FeuLog::i("\n\n");
 }
