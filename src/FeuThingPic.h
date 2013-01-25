@@ -34,25 +34,24 @@ public:
     float mOrdinal;  // "ordinal" Ordinal number of creation in class
 
     // Constructed properties
-    //                  "left"    X coordinate of leftmost part of pic
-    //                  "right"   X coordinate of rightmost part of pic
-    //                  "top"     Y coordinate of topmost part of pic
-    //                  "bottom"  Y coordinate of bottommost part of pic
-    //                  "front"   Z coordinate of frontmost part of pic
-    //                  "back"    Z coordinate of backmost part of pic
+    float mLeft;     //  "left"    X coordinate of leftmost part of pic
+    float mRight;    //  "right"   X coordinate of rightmost part of pic
+    float mTop;      //  "top"     Y coordinate of topmost part of pic
+    float mBottom;   //  "bottom"  Y coordinate of bottommost part of pic
+    float mFront;    //  "front"   Z coordinate of frontmost part of pic
+    float mBack;     //  "back"    Z coordinate of backmost part of pic
 
-private:
-    FeuThingClass *mParent;  // From whence we came...
-
-public:
+    FeuThingClass *mParent;  // Class from whence we came...
     FeuThingPath *mPath;     // The path we're currently on.
     FeuPicData *mData;       // Class-specific container
 
+private:  // Step types.
+    void dump();
+    void doStep_move(FeuThingStep *step);
+    void doStep_place(FeuThingStep *step);
 
 public:
     void runFrame();
-    virtual float getAttributeValue(std::string);
-    virtual void  setAttributeValue(std::string,float);
 
 };
 

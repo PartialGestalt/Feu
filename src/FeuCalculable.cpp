@@ -35,7 +35,7 @@ struct feuOpInfo feuOpInfoTable[] = {
     { FEU_OP_ID_SUB, "-", 6, true, feu_op_sub },
     { FEU_OP_ID_MULT, "*", 5, true, feu_op_mult },
     { FEU_OP_ID_DIV, "/", 5, true, feu_op_div },
-    { FEU_OP_ID_MOD, "%", 5, true, NULL },
+    { FEU_OP_ID_MOD, "%", 5, true, feu_op_modulo },
     { FEU_OP_ID_EXPONENT, "^^", 4, false, feu_op_exponent }, 
     { FEU_OP_ID_INCR, "++", 3, false, NULL },
     { FEU_OP_ID_DECR, "--", 3, false, NULL },
@@ -59,6 +59,8 @@ FeuCalculable::FeuCalculable(Feu *feu, std::string expression, FeuThing *parentT
     mOpMap = &feuOperators;
     FeuLog::i("Calculable is: \"", expression, "\"\n");
     mRPN = new FeuList();
+    mExpression = new std::string(expression);
+    mContext = NULL; // Claimed by context FeuThing
     // Convert input string into tokens
     this->tokenize(expression);
 
@@ -232,19 +234,19 @@ void FeuCalculable::rpn() {
     for (i = mTokens.begin(); i != mTokens.end() ;i++) {
         if (isdigit((**i)[0])) {
             // Numeric token, just push to output
-            mRPN->push_back(new FeuCalcNumber(**i));
+            mRPN->push_back(new FeuCalcNumber(this,**i));
             // Save our token type
             lastTokenType = FEU_TOKEN_NUM;
         } else if (isalpha((**i)[0])) {
             // If simple object attribute reference, push as a number
-            mRPN->push_back(new FeuCalcReference(mFeu,**i,NULL));
+            mRPN->push_back(new FeuCalcReference(mFeu,this,**i));
             // Have at least one object reference, so not known to be constant.
             mIsConstant = false;
             // Save our token type
             lastTokenType = FEU_TOKEN_REF;
         } else {
             // Anything else should be an operator
-            fcop = new FeuCalcOperator(**i); 
+            fcop = new FeuCalcOperator(this,**i); 
             // How we handle the operator depends on precedence rules...
             switch(fcop->getID()) {
                 // Left-grouping gets pushed onto shunt, unless we're starting
@@ -264,9 +266,9 @@ void FeuCalculable::rpn() {
                         methodRef = (FeuCalcReference *)mRPN->back();
                         mRPN->pop_back();
                         // Add bonus "End of arguments" marker
-                        mRPN->push_back(new FeuCalcOperator(FEU_OP_ID_ENDARG));
+                        mRPN->push_back(new FeuCalcOperator(this,FEU_OP_ID_ENDARG));
                         // Create/push a pseudo-operator
-                        methodOp = new FeuCalcMethod(methodRef);
+                        methodOp = new FeuCalcMethod(this,methodRef);
                         opstack.push(methodOp);
                         // Not that we have one (more) function on the stack
                         funcDepth++;
@@ -301,23 +303,26 @@ void FeuCalculable::rpn() {
                             delete fco_top;
                             
                             // If the target was a left paren, and
-                            // the next top is a function, pull it 
-                            // off and push to the output list
-                            fco_top = opstack.top();
-                            if ((tgt_id == FEU_OP_ID_LPAREN) &&
-                                (fco_top->getID() == FEU_OP_ID_FUNCTION)) {
-                                FeuCalcMethod *fcMeth;
-                                FeuCalcReference *fcRef;
+                            // there are more ops, and the next
+                            // top is a function, pull it off and 
+                            // push to the output list
+                            if (!opstack.empty()) {
+                                fco_top = opstack.top();
+                                if ((tgt_id == FEU_OP_ID_LPAREN) &&
+                                    (fco_top->getID() == FEU_OP_ID_FUNCTION)) {
+                                    FeuCalcMethod *fcMeth;
+                                    FeuCalcReference *fcRef;
 
-                                // Pull from opstack
-                                opstack.pop(); 
-                                funcDepth--;
-                                // Extract FeuCalcReference
-                                fcMeth = (FeuCalcMethod *)fco_top;
-                                fcRef = fcMeth->mRef;
-                                delete fcMeth;
-                                // Push onto output
-                                mRPN->push_back(fcRef);
+                                    // Pull from opstack
+                                    opstack.pop(); 
+                                    funcDepth--;
+                                    // Extract FeuCalcReference
+                                    fcMeth = (FeuCalcMethod *)fco_top;
+                                    fcRef = fcMeth->mRef;
+                                    delete fcMeth;
+                                    // Push onto output
+                                    mRPN->push_back(fcRef);
+                                }
                             }
                         } else {
                             // Move it to output 
@@ -406,22 +411,24 @@ float FeuCalculable::proc(FeuThing *contextThing) {
     FeuList::iterator i;
     FeuCalcItem *fci;
 
+    // For the duration of this proc(), we're "owned" by contextThing
+    mContext = contextThing;
+
     // Shortcut for constants....
     mRunCount++;
     if (mIsConstant && (mRunCount > 1)) {
         return mLastResult;
     }
 
-    // No Shortcut -- actually run it
-
     // Walk list of calc items, calling each proc() routine.  
     // The result should be left on the stack at the end.
     for (i=mRPN->begin(); i != mRPN->end(); i++) {
         fci = (FeuCalcItem *)*i;
         FeuLog::i("CALCITEM: \"" + fci->toString() + "\"\n");
-        if (0 != fci->proc(&mCalcStack,contextThing)) {
+        if (0 != fci->proc(&mCalcStack)) {
             //  Something failed.
             FeuLog::e("Error in arithmetic processing.\n");
+            throw (new FeuException("ARITH",fci->toString()));
             break;
         }
     }

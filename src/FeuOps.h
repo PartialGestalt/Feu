@@ -36,7 +36,7 @@ void feu_args_binary_put(FeuCalcItem *left, FeuCalcItem *right)
         FeuCalcItem *right, *result; \
         feu_args_unary_get(s,&right); \
         if (NULL == right) return -1; \
-        result = new FeuCalcNumber(__expr); \
+        result = new FeuCalcNumber(right->mCalculable,__expr); \
         s->push(result); \
         feu_args_unary_put(right);\
         return 0; \
@@ -49,7 +49,7 @@ void feu_args_binary_put(FeuCalcItem *left, FeuCalcItem *right)
         FeuCalcItem *left, *right, *result; \
         feu_args_binary_get(s,&left,&right); \
         if ((NULL == left) || (NULL == right)) return -1; \
-        result = new FeuCalcNumber(__expr); \
+        result = new FeuCalcNumber(right->mCalculable,__expr); \
         s->push(result); \
         feu_args_binary_put(left,right);\
         return 0; \
@@ -76,6 +76,7 @@ FEU_BINARY_OP(     exponent, (std::pow(left->getValue(),right->getValue())) );
 FEU_BINARY_OP(       orbits, ((int)left->getValue() | (int)right->getValue()) );
 FEU_BINARY_OP(      andbits, ((int)left->getValue() & (int)right->getValue()) );
 FEU_BINARY_OP(      xorbits, ((int)left->getValue() ^ (int)right->getValue()) );
+FEU_BINARY_OP(       modulo, ((int)left->getValue() % (int)right->getValue()) );
 
 FEU_UNARY_OP(       notbits, (~((int)right->getValue())) );
 FEU_UNARY_OP(    unaryminus, (-((int)right->getValue())) );

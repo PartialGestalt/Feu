@@ -149,6 +149,10 @@ private:
     FeuStack mCalcStack; // Stack for calculations
     int mRunCount;
 
+public:
+    std::string *mExpression;  // Copy of the original string
+    FeuThing *mContext;  // Active context for this calculable
+
 private:
     void tokenize(std::string); // Tokenize/syntax check
 

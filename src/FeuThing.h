@@ -52,7 +52,8 @@ public:
     Feu *mFeu;  // The main document
 	FeuThing *mParent;
     std::string mType; // object class name (element type)
-    std::map<std::string,std::string> mAttributes; // Raw attributes from XML
+    std::map<std::string,std::string> mAttributes; // Raw string attributes from XML
+    std::map<std::string,float *>mValues; // Fast-access values
     std::list<FeuThing *> mKids; // Child XML element things
     std::string mName; // My own special name
     std::map<std::string,std::list<FeuThingAction *> > mActions; // Actions, indexed by "what"

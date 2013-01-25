@@ -5,10 +5,11 @@
 #include <iostream>
 
 // Base
-#include "FeuRefCounted.h"
-#include "FeuLog.h"
+#include "FeuException.h"
 #include "FeuList.h"
 #include "FeuStack.h"
+#include "FeuLog.h"
+#include "FeuRefCounted.h"
 #include "FeuThing.h"
 // Calculables
 #include "FeuCalculable.h"

@@ -11,11 +11,22 @@
          description="This FEU ruleset doesn't do anything useful"
 >
   <path name="BasePath">
-    <step type="move" condition="Screen.width < 1000 * Random.get(19,20)" parameter="absolute" x="xspeed" y="0" z="0"/>
+    <!-- These first two steps initialize the odd images to the left of the screen -->
+    <!-- and the even images to the right.                                         -->
+    <step type="place" condition="(ordinal%2) == 0" x="Screen.right" />
+    <step type="place" condition="(ordinal%2) == 1" x="Screen.left" />
+    <!-- Initialization finished, switch to a new path -->
+    <step type="path" option="RunPath" />
+  </path>
+  <path name="RunPath">
+    <!-- Relative motion by our speed properties -->
+    <step type="move" x="xspeed" y="yspeed" />
+    <!-- Self-destruct if we're older than some random value -->
+    <step type="destroy" condition="age > Random.getrange(0,10)" />
   </path>
   <class name="DisplaySlides" 
          source="XBMC.pictures(Export)" 
-         sequence="random" max-count="1"
+         sequence="random" max-count="3"
          path="BasePath">
     <!-- Initialize class-specific properties; this allows each    -->
     <!-- object of this class to get a uniqe set of random values, -->

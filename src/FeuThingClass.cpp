@@ -59,8 +59,8 @@ static float feu_class_create(FeuThing *contextThing,std::vector<float> *argv) {
     // Step 3: Fill in other new bits
     pic->mXpos = pic->mYpos = pic->mZpos = 0.0;
     pic->mXrot = pic->mYrot = pic->mZrot = 0.0;
-    pic->mWidth = mFeu->mScreen->mWidth;
-    pic->mHeight = mFeu->mScreen->mHeight;
+    pic->mWidth = c->mFeu->mScreen->mWidth;
+    pic->mHeight = c->mFeu->mScreen->mHeight;
     pic->mDepth = 0;
     pic->mAlpha = 1.0;
     pic->mOrdinal = c->mSeqNum++;

@@ -83,7 +83,13 @@ int main(int argc, char **argv)
 
         FeuLog::i("Ruleset.1 test starting...\n");
 
-        feu = new Feu("../samples/ParseTest.feu");
+        try {
+            feu = new Feu("../samples/ParseTest.feu");
+        } catch (FeuException *fe) {
+            fe->what();
+            delete feu;
+            return -1;
+        }
 
         FeuLog::i("Ruleset.1 loaded\n");
         FeuLog::i("===============================================\n");

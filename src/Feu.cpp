@@ -34,7 +34,12 @@ Feu::Feu(std::string filename) : mRoot(NULL),mFilename(filename) {
     {
         std::list<FeuCalculable *>::iterator i;
         for (i=mCalculables.begin(); i != mCalculables.end(); i++) {
-            (*i)->rpn();
+            if (!*i) {
+                FeuLog::e("NULL calculable has been registered.\n");
+            } else {
+                FeuLog::i("Deferred calculable prep for \"" + *((*i)->mExpression) + "\"\n");
+                (*i)->rpn();
+            }
         }
     }
 }

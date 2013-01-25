@@ -83,26 +83,42 @@ void FeuThing::geneology() {
 }
 
 float FeuThing::getAttributeValue(std::string attr) {
+    float *pVal;
+    // Fast-access map?
+    //     CLEAN: TODO: For attributes that don't exist, this actually
+    //     creates a bogus entry....we're going to ignore this for now,
+    //     because it shouldn't happen across a very wide range of values.
+    //     When we're memory optimizing (later), come back to this.
+    if (NULL != (pVal = mValues[attr])) return *pVal;
+
     // Basic mode ; just use string from XML and convert
     if (mAttributes.count(attr))  {
         // Has it; convert to return 
         return floatof(mAttributes[attr]);
     }
+
     // Not found?!?!  Warn and return zero.
     FeuLog::w("FeuThing:: Attempt to access nonexistent attribute \"" + attr + "\".\n");
     return 0.0;
 }
 
 void FeuThing::setAttributeValue(std::string attr, float value) {
-    // Check for attr to update
-    if (0 == mAttributes.count(attr)) {
-        FeuLog::w("FeuThing:: Attempt to set value of nonexistent attribute \"" + attr + "\".\n");
+    float *pVal;
+    // Does this exist in the fast map?
+    if (NULL != (pVal = mValues[attr])) {
+        *pVal = value;
         return;
     }
 
-    // Got it.  Change the string backing store
-    mAttributes[attr] = stringof(value);
+    // Slow path string map?
+    if (0 != mAttributes.count(attr)) {
+        // Got it.  Change the string backing store
+        mAttributes[attr] = stringof(value);
+        return;
+    }
 
+    // Not found.  Bummer.
+    FeuLog::w("FeuThing:: Attempt to set value of nonexistent attribute \"" + mType + "." + attr + "\".\n");
     return;
 }
 
@@ -129,6 +145,8 @@ FeuThing *FeuThing::findGlobalThing(Feu *feu, FeuSpecifier *spec) {
 }
 
 FeuThing *FeuThing::findGlobalThing(Feu *feu, std::string objName) {
+    // CLEAN: TODO: Should we switch to a global map registry?
+    
     // A "global" is a direct child of the root element.
     std::list<FeuThing *>::iterator i;
 
@@ -158,7 +176,8 @@ void FeuThing::addAction(std::string when, FeuThingAction *action) {
 }
 
 bool FeuThing::hasAttribute(std::string attrName) {
-    return (mAttributes.count(attrName) != 0);
+    return (mAttributes.count(attrName) != 0 ||
+            mValues.count(attrName) != 0);
 }
 
 bool FeuThing::hasMethod(std::string methName) {
