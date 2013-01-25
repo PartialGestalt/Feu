@@ -32,7 +32,9 @@
     <!-- Initialize class-specific properties; this allows each    -->
     <!-- object of this class to get a uniqe set of random values, -->
     <!-- but have those values constant for the lifetime of the    -->
-    <!--  object.                                                  -->
+    <!--  object.  When each pic is created, it gets a custom      -->
+    <!-- property with the given name.  The "value" attribute is   -->
+    <!-- calculated only once, at create time.                     -->
     <property name="xspeed" value="Random.get()"/>
     <property name="yspeed" value="Random.get()"/>
     <property name="zspeed" value="Random.get()"/>

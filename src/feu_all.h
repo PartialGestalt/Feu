@@ -25,6 +25,7 @@
 #include "FeuThingAction.h"
 #include "FeuThingScreen.h"
 #include "FeuThingRandom.h"
+#include "FeuThingProperty.h"
 #include "FeuThingStep.h"
 #include "FeuThingPic.h"
 #include "FeuThing.h"

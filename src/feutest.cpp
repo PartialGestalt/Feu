@@ -100,10 +100,17 @@ int main(int argc, char **argv)
 
         FeuLog::i("Ruleset.2 test starting...\n");
 
+
+        try {
         feu->runEvent("onLoad");     // Run the "onLoad" handlers
         feu->runEvent("onActivate"); // Run the "onActivate" handlers
         for (i=0;i<10;i++) {
             feu->run();  // Run a single frame.
+        }
+        } catch (FeuException *fe) {
+            fe->what();
+            delete feu;
+            return -1;
         }
 
 

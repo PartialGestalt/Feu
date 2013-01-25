@@ -49,6 +49,7 @@ private:  // Step types.
     void dump();
     void doStep_move(FeuThingStep *step);
     void doStep_place(FeuThingStep *step);
+    void doStep_path(FeuThingStep *step);
 
 public:
     void runFrame();

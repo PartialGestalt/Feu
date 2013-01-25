@@ -51,7 +51,7 @@ void FeuThingPic::runFrame() {
     if (!mPath) return;
 
     // Step 2: Cycle through all the steps in our current path
-    for (kid = mPath->mKids.begin(); kid != mPath->mKids.end(); kid++) {
+    for (kid = mPath->mKids.begin(); kid != mPath->mKids.end() && !done; kid++) {
         step = (FeuThingStep *)*kid;
         // CLEAN: TODO: Validate steps on adoption so we don't have to do this....
         if (step->mType != "step") continue;
@@ -61,6 +61,7 @@ void FeuThingPic::runFrame() {
         switch (step->mStepType) {
             case FEU_STEP_TYPE_MOVE:  doStep_move(step); break;
             case FEU_STEP_TYPE_PLACE: doStep_place(step); break;
+            case FEU_STEP_TYPE_PATH:  doStep_path(step); done=true; break;
             default:
                 // This should never happen, since it's checked on creation ...
                 FeuLog::e("Unknown step type, \"" + step->mAttributes["type"] + "\".\n");
@@ -73,6 +74,22 @@ void FeuThingPic::runFrame() {
 
     // Debug: dump the pic
     dump();
+}
+
+void FeuThingPic::doStep_path(FeuThingStep *step) {
+    FeuThing *newPath;
+
+    // Step 1: lookup new path
+    newPath = findGlobalThing(mFeu,step->mAttributes["option"]);
+    if (!newPath) {
+        throw (new FeuException("Step error","Invalid path name \"" + step->mAttributes["option"] + "\"\n"));
+    } else {
+        FeuLog::i("Switched displayable \"" + mName + "\" to new path \"" + step->mAttributes["option"] + "\".\n");
+    }
+    
+    // Step 2: Set it up
+    mPath = (FeuThingPath *)newPath;
+    return;
 }
 
 void FeuThingPic::doStep_move(FeuThingStep *step) {

@@ -47,7 +47,7 @@ FeuThing::FeuThing(Feu *feu, std::string name) {
 
 FeuThing::~FeuThing() {
     std::list<FeuThing *>::iterator iter;
-    FeuLog::i("entering destructor for " + mName + "{" + mType + "}\n");
+    //FeuLog::i("entering destructor for " + mName + "{" + mType + "}\n");
     for (iter = mKids.begin(); iter != mKids.end(); iter++)
     {
         delete *iter;
@@ -173,6 +173,10 @@ FeuThing *FeuThing::findThing(Feu *feu, FeuThing *context, FeuSpecifier *spec)
 
 void FeuThing::addAction(std::string when, FeuThingAction *action) {
     mActions[when].push_back(action);
+}
+
+void FeuThing::addProperty(FeuThingProperty *prop) {
+    mProperties.push_back(prop);
 }
 
 bool FeuThing::hasAttribute(std::string attrName) {

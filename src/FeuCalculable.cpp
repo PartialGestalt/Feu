@@ -57,7 +57,7 @@ FeuCalculable::FeuCalculable(Feu *feu, std::string expression, FeuThing *parentT
     mLastResult = 0.0f; // As good a default as any...
     mRunCount = 0; // No runs yet.
     mOpMap = &feuOperators;
-    FeuLog::i("Calculable is: \"", expression, "\"\n");
+    //FeuLog::i("Calculable is: \"", expression, "\"\n");
     mRPN = new FeuList();
     mExpression = new std::string(expression);
     mContext = NULL; // Claimed by context FeuThing
@@ -212,6 +212,7 @@ void FeuCalculable::tokenize(std::string formula) {
     // Anything left over gets added....
     if (NULL != accum) mTokens.push_back(accum);
 
+#if 0
     // Dump it for fun
     {
         std::string a = "Token: \"";
@@ -221,6 +222,7 @@ void FeuCalculable::tokenize(std::string formula) {
             FeuLog::i(a + **i + b);
         }
     }
+#endif
 }
 
 void FeuCalculable::rpn() {
@@ -401,6 +403,7 @@ void FeuCalculable::rpn() {
         mRPN->push_back(opstack.top());
         opstack.pop();
     }
+#if 0
     // Dump RPN for fun
     {
         FeuList::iterator i;
@@ -408,6 +411,7 @@ void FeuCalculable::rpn() {
             FeuLog::i("RPN Token: \"",((FeuCalcItem *)(*i))->toString(),"\"\n");
         }
     }
+#endif
 }
 
 float FeuCalculable::proc(FeuThing *contextThing) {
@@ -420,7 +424,7 @@ float FeuCalculable::proc(FeuThing *contextThing) {
     // Shortcut for constants....
     mRunCount++;
     if (mIsConstant && (mRunCount > 1)) {
-        FeuLog::i("FeuCalculable: returning cached result " + stringof(mLastResult) + "\n");
+        //FeuLog::i("FeuCalculable: returning cached result " + stringof(mLastResult) + "\n");
         return mLastResult;
     }
 
@@ -428,7 +432,7 @@ float FeuCalculable::proc(FeuThing *contextThing) {
     // The result should be left on the stack at the end.
     for (i=mRPN->begin(); i != mRPN->end(); i++) {
         fci = (FeuCalcItem *)*i;
-        FeuLog::i("CALCITEM: \"" + fci->toString() + "\"\n");
+        //FeuLog::i("CALCITEM: \"" + fci->toString() + "\"\n");
         if (0 != fci->proc(&mCalcStack)) {
             //  Something failed.
             FeuLog::e("Error in arithmetic processing.\n");
@@ -454,7 +458,7 @@ float FeuCalculable::proc(FeuThing *contextThing) {
         if (!fci->ref_count()) delete fci;
     }
 
-    FeuLog::i("FeuCalculable: returning calculated result " + stringof(mLastResult) + "\n");
+    //FeuLog::i("FeuCalculable: returning calculated result " + stringof(mLastResult) + "\n");
     return mLastResult;
 }
 

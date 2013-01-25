@@ -129,11 +129,13 @@ FeuCalcItem *FeuCalcReference::copy() {
 }
 
 void FeuCalcReference::resolveReference() {
+#if 0
     if (mSpecifier.isSelf()) {
         FeuLog::i("Resolving self() reference \"" + mInitial + "\"\n");
     } else {
         FeuLog::i("Resolving global reference \"" + mInitial + "\"\n");
     }
+#endif
     // If we're not resolved yet, do it here....
     // NOTE: We must have a context pointer if we're not a global!!!
     if (!mSpecifier.isSelf() && !mThing) {
