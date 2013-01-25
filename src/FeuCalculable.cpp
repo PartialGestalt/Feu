@@ -87,6 +87,9 @@ FeuCalculable::~FeuCalculable() {
         }
         delete mRPN;
     }
+
+    // Anything else.
+    delete mExpression;
 }
 
 void FeuCalculable::tokenize(std::string formula) {
@@ -417,6 +420,7 @@ float FeuCalculable::proc(FeuThing *contextThing) {
     // Shortcut for constants....
     mRunCount++;
     if (mIsConstant && (mRunCount > 1)) {
+        FeuLog::i("FeuCalculable: returning cached result " + stringof(mLastResult) + "\n");
         return mLastResult;
     }
 
@@ -450,6 +454,7 @@ float FeuCalculable::proc(FeuThing *contextThing) {
         if (!fci->ref_count()) delete fci;
     }
 
+    FeuLog::i("FeuCalculable: returning calculated result " + stringof(mLastResult) + "\n");
     return mLastResult;
 }
 

@@ -29,6 +29,7 @@ FeuThingStep::FeuThingStep(Feu *feu, TiXmlElement *ele, FeuThing *parent) : FeuT
         //else if (stype == "destroy") mStepType = FEU_STEP_TYPE_DESTROY;
         else {
             FeuLog::e("Unknown step type, \"" + stype + "\" in step at line " + stringof(ele->Row()) + "\n");
+            mStepType = FEU_STEP_TYPE_MAX;
         }
     }
 
@@ -52,8 +53,9 @@ FeuThingStep::FeuThingStep(Feu *feu, TiXmlElement *ele, FeuThing *parent) : FeuT
 }
 
 FeuThingStep::~FeuThingStep() {
-    delete mZ;
-    delete mY;
-    delete mX;
-    delete mCondition;
+    if (hasZ) delete mZ;
+    if (hasY) delete mY;
+    if (hasX) delete mX;
+    if (hasCondition) delete mCondition;
 }
+
