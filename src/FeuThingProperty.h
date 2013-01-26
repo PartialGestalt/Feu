@@ -9,10 +9,13 @@
 
 #include "FeuThing.h"
 
+class FeuThingProperty;
+
 /* Structure used in pic addenda */
 struct feuPropInfo {
-    std::string *propName;
-    float        propVal;
+    FeuThingProperty *propHost; // From whence we came
+    std::string *propName;      // Simple name
+    float        propValue;       // Collapsed value
 };
 
 class FeuThingProperty : public FeuThing {
@@ -25,7 +28,7 @@ private:
 
 public:
     struct feuPropInfo *getPropInfo(FeuThing *contextThing);
-    void            releasePropInfo(struct feuPropInfo *);
+    static void     releasePropInfo(struct feuPropInfo *);
 
 
 };

@@ -45,6 +45,11 @@ public:
     FeuThingPath *mPath;     // The path we're currently on.
     FeuPicData *mData;       // Class-specific container
 
+private:
+    // Note that the base FeuThing object has a member called 'mProperties' that is
+    // the list of XML "property" children elements.
+    std::map<std::string, feuPropInfo *>mPropInfo; // Additional properties from ruleset
+
 private:  // Step types.
     void dump();
     void doStep_move(FeuThingStep *step);
@@ -53,6 +58,8 @@ private:  // Step types.
 
 public:
     void runFrame();
+    void addProperties(FeuThing *propThing);
+    void addProperty(feuPropInfo *propInfo);
 
 };
 

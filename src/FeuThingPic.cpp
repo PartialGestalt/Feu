@@ -153,3 +153,34 @@ void FeuThingPic::dump() {
     }
     FeuLog::i("\n\n");
 }
+
+void FeuThingPic::addProperty(struct feuPropInfo *propInfo) {
+    struct feuPropInfo *oldInfo;
+    // Step 1: release the old....
+    if (mPropInfo.count(*(propInfo->propName))) {
+        FeuLog::i("Pic \"" + mName + "\" updating property \"" + *(propInfo->propName) + "\" with initial value of " + stringof(propInfo->propValue) + "\n");
+        FeuThingProperty::releasePropInfo(mPropInfo[*(propInfo->propName)]);
+    } else {
+        FeuLog::i("Pic \"" + mName + "\" adding property \"" + *(propInfo->propName) + "\" with initial value of " + stringof(propInfo->propValue) + "\n");
+    }
+
+    // Step 2: Add the new to the list
+    mPropInfo[*(propInfo->propName)] = propInfo;
+
+    // Step 3: Register into our fast array
+    mValues[*(propInfo->propName)] = &(propInfo->propValue);
+}
+
+void FeuThingPic::addProperties(FeuThing *propThing) {
+    std::list<FeuThingProperty *>::iterator i;
+    // Inherit all properties from the given thing....
+    for (i=propThing->mProperties.begin(); i != propThing->mProperties.end(); i++) {
+        struct feuPropInfo *newInfo;
+
+        newInfo = (*i)->getPropInfo(this);
+        if (!newInfo) {
+            FeuLog::i("PropInfo load fail.\n");
+        }
+        addProperty(newInfo);
+    }
+}

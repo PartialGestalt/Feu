@@ -65,12 +65,17 @@ static float feu_class_create(FeuThing *contextThing,std::vector<float> *argv) {
     pic->mAlpha = 1.0;
     pic->mOrdinal = c->mSeqNum;
 
+    // Step 4: Add custom properties 
+    //    ...globals...
+    pic->addProperties(c->mFeu->getRoot());
+    //    .. class-specific...
+    pic->addProperties(c);
 
-    // Step 4: Register with core
+    // Step 5: Register with core
     if (pic->mFeu) pic->mFeu->registerPic(pic);
 
 
-    // Step 5: Bump our ordinal sequence number
+    // Step 6: Bump our ordinal sequence number
     c->mSeqNum++;
 }
 

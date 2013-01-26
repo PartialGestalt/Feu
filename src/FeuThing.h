@@ -58,7 +58,7 @@ public:
     std::string mName; // My own special name
     std::map<std::string,std::list<FeuThingAction *> > mActions; // Actions, indexed by "what"
     std::map<std::string,struct feuMethod *> mMethods; // Methods supported by this FeuThing
-    std::list<FeuThingProperty *>mProperties; // Additional properties from ruleset
+    std::list<FeuThingProperty *>mProperties;  // List of child property objects
 
 public:
 	void adopt(FeuThing *ft_kid);
