@@ -38,6 +38,7 @@ private:
     std::list<FeuThingProperty *>mProperties; // Global per-pic properties
 
 public:
+    std::list<FeuThingPic *>mDeadPics; // Pics that are self-destructing
     FeuThingScreen *mScreen;
     FeuThingRandom *mRandom;
 

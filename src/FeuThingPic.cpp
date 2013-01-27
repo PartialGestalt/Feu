@@ -62,6 +62,15 @@ void FeuThingPic::runFrame() {
             case FEU_STEP_TYPE_MOVE:  doStep_move(step); break;
             case FEU_STEP_TYPE_PLACE: doStep_place(step); break;
             case FEU_STEP_TYPE_PATH:  doStep_path(step); done=true; break;
+            case FEU_STEP_TYPE_DESTROY: {
+                // We can't delete here, since the main Feu is walking the list of
+                // registered pics.  Instead, put ourselves on the kill list and
+                // let them clean up when the frame is finished.
+                done = true; // So we don't continue...
+                FeuLog::i("Going full Kervorkian\n");
+                mFeu->mDeadPics.push_back(this);
+                break;
+            }
             default:
                 // This should never happen, since it's checked on creation ...
                 FeuLog::e("Unknown step type, \"" + step->mAttributes["type"] + "\".\n");

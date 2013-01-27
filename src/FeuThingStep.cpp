@@ -26,7 +26,7 @@ FeuThingStep::FeuThingStep(Feu *feu, TiXmlElement *ele, FeuThing *parent) : FeuT
         //else if (stype == "size") mStepType = FEU_STEP_TYPE_SIZE;
         //else if (stype == "scale") mStepType = FEU_STEP_TYPE_SCALE;
         else if (stype == "path") mStepType = FEU_STEP_TYPE_PATH;
-        //else if (stype == "destroy") mStepType = FEU_STEP_TYPE_DESTROY;
+        else if (stype == "destroy") mStepType = FEU_STEP_TYPE_DESTROY;
         else {
             FeuLog::e("Unknown step type, \"" + stype + "\" in step at line " + stringof(ele->Row()) + "\n");
             mStepType = FEU_STEP_TYPE_MAX;

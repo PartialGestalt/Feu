@@ -102,3 +102,8 @@ void FeuThingClass::setAttributeValue(std::string attr, float value) {
 
     return;
 }
+
+void FeuThingClass::harvest(FeuThingPic *pic) {
+    // Eventually this will be more complex, but for now just delete the pic.
+    delete pic;
+}

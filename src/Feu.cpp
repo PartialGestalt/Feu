@@ -101,10 +101,21 @@ void Feu::runEvent(std::string eventName) {
 
 void Feu::run() {
     std::list<FeuThingPic *>::iterator i;
+    FeuThingPic *dead;
     FeuLog::i("[FEU]: Running a single frame.\n");
     // Loop over all live displayables, and call their run method
     for (i=mPics.begin(); i != mPics.end(); i++) {
         (*i)->runFrame();
+    }
+    // Clean up any self-destructing elements
+    while (!mDeadPics.empty()) {
+        // Pull from kill list
+        dead = mDeadPics.front();
+        mDeadPics.pop_front();
+        // Remove from registry
+        unregisterPic(dead);
+        // Give to class to clean up
+        dead->mParent->harvest(dead);
     }
 }
 

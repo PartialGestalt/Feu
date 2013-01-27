@@ -47,7 +47,8 @@ public:
 
 private:
     // Note that the base FeuThing object has a member called 'mProperties' that is
-    // the list of XML "property" children elements.
+    // the list of XML "property" children elements; this is our container for fast-access
+    // properties at runtime.
     std::map<std::string, feuPropInfo *>mPropInfo; // Additional properties from ruleset
 
 private:  // Step types.
