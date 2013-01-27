@@ -38,8 +38,15 @@ FeuThingPic::FeuThingPic(Feu *feu, FeuThingClass *parent, std::string name) : Fe
 }
 
 FeuThingPic::~FeuThingPic() {
+    std::map<std::string, feuPropInfo *>::iterator i;
     // Deregister 
     mFeu->unregisterPic(this);
+
+    // Release our ruleset-defined properties
+    for (i=mPropInfo.begin() ; i != mPropInfo.end() ;i++) {
+        FeuThingProperty::releasePropInfo(i->second);
+    }
+
 }
 
 void FeuThingPic::runFrame() {
@@ -81,6 +88,7 @@ void FeuThingPic::runFrame() {
     // Step 3: update non-step values
     mAge++;
 
+    // Step 4: call out to class-specific renderer
     // Debug: dump the pic
     dump();
 }
