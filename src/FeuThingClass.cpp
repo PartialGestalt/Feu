@@ -103,7 +103,12 @@ void FeuThingClass::setAttributeValue(std::string attr, float value) {
     return;
 }
 
-void FeuThingClass::harvest(FeuThingPic *pic) {
+void FeuThingClass::harvestPic(FeuThingPic *pic) {
     // Eventually this will be more complex, but for now just delete the pic.
     delete pic;
+}
+
+void FeuThingClass::renderPic(FeuThingPic *pic) {
+    // Update this image's visual representation onscreen, based on its position
+    // and other properties
 }

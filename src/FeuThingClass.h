@@ -19,7 +19,8 @@ public:
     int mSeqNum;  // Seuquence ordinal.
 
 public:
-    void harvest(FeuThingPic *pic);
+    void harvestPic(FeuThingPic *pic);
+    void renderPic(FeuThingPic *pic);
     virtual float getAttributeValue(std::string);
     virtual void  setAttributeValue(std::string,float);
 };

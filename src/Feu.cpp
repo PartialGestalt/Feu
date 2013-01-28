@@ -115,7 +115,12 @@ void Feu::run() {
         // Remove from registry
         unregisterPic(dead);
         // Give to class to clean up
-        dead->mParent->harvest(dead);
+        dead->mParent->harvestPic(dead);
+    }
+
+    // Update the screen
+    for (i=mPics.begin(); i != mPics.end(); i++) {
+        (*i)->mParent->renderPic(*i);
     }
 }
 
