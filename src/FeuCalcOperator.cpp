@@ -4,7 +4,7 @@
 
 #include "feu_all.h"
 
-FeuCalcOperator::FeuCalcOperator(std::string initVal) {
+FeuCalcOperator::FeuCalcOperator(FeuCalculable *calc, std::string initVal) : FeuCalcItem(calc) {
     std::map<std::string,int>::iterator i = feuOperators.find(initVal);
     if (i == feuOperators.end()) {
         // CLEAN: TODO: Throw an exception here.
@@ -14,19 +14,19 @@ FeuCalcOperator::FeuCalcOperator(std::string initVal) {
     }
 }
 
-FeuCalcOperator::FeuCalcOperator(int idVal) {
+FeuCalcOperator::FeuCalcOperator(FeuCalculable *calc, int idVal) : FeuCalcItem(calc) {
     // Constructor for creating by ID
     mInfo = &feuOpInfoTable[idVal];
 }
 
-int FeuCalcOperator::proc(FeuStack *calcStack, FeuThing *contextThing) {
+int FeuCalcOperator::proc(FeuStack *calcStack) {
     if (NULL != mInfo->func) return (mInfo->func)(calcStack,this);
     else FeuLog::w("No function to implement operator \"",mInfo->op,"\"\n");
     return -1; // No handler is a problem.
 }
 
 FeuCalcItem *FeuCalcOperator::copy() {
-    FeuCalcOperator *fco = new FeuCalcOperator(mInfo->op);
+    FeuCalcOperator *fco = new FeuCalcOperator(mCalculable, mInfo->op);
     return (FeuCalcItem *)fco;
 }
 

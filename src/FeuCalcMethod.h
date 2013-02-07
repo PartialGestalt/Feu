@@ -19,7 +19,7 @@ class FeuCalcOperator;
 
 class FeuCalcMethod : public FeuCalcOperator {
 public:
-    FeuCalcMethod(FeuCalcReference *ref);
+    FeuCalcMethod(FeuCalculable *calc, FeuCalcReference *ref);
 
 public:
     FeuCalcReference *mRef;

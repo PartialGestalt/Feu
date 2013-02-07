@@ -18,8 +18,9 @@ public:
     FeuThingPath *mDefaultPath;
     int mSeqNum;  // Seuquence ordinal.
 
-
 public:
+    void harvestPic(FeuThingPic *pic);
+    void renderPic(FeuThingPic *pic);
     virtual float getAttributeValue(std::string);
     virtual void  setAttributeValue(std::string,float);
 };

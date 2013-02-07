@@ -18,6 +18,7 @@ public:
     std::vector<std::string> mVector;
     std::string mObject;
     std::string mAttribute;
+    bool mIsSelf;
 
 private:
     static void splitComponents(std::string, std::vector<std::string> *v, char delim);

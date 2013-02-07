@@ -20,6 +20,7 @@ class FeuThingRandom;
 class FeuThingPath;
 class FeuCalculable;
 class FeuThingPic;
+class FeuThingProperty;
 
 class Feu {
 public:
@@ -34,8 +35,10 @@ private:
     FeuThing *mRoot;
     std::list<FeuCalculable *>mCalculables; // For deferred resolution
     std::list<FeuThingPic *>mPics; // The list of live displayables
+    std::list<FeuThingProperty *>mProperties; // Global per-pic properties
 
 public:
+    std::list<FeuThingPic *>mDeadPics; // Pics that are self-destructing
     FeuThingScreen *mScreen;
     FeuThingRandom *mRandom;
 

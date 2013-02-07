@@ -1,7 +1,8 @@
 #include "feu_all.h"
 
-FeuCalcItem::FeuCalcItem() {
+FeuCalcItem::FeuCalcItem(FeuCalculable *calc) {
     //FeuLog::i("CONSTRUCT: FeuCalcItem()\n");
+    mCalculable = calc;
 }
 
 FeuCalcItem::~FeuCalcItem() {

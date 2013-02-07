@@ -14,6 +14,8 @@
 
 #include <list>
 
+class FeuRefCounted;
+
 class FeuList : public std::list<FeuRefCounted *> {
 public:
 #if 0

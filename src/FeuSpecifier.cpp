@@ -9,6 +9,7 @@ FeuSpecifier::FeuSpecifier(std::string objectSpec) {
     mVector = std::vector<std::string>();
     // Special case handling for 'this' references
     if (dotpos == std::string::npos) {
+        mIsSelf = true;
         mObject = std::string("this");
         mAttribute = objectSpec;
         mVector.push_back(mObject);
@@ -17,6 +18,7 @@ FeuSpecifier::FeuSpecifier(std::string objectSpec) {
     }
 
     // Normal handling, at least one object component
+    mIsSelf = false;
     dotpos = objectSpec.find_last_of('.');
     mObject = objectSpec.substr(0,dotpos);
     splitComponents(objectSpec,&mVector,'.');    
@@ -39,5 +41,5 @@ void FeuSpecifier::splitComponents(std::string s,std::vector<std::string> *v, ch
 }
 
 bool FeuSpecifier::isSelf() {
-    return (mObject == "this");
+    return mIsSelf;
 }

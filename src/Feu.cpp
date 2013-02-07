@@ -34,7 +34,12 @@ Feu::Feu(std::string filename) : mRoot(NULL),mFilename(filename) {
     {
         std::list<FeuCalculable *>::iterator i;
         for (i=mCalculables.begin(); i != mCalculables.end(); i++) {
-            (*i)->rpn();
+            if (!*i) {
+                FeuLog::e("NULL calculable has been registered.\n");
+            } else {
+                //FeuLog::i("Deferred calculable prep for \"" + *((*i)->mExpression) + "\"\n");
+                (*i)->rpn();
+            }
         }
     }
 }
@@ -62,7 +67,7 @@ FeuThing *Feu::getRoot() {
 FeuThing *Feu::convertElement(Feu *feu, TiXmlElement *ele, FeuThing *parent) {
     std::string eletype = ele->ValueStr();
     // Try to create a FeuThing from the XML element
-    FeuLog::i("convertElement of type: \"" + eletype + "\"\n");
+    //FeuLog::i("convertElement of type: \"" + eletype + "\"\n");
     // Choose class from name
     if (eletype == "step") {
         return new FeuThingStep(feu, ele, parent);
@@ -72,6 +77,8 @@ FeuThing *Feu::convertElement(Feu *feu, TiXmlElement *ele, FeuThing *parent) {
         return new FeuThingClass(feu,ele,parent);
     } else if (eletype == "path") {
         return new FeuThingPath(feu,ele,parent);
+    } else if (eletype == "property") {
+        return new FeuThingProperty(feu,ele,parent);
     } else {
         // Anything unknown gets a plain FeuThing
         return new FeuThing(feu, ele, parent );
@@ -94,10 +101,26 @@ void Feu::runEvent(std::string eventName) {
 
 void Feu::run() {
     std::list<FeuThingPic *>::iterator i;
+    FeuThingPic *dead;
     FeuLog::i("[FEU]: Running a single frame.\n");
     // Loop over all live displayables, and call their run method
     for (i=mPics.begin(); i != mPics.end(); i++) {
         (*i)->runFrame();
+    }
+    // Clean up any self-destructing elements
+    while (!mDeadPics.empty()) {
+        // Pull from kill list
+        dead = mDeadPics.front();
+        mDeadPics.pop_front();
+        // Remove from registry
+        unregisterPic(dead);
+        // Give to class to clean up
+        dead->mParent->harvestPic(dead);
+    }
+
+    // Update the screen
+    for (i=mPics.begin(); i != mPics.end(); i++) {
+        (*i)->mParent->renderPic(*i);
     }
 }
 

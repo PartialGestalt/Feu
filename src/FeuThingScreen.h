@@ -17,6 +17,14 @@ public:
 public:
     float mWidth;
     float mHeight;
+    float mLeft;
+    float mRight;
+    float mTop;
+    float mBottom;
+
+public:
+    void setWidth(int width);
+    void setHeight(int height);
 };
 
 

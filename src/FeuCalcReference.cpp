@@ -5,13 +5,12 @@
 #include "feu_all.h"
 #include <typeinfo>
 
-FeuCalcReference::FeuCalcReference(Feu *feu, std::string initVal, FeuThing *contextThing) : mSpecifier(initVal) {
+FeuCalcReference::FeuCalcReference(Feu *feu, FeuCalculable *calc, std::string initVal) : mSpecifier(initVal), FeuCalcItem(calc) {
     mFeu = feu;
     // "contextThing", if given, is the object we will belong to, which defines 
     // the scope and context.  "mThing" is the object whose value we will use during
     // calculations, and must be resolved before use.
     mInitial = initVal;
-    mContext = contextThing;
     mAttribute = mSpecifier.mAttribute;
     mIsMethod = false; // Will get updated later if true...
     mThing = NULL;
@@ -22,17 +21,13 @@ FeuCalcReference::FeuCalcReference(Feu *feu, std::string initVal, FeuThing *cont
     return;
 }
 
-int FeuCalcReference::proc(FeuStack *calcStack, FeuThing *contextThing) {
+int FeuCalcReference::proc(FeuStack *calcStack) {
     FeuThing *procThing = NULL;
     struct feuMethod *meth;
     float retVal;
 
-    // NOTE: We must have either resolved the reference or be given
-    // a contextThing for this to work.  If both are defined, the one
-    // we choose depends on the reference type; if global, the predetermined
-    // thing wins.  If a simple attribute, the context wins.
-    if (contextThing && (!mThing || mSpecifier.isSelf()))  {
-        procThing = contextThing;
+    if (mSpecifier.isSelf()) {
+        procThing = mCalculable->mContext;
     } else {
         procThing = mThing;
     }
@@ -61,7 +56,7 @@ int FeuCalcReference::proc(FeuStack *calcStack, FeuThing *contextThing) {
             // Arg check passed, call func
             retVal = (meth->func)(procThing,NULL);
             // If we have a return value, push it onto the stack
-            if (meth->isReturning) calcStack->push(new FeuCalcNumber(retVal));
+            if (meth->isReturning) calcStack->push(new FeuCalcNumber(mCalculable, retVal));
             return 0;
         } else {
             // Case 1.3: Attribute or method not found...
@@ -121,7 +116,7 @@ int FeuCalcReference::proc(FeuStack *calcStack, FeuThing *contextThing) {
             // Arg check passed, call func
             retVal = (meth->func)(procThing,argv);
             // If we have a return value, push it onto the stack
-            if (meth->isReturning) calcStack->push(new FeuCalcNumber(retVal));
+            if (meth->isReturning) calcStack->push(new FeuCalcNumber(mCalculable, retVal));
             // Destroy arg list
             delete argv;
         }
@@ -130,24 +125,22 @@ int FeuCalcReference::proc(FeuStack *calcStack, FeuThing *contextThing) {
 }
 
 FeuCalcItem *FeuCalcReference::copy() {
-    return new FeuCalcReference(mFeu,mInitial,NULL);
-}
-
-void FeuCalcReference::setContext(FeuThing *context) {
-    mContext = context;
+    return new FeuCalcReference(mFeu,mCalculable,mInitial);
 }
 
 void FeuCalcReference::resolveReference() {
+#if 0
+    if (mSpecifier.isSelf()) {
+        FeuLog::i("Resolving self() reference \"" + mInitial + "\"\n");
+    } else {
+        FeuLog::i("Resolving global reference \"" + mInitial + "\"\n");
+    }
+#endif
     // If we're not resolved yet, do it here....
     // NOTE: We must have a context pointer if we're not a global!!!
-    if (!mThing) {
-        if (mContext) { 
-            // We're running in context; do full lookup
-            mThing = FeuThing::findThing(mFeu,mContext,&mSpecifier);
-        } else {
-            // No context set! If global fails, this is an error.
-            mThing = FeuThing::findGlobalThing(mFeu,&mSpecifier);
-        }
+    if (!mSpecifier.isSelf() && !mThing) {
+        // No context set! If global fails, this is an error.
+        mThing = FeuThing::findGlobalThing(mFeu,&mSpecifier);
     }
     // If this is a self-reference (i.e. just attribute) we can defer
     // until runtime processing; otherwise, we've got an error.
@@ -157,31 +150,50 @@ void FeuCalcReference::resolveReference() {
 }
 
 float FeuCalcReference::getValue() {
+    FeuThing *procThing;
     // TODO: CLEAN: For constants, use cached value?
-    // Try to resolve it....
-    if (!mThing) {
-        resolveReference();
-        // If we didn't get it, throw an error.
+
+    // Choose the reference object
+    if (!mSpecifier.isSelf()) {
+        // Try to resolve it....
         if (!mThing) {
-            FeuLog::e("Unknown object reference \"" + mInitial + "\", perhaps missing context?\n");
+            resolveReference();
         }
+        procThing = mThing;
+    } else {
+        procThing = mCalculable->mContext;
+    }
+    // If we don't have a reference object, throw an error.
+    if (!procThing) {
+        FeuLog::e("Unknown object reference \"" + mInitial + "\", perhaps missing context?\n");
+        // TODO: CLEAN: Throw an exception here....
+        return mValue; 
     }
     // Now pull value
-    if (mThing) return mThing->getAttributeValue(mAttribute);
-    else return mValue;
+    return procThing->getAttributeValue(mAttribute);
 }
 
 void FeuCalcReference::setValue(float newVal) {
-    // Try to resolve it....
-    if (!mThing) {
-        resolveReference();
-        // If we didn't get it, throw an error.
+    FeuThing *procThing;
+    // TODO: CLEAN: For constants, use cached value?
+
+    // Choose the reference object
+    if (!mSpecifier.isSelf()) {
+        // Try to resolve it....
         if (!mThing) {
-            FeuLog::e("Unknown object reference \"" + mInitial + "\", perhaps missing context?\n");
+            resolveReference();
         }
+        procThing = mThing;
+    } else {
+        procThing = mCalculable->mContext;
+    }
+    // If we don't have a reference object, throw an error.
+    if (!procThing) {
+        FeuLog::e("Unknown object reference \"" + mInitial + "\", perhaps missing context?\n");
+        // TODO: CLEAN: Throw an exception here....
     }
     // Set it
-    if (mThing) mThing->setAttributeValue(mAttribute,newVal);
+    if (procThing) procThing->setAttributeValue(mAttribute,newVal);
     mValue = newVal;
 }
 

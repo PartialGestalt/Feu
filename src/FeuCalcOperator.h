@@ -15,12 +15,12 @@ class FeuThing;
 
 class FeuCalcOperator : public FeuCalcItem {
 public:
-    FeuCalcOperator(std::string);
-    FeuCalcOperator(int);
+    FeuCalcOperator(FeuCalculable *, std::string);
+    FeuCalcOperator(FeuCalculable *, int);
 private:
 	struct feuOpInfo *mInfo;
 public:
-	int proc(FeuStack *, FeuThing *contextThing = NULL);
+	int proc(FeuStack *);
     FeuCalcItem *copy();
     float getValue();
     void setValue(float); 

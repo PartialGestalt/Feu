@@ -44,7 +44,7 @@ FeuThingClass::~FeuThingClass() {
 static float feu_class_create(FeuThing *contextThing,std::vector<float> *argv) {
     FeuThingPic *pic;
     FeuThingClass *c = (FeuThingClass *)contextThing;
-    std::string picName=std::string(c->mName) + stringof(c->mSeqNum++);
+    std::string picName=std::string(c->mName) + "[" + stringof(c->mSeqNum) + "]";
 
     FeuLog::i("In <Class>.create()\n");
     // Step 1: Create a pic 
@@ -59,15 +59,24 @@ static float feu_class_create(FeuThing *contextThing,std::vector<float> *argv) {
     // Step 3: Fill in other new bits
     pic->mXpos = pic->mYpos = pic->mZpos = 0.0;
     pic->mXrot = pic->mYrot = pic->mZrot = 0.0;
-    pic->mWidth = mFeu->mScreen->mWidth;
-    pic->mHeight = mFeu->mScreen->mHeight;
+    pic->mWidth = c->mFeu->mScreen->mWidth;
+    pic->mHeight = c->mFeu->mScreen->mHeight;
     pic->mDepth = 0;
     pic->mAlpha = 1.0;
-    pic->mOrdinal = c->mSeqNum++;
+    pic->mOrdinal = c->mSeqNum;
 
+    // Step 4: Add custom properties 
+    //    ...globals...
+    pic->addProperties(c->mFeu->getRoot());
+    //    .. class-specific...
+    pic->addProperties(c);
 
-    // Step 3: Register with core
+    // Step 5: Register with core
     if (pic->mFeu) pic->mFeu->registerPic(pic);
+
+
+    // Step 6: Bump our ordinal sequence number
+    c->mSeqNum++;
 }
 
 float FeuThingClass::getAttributeValue(std::string attr) {
@@ -92,4 +101,14 @@ void FeuThingClass::setAttributeValue(std::string attr, float value) {
     mAttributes[attr] = stringof(value);
 
     return;
+}
+
+void FeuThingClass::harvestPic(FeuThingPic *pic) {
+    // Eventually this will be more complex, but for now just delete the pic.
+    delete pic;
+}
+
+void FeuThingClass::renderPic(FeuThingPic *pic) {
+    // Update this image's visual representation onscreen, based on its position
+    // and other properties
 }

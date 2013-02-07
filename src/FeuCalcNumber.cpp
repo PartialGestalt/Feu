@@ -4,15 +4,15 @@
 
 #include "feu_all.h"
 
-FeuCalcNumber::FeuCalcNumber(float initVal) {
+FeuCalcNumber::FeuCalcNumber(FeuCalculable *calc, float initVal) : FeuCalcItem(calc)  {
     mValue = initVal;
 }
 
-FeuCalcNumber::FeuCalcNumber(int initVal) {
+FeuCalcNumber::FeuCalcNumber(FeuCalculable *calc, int initVal) : FeuCalcItem(calc)  {
     mValue = (float)initVal;
 }
 
-FeuCalcNumber::FeuCalcNumber(std::string initVal) {
+FeuCalcNumber::FeuCalcNumber(FeuCalculable *calc, std::string initVal) : FeuCalcItem(calc)  {
     if (std::string::npos != initVal.find_first_of('.')) {
         // If the string contains a decimal point, it must be decimal float...
         //FeuLog::i("FeuCalcNumber(): Forced decimal for \""+initVal+"\".\n");
@@ -28,14 +28,14 @@ FeuCalcNumber::FeuCalcNumber(std::string initVal) {
     }
 }
 
-int FeuCalcNumber::proc(FeuStack *calcStack, FeuThing *contextThing) {
+int FeuCalcNumber::proc(FeuStack *calcStack) {
     // For processing, we simply push onto the calculator stack
     calcStack->push(this);
     return 0;
 }
 
 FeuCalcItem *FeuCalcNumber::copy() {
-    FeuCalcNumber *fcn = new FeuCalcNumber(mValue);
+    FeuCalcNumber *fcn = new FeuCalcNumber(mCalculable, mValue);
     return (FeuCalcItem *)fcn;
 }
 
