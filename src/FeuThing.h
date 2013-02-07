@@ -1,9 +1,6 @@
 /*
  * FeuThing.h
  *
- *  Created on: Dec 22, 2012
- *      Author: akephart
- *
  * FeuThing is a base class for most of our other objects, and
  * is a codewise representation of an XML element.  It can have
  * generic attributes in the attributes map, and can have

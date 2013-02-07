@@ -1,8 +1,7 @@
 /*
  * FeuLog.h
  *
- *  Created on: Dec 22, 2012
- *      Author: akephart
+ * FeuLog is a catchall class for logging and related utilities
  */
 
 #ifndef _FEU_LOG_H_

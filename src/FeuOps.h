@@ -1,3 +1,7 @@
+/*
+ * FeuOps.h -- define available FeuCalculable operators
+ */
+
 #ifndef _FEU_OPS_H_
 #define _FEU_OPS_H_
 
