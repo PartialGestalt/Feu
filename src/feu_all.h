@@ -10,6 +10,7 @@
 #include "FeuStack.h"
 #include "FeuLog.h"
 #include "FeuRefCounted.h"
+#include "FeuTimer.h"
 #include "FeuThing.h"
 // Calculables
 #include "FeuCalculable.h"

@@ -1,11 +1,14 @@
 /*
  * FeuTimer.h
  *
- * FeuTimer is a class for timing information; 
+ * FeuTimer is a class for timing information, primarily for
+ * interval calculation.
  */
 
 #ifndef _FEU_TIMER_H_
 #define _FEU_TIMER_H_
+
+#include <sys/time.h>
 
 class FeuTimer {
 public:
@@ -13,7 +16,8 @@ public:
 	virtual ~FeuTimer();
 
 public:
-    static float now(); // Get current time
+    static double now(); // Get current time, in sec
+    static double since(float when); // Get interval, in sec
 };
 
 #endif /* _FEU_TIMER_H_ */
