@@ -2,31 +2,11 @@
 #define __FEU_ADDON_C__
 
 #include <stdio.h>
+#include "xbmc_scr_dll.h"
 
 /* Force C linkage for the whole dang file */
 
 extern "C" {
-
-/** ***************************************************************************
- * @brief Register our screensaver
- *
- * @details This function initializes the struct from core to register our
- * entry points.
- *
- * @param pScr -- Pointer to container into which we'll register
- *
- * @returns Nothing
- *
- * @remarks
- * */
-
-void get_addon(struct ScreenSaver *pScr)
-{
-    /* These are the only required entrypoints */
-    pScr->Start = ADDON_Start;
-    pScr->Render = ADDON_Render;
-    pScr->GetInfo = ADDON_GetInfo;
-}
 
 /** ***************************************************************************
  * @brief Instantiation
@@ -60,7 +40,7 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
  *
  * @remarks
  * */
-void ADDON_Start()
+void Start()
 {
     printf("\n[ADDON_Start]");fflush(stdout);
     return;
@@ -75,7 +55,7 @@ void ADDON_Start()
  *
  * @remarks
  * */
-void ADDON_Render()
+void Render()
 {
     return;
 }
@@ -105,7 +85,7 @@ void ADDON_Destroy()
     return;
 }
 
-void ADDON_GetInfo(SCR_INFO *info)
+void GetInfo(SCR_INFO *info)
 {
     printf("[GetInfo]");fflush(stdout);
 }

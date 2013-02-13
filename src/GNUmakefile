@@ -29,7 +29,7 @@ HDRS= \
 	feu.h \
 	$(CLASS_HDRS)
 
-LIB=FEU.xbs
+LIB=libFEU.so
 
 LIB_SRCS=$(CLASS_SRCS)
 
