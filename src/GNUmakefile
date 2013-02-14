@@ -21,7 +21,7 @@ include $(BUILD_ROOT)/common.mk
 
 firstrule: all
 
-CLASS_SRCS=$(wildcard Feu[A-Z]*.cpp) Feu.cpp
+CLASS_SRCS=$(filter-out $(wildcard FeuXBMC*.cpp), $(wildcard Feu[A-Z]*.cpp)) Feu.cpp
 
 CLASS_HDRS=$(CLASS_SRCS:.cpp=.h)
 
@@ -63,6 +63,9 @@ CLOBBERFILES=$(CLEANFILES) cscope.out cscope.files
 .PHONY: all clean clobber fresh install pkg cscope
 
 all: $(LIB) $(TEST) $(CALC)
+
+showcfg::
+	echo SOURCES are "$(CLASS_SRCS)"
 
 test: $(TEST)
 	$(VALGRINDER) ./$(TEST)
