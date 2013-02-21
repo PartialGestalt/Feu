@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<settings>
+  <!-- GROUP 1: General settings -->
+  <category label="00000">
+    <!-- Placeholder -->
+    <setting label="30001" type="bool" value="true" id="feu.placeholder" default="true"/>
+  </category>
+</settings>

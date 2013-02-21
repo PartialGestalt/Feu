@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addon
+  id="_PACKAGE_"
+  version="_VERSION_"
+  name="Feu"
+  provider-name="PartialGestalt">
+  <requires>
+    <c-pluff version="0.1"/>
+  </requires>
+  <extension point="xbmc.ui.screensaver" library_linux="FeuSS.xbs"/>
+  <extension point="xbmc.addon.metadata">
+    <platform>linux</platform>
+    <summary lang="en">Feu scripted flying pictures</summary>
+    <description lang="en">This addon displays and moves images as specified in preset scripts.</description>
+  </extension>
+</addon>
+

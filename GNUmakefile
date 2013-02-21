@@ -17,7 +17,7 @@
 BUILD_ROOT=.
 
 firstrule: all
-SUBDIRS=src
+SUBDIRS=src ss #vis
 
 include $(BUILD_ROOT)/common.mk
 
