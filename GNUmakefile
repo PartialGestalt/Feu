@@ -28,5 +28,8 @@ clobber::
 	$(DESCEND)
 
 
+pkg: all
+	$(DESCEND)
+
 .DEFAULT:
 	$(DESCEND)

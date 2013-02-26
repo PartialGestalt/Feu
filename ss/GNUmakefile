@@ -10,14 +10,14 @@ ADDONXML_SRCS=$(ADDONXML).in
 PACKAGE=screensaver.pg.feu
 VERSION=0.9.0
 
-PKGROOT=pkg
+PKGROOT=../pkg
 PKGDIR=$(PKGROOT)/$(PACKAGE)
 FULLPKGDIR=$(realpath $(PKGROOT))
 FULLPKGNAME=$(PACKAGE).$(VERSION).zip
 FULLPKG=$(FULLPKGDIR)/$(FULLPKGNAME)
 
-PKGDEPS=$(LIB) $(ADDONXML) icon.png resources/settings.xml resources/language/English/strings.xml
-PKGBITS=$(LIB) $(ADDONXML) icon.png resources
+PKGDEPS=$(LIB) $(ADDONXML) icon.png resources/settings.xml resources/language/English/strings.xml $(wildcard ../presets/*.feu)
+PKGBITS=$(LIB) $(ADDONXML) icon.png resources ../presets
 
 
 CLEANFILES=$(PKGROOT) $(ADDONXML)
@@ -29,7 +29,6 @@ CLOBBERFILES=$(PKGROOT) $(ADDONXML)
 install: pkg
 	$(SAY_IT) "[ INSTALL ]" $(PACKAGE).$(VERSION).zip ' --> ' XBMC
 	$(DO_IT)-(cd ~/.xbmc/addons && unzip -q -o $(FULLPKG))
-#	cp $(LIB) ~/.xbmc/addons/screensaver.pg.xs-bridge
 
 pkg-checkdir:
 	@-if [ ! -d $(PKGDIR) ] ; then mkdir -p $(PKGDIR) ; fi
@@ -40,7 +39,7 @@ pkg-prep: $(PKGDEPS) pkg-checkdir
 
 pkg: pkg-prep
 	$(SAY_IT) "[   ZIP   ]" $(FULLPKGNAME)
-	$(DO_IT)(cd pkg && zip -r -l -q $(FULLPKGNAME) $(PACKAGE))
+	$(DO_IT)(cd $(PKGROOT) && zip -r -l -q $(FULLPKGNAME) $(PACKAGE))
 
 $(ADDONXML): $(ADDONXML_SRCS) GNUmakefile
 	$(SAY_IT) "[ XMLPREP ]" $@
