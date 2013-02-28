@@ -84,7 +84,7 @@ int main(int argc, char **argv)
         FeuLog::i("Ruleset.1 test starting...\n");
 
         try {
-            feu = new Feu("../samples/ParseTest.feu");
+            feu = new Feu("../presets/ParseTest.feu");
         } catch (FeuException *fe) {
             fe->what();
             delete feu;

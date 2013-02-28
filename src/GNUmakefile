@@ -21,7 +21,7 @@ include $(BUILD_ROOT)/common.mk
 
 firstrule: all
 
-CLASS_SRCS=$(wildcard Feu[A-Z]*.cpp) Feu.cpp
+CLASS_SRCS=$(filter-out $(wildcard FeuXBMC*.cpp), $(wildcard Feu[A-Z]*.cpp)) Feu.cpp
 
 CLASS_HDRS=$(CLASS_SRCS:.cpp=.h)
 
@@ -29,7 +29,7 @@ HDRS= \
 	feu.h \
 	$(CLASS_HDRS)
 
-LIB=FEU.xbs
+LIB=libFEU.so
 
 LIB_SRCS=$(CLASS_SRCS)
 
@@ -38,6 +38,16 @@ LIB_TEMPS=$(LIB_SRCS:.cpp=.ii) $(LIB_SRCS:.cpp=.s)
 LIB_OBJS=$(LIB_SRCS:.cpp=.o)
 
 LIB_LDFLAGS=-ltinyxml
+
+XBMC_SS_LIB=FeuSS.xbs
+
+XBMC_SS_SRCS=FeuXBMCScreenSaver.cpp
+
+XBMC_SS_TEMPS=$(XBMC_SS_SRCS:.cpp=.ii) $(XBMC_SS_SRCS:.cpp=.s)
+
+XBMC_SS_OBJS=$(XBMC_SS_SRCS:.cpp=.o)
+
+XBMC_SS_LDFLAGS=-L . -lFEU
 
 TEST=feutest
 
@@ -57,18 +67,24 @@ PACKAGE=screensaver.pg.feu
 VERSION=0.8.1
 PKGROOT=pkg
 
-CLEANFILES=$(LIB) $(LIB_OBJS) $(TEST) $(TEST_OBJS) $(CALC) $(CALC_OBJS) $(PKGROOT) $(LIB_TEMPS) $(TEST_TEMPS) $(CALC_TEMPS)
+CLEANFILES=$(LIB) $(XBMC_SS_LIB) $(LIB_OBJS) $(XBMC_SS_OBJS) $(TEST) $(TEST_OBJS) $(CALC) $(CALC_OBJS) $(PKGROOT) $(LIB_TEMPS) $(TEST_TEMPS) $(CALC_TEMPS) $(XBMC_SS_TEMPS)
 CLOBBERFILES=$(CLEANFILES) cscope.out cscope.files
 
 .PHONY: all clean clobber fresh install pkg cscope
 
-all: $(LIB) $(TEST) $(CALC)
+all: $(LIB) $(XBMC_SS_LIB) $(TEST) $(CALC)
+
+showcfg::
+	echo SOURCES are "$(CLASS_SRCS)"
 
 test: $(TEST)
 	$(VALGRINDER) ./$(TEST)
 
 $(LIB): $(LIB_OBJS)
 	$(SHAREDLIB) $(LIB_LDFLAGS)
+
+$(XBMC_SS_LIB): $(LIB) $(XBMC_SS_OBJS)
+	$(SHAREDLIB) $(XBMC_SS_LDFLAGS)
 
 $(TEST): $(TEST_OBJS) $(LIB)
 	$(LINKPROG)

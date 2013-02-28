@@ -1,0 +1,8 @@
+README:
+------
+
+This directory contains the XBMC include files published by the XBMC team.
+These files are generally not changed without an XBMC version update.
+
+The only local changes we'll make are to generate a little bit of
+C-friendliness in a C++ world.

@@ -17,7 +17,7 @@
 BUILD_ROOT=.
 
 firstrule: all
-SUBDIRS=src
+SUBDIRS=src ss #vis
 
 include $(BUILD_ROOT)/common.mk
 
@@ -27,6 +27,9 @@ clean::
 clobber:: 
 	$(DESCEND)
 
+
+pkg: all
+	$(DESCEND)
 
 .DEFAULT:
 	$(DESCEND)

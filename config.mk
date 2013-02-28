@@ -51,8 +51,11 @@ CRELEASEFLAGS=$(CPPRELEASEFLAGS)
 CPPMACHFLAGS=-fPIC
 CMACHFLAGS=$(CPPMACHFLAGS)
 
+# Extra includes
+CPPINCFLAGS+=-I$(BUILD_ROOT)/xbmc
+
 # Combine as appropriate
-CPPFLAGS+=$(CPPMACHFLAGS) $(CPP$(BUILD_CONFIG)FLAGS)
+CPPFLAGS+=$(CPPMACHFLAGS) $(CPP$(BUILD_CONFIG)FLAGS) $(CPPINCFLAGS)
 
 # Common libs (don't use much here, most libs should
 # be in local particular makefiles.
