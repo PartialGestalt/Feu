@@ -13,11 +13,11 @@
 class FeuTimer {
 public:
 	FeuTimer();
-	virtual ~FeuTimer();
+//	virtual ~FeuTimer();
 
 public:
     static double now(); // Get current time, in sec
-    static double since(float when); // Get interval, in sec
+    static double since(double when); // Get interval, in sec
 };
 
 #endif /* _FEU_TIMER_H_ */

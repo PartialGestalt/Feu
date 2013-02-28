@@ -4,7 +4,7 @@
 int main(int argc, char **argv)
 {
     FeuCalculable  *fc;
-    float fc_result;
+    double fc_result;
     std::string  *expr;
 
     if (argc < 2) {

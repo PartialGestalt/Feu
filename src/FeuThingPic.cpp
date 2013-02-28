@@ -101,7 +101,7 @@ void FeuThingPic::doStep_path(FeuThingStep *step) {
     if (!newPath) {
         throw (new FeuException("Step error","Invalid path name \"" + step->mAttributes["option"] + "\"\n"));
     } else {
-        FeuLog::i("Switched displayable \"" + mName + "\" to new path \"" + step->mAttributes["option"] + "\".\n");
+        //FeuLog::i("Switched displayable \"" + mName + "\" to new path \"" + step->mAttributes["option"] + "\".\n");
     }
     
     // Step 2: Set it up
@@ -110,7 +110,7 @@ void FeuThingPic::doStep_path(FeuThingStep *step) {
 }
 
 void FeuThingPic::doStep_move(FeuThingStep *step) {
-    float calc;
+    double calc;
     // For move, simply additively apply any calculables
     // (and derived values!)
     if (step->hasX) {
@@ -155,9 +155,10 @@ void FeuThingPic::doStep_place(FeuThingStep *step) {
 }
 
 void FeuThingPic::dump() {
-    std::map<std::string,float *>::iterator ifast;
+    std::map<std::string,double *>::iterator ifast;
     std::map<std::string,std::string>::iterator islow;
 
+#if 0
     FeuLog::i("FeuThingPic: \"" + mName + "\"\n");
     FeuLog::i("\tFast values:\n");
     for (ifast = mValues.begin(); ifast != mValues.end(); ifast++) {
@@ -169,6 +170,7 @@ void FeuThingPic::dump() {
         FeuLog::i("\t\t" + (*islow).first + " = " + (*islow).second + "\n");
     }
     FeuLog::i("\n\n");
+#endif
 }
 
 void FeuThingPic::addProperty(struct feuPropInfo *propInfo) {

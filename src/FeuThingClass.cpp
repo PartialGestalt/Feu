@@ -11,7 +11,7 @@
 /*
  * Method table
  */
-static float feu_class_create(FeuThing *,std::vector<float> *);
+static double feu_class_create(FeuThing *,std::vector<double> *);
 
 static feuMethod classMethods[] = {
     { "create", false, 0, feu_class_create },
@@ -41,7 +41,7 @@ FeuThingClass::FeuThingClass(Feu *feu, TiXmlElement *ele, FeuThing *parent) : Fe
 FeuThingClass::~FeuThingClass() {
 }
 
-static float feu_class_create(FeuThing *contextThing,std::vector<float> *argv) {
+static double feu_class_create(FeuThing *contextThing,std::vector<double> *argv) {
     FeuThingPic *pic;
     FeuThingClass *c = (FeuThingClass *)contextThing;
     std::string picName=std::string(c->mName) + "[" + stringof(c->mSeqNum) + "]";
@@ -79,18 +79,18 @@ static float feu_class_create(FeuThing *contextThing,std::vector<float> *argv) {
     c->mSeqNum++;
 }
 
-float FeuThingClass::getAttributeValue(std::string attr) {
+double FeuThingClass::getAttributeValue(std::string attr) {
     // Basic mode ; just use string from XML and convert
     if (mAttributes.count(attr))  {
         // Has it; convert to return 
-        return floatof(mAttributes[attr]);
+        return doubleof(mAttributes[attr]);
     }
     // Not found?!?!  Warn and return zero.
     FeuLog::w("FeuThingClass:: Attempt to access nonexistent attribute \"" + attr + "\".\n");
     return 0.0;
 }
 
-void FeuThingClass::setAttributeValue(std::string attr, float value) {
+void FeuThingClass::setAttributeValue(std::string attr, double value) {
     // Check for attr to update
     if (0 == mAttributes.count(attr)) {
         FeuLog::w("FeuThingClass:: Attempt to set value of nonexistent attribute \"" + attr + "\".\n");

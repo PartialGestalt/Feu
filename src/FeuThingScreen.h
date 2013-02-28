@@ -15,12 +15,12 @@ public:
     ~FeuThingScreen();
 
 public:
-    float mWidth;
-    float mHeight;
-    float mLeft;
-    float mRight;
-    float mTop;
-    float mBottom;
+    double mWidth;
+    double mHeight;
+    double mLeft;
+    double mRight;
+    double mTop;
+    double mBottom;
 
 public:
     void setWidth(int width);

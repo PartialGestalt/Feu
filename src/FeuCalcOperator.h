@@ -22,8 +22,8 @@ private:
 public:
 	int proc(FeuStack *);
     FeuCalcItem *copy();
-    float getValue();
-    void setValue(float); 
+    double getValue();
+    void setValue(double); 
     std::string toString();
 
 public:

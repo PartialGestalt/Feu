@@ -23,7 +23,7 @@
     <!-- Relative motion by our speed properties -->
     <step type="move" x="xspeed" y="yspeed" />
     <!-- Self-destruct if we're older than some random value -->
-    <step type="destroy" condition="age > Random.getrange(0,10)" />
+    <step type="destroy" condition="age > Random.getrange(10000,10001)" />
   </path>
   <class name="DisplaySlides" 
          source="XBMC.pictures(Export)" 
@@ -35,13 +35,16 @@
     <!--  object.  When each pic is created, it gets a custom      -->
     <!-- property with the given name.  The "value" attribute is   -->
     <!-- calculated only once, at create time.                     -->
-    <property name="xspeed" value="Random.get()"/>
-    <property name="yspeed" value="Random.get()"/>
-    <property name="zspeed" value="Random.get()"/>
+    <property name="xspeed" value="Random.getrange(1,50)"/>
+    <property name="yspeed" value="Random.getrange(1,50)"/>
+    <property name="zspeed" value="Random.getrange(1,50)"/>
   </class>
   <!-- Seed randomizer when the file is loaded -->
   <action when="onLoad" what="Random.seed(123)"/>
   <!-- Create a couple objects when we start up -->
+  <action when="onActivate" what="DisplaySlides.create()"/>
+  <action when="onActivate" what="DisplaySlides.create()"/>
+  <action when="onActivate" what="DisplaySlides.create()"/>
   <action when="onActivate" what="DisplaySlides.create()"/>
   <action when="onActivate" what="DisplaySlides.create()"/>
 </ruleset>

@@ -100,9 +100,11 @@ void Feu::runEvent(std::string eventName) {
 }
 
 void Feu::run() {
+    double starttime,fps;
     std::list<FeuThingPic *>::iterator i;
     FeuThingPic *dead;
-    FeuLog::i("[FEU]: Running a single frame.\n");
+    starttime = FeuTimer::now();
+
     // Loop over all live displayables, and call their run method
     for (i=mPics.begin(); i != mPics.end(); i++) {
         (*i)->runFrame();
@@ -122,6 +124,9 @@ void Feu::run() {
     for (i=mPics.begin(); i != mPics.end(); i++) {
         (*i)->mParent->renderPic(*i);
     }
+
+    fps = 1.0/FeuTimer::since(starttime);
+    FeuLog::i("[FEU]: Frame completed at " + stringof(fps) + "fps.\n");
 }
 
 void Feu::registerCalculable(FeuCalculable *feucalc) {

@@ -82,8 +82,8 @@ void FeuThing::geneology() {
 
 }
 
-float FeuThing::getAttributeValue(std::string attr) {
-    float *pVal;
+double FeuThing::getAttributeValue(std::string attr) {
+    double *pVal;
     // Fast-access map?
     //     CLEAN: TODO: For attributes that don't exist, this actually
     //     creates a bogus entry....we're going to ignore this for now,
@@ -94,7 +94,7 @@ float FeuThing::getAttributeValue(std::string attr) {
     // Basic mode ; just use string from XML and convert
     if (mAttributes.count(attr))  {
         // Has it; convert to return 
-        return floatof(mAttributes[attr]);
+        return doubleof(mAttributes[attr]);
     }
 
     // Not found?!?!  Warn and return zero.
@@ -102,8 +102,8 @@ float FeuThing::getAttributeValue(std::string attr) {
     return 0.0;
 }
 
-void FeuThing::setAttributeValue(std::string attr, float value) {
-    float *pVal;
+void FeuThing::setAttributeValue(std::string attr, double value) {
+    double *pVal;
     // Does this exist in the fast map?
     if (NULL != (pVal = mValues[attr])) {
         *pVal = value;

@@ -30,12 +30,12 @@ FeuCalcItem *FeuCalcOperator::copy() {
     return (FeuCalcItem *)fco;
 }
 
-float FeuCalcOperator::getValue() {
+double FeuCalcOperator::getValue() {
     // CLEAN: TODO: Throw an exception here.
     return 0.0;
 }
 
-void FeuCalcOperator::setValue(float newVal) {
+void FeuCalcOperator::setValue(double newVal) {
     // CLEAN: TODO: Throw an exception here.
     return;
 }

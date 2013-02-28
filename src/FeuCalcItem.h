@@ -24,8 +24,8 @@ public:
 public:
 	virtual int proc(FeuStack *) = 0;
     virtual FeuCalcItem *copy() = 0;
-    virtual float getValue() = 0;
-    virtual void setValue(float) = 0;
+    virtual double getValue() = 0;
+    virtual void setValue(double) = 0;
     virtual std::string toString() = 0;
 };
 

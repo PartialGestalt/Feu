@@ -34,8 +34,8 @@ public:
 
 template <typename T> std::string stringof(T t) { std::ostringstream os; os << t; return os.str(); }
 
-static float floatof(std::string s) {
-    float fout;
+static double doubleof(std::string s) {
+    double fout;
     std::stringstream os;
     os << s;
     os >> fout; 

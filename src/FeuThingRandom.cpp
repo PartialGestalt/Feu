@@ -10,11 +10,11 @@
 #include "FeuThingRandom.h"
 
 // Method handlers
-static float feu_random_get(FeuThing *,std::vector<float> *);
-static float feu_random_getrange(FeuThing *, std::vector<float> *);
-static float feu_random_seed(FeuThing *,std::vector<float> *);
+static double feu_random_get(FeuThing *,std::vector<double> *);
+static double feu_random_getrange(FeuThing *, std::vector<double> *);
+static double feu_random_seed(FeuThing *,std::vector<double> *);
 
-static float feu_random_max = (float)RAND_MAX;
+static double feu_random_max = (double)RAND_MAX;
 
 // Method table
 static feuMethod randomMethods[] = {
@@ -43,21 +43,21 @@ FeuThingRandom::~FeuThingRandom() {
 }
 
 
-static float feu_random_get(FeuThing *feu, std::vector<float> *argv) {
+static double feu_random_get(FeuThing *feu, std::vector<double> *argv) {
     // Basic get.  Return a value between 0.0 and 1.0, inclusive
-    return ((float)rand())/feu_random_max;
+    return ((double)rand())/feu_random_max;
 }
 
-static float feu_random_seed(FeuThing *feu, std::vector<float> *argv) {
+static double feu_random_seed(FeuThing *feu, std::vector<double> *argv) {
     srand((int)((*argv)[0]));
     return 0.0;
 }
 
-static float feu_random_getrange(FeuThing *feu, std::vector<float> *argv) {
-    float min=(*argv)[0];
-    float max=(*argv)[1];
-    float range=max-min;
-    float r = feu_random_get(NULL,NULL); // Between 0.0 and 1.0
+static double feu_random_getrange(FeuThing *feu, std::vector<double> *argv) {
+    double min=(*argv)[0];
+    double max=(*argv)[1];
+    double range=max-min;
+    double r = feu_random_get(NULL,NULL); // Between 0.0 and 1.0
 
     return (min + (r * range));
 }

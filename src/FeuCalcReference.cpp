@@ -24,7 +24,7 @@ FeuCalcReference::FeuCalcReference(Feu *feu, FeuCalculable *calc, std::string in
 int FeuCalcReference::proc(FeuStack *calcStack) {
     FeuThing *procThing = NULL;
     struct feuMethod *meth;
-    float retVal;
+    double retVal;
 
     if (mSpecifier.isSelf()) {
         procThing = mCalculable->mContext;
@@ -81,7 +81,7 @@ int FeuCalcReference::proc(FeuStack *calcStack) {
             FeuCalcOperator *op;
             int argcount = 0;
             bool done = false;
-            std::vector<float> *argv = new std::vector<float>();
+            std::vector<double> *argv = new std::vector<double>();
             // Yo La Tengo.  Build arg list and call handler.
             while (!calcStack->empty() && !done) {
                 item = (FeuCalcItem *)calcStack->pop();
@@ -149,7 +149,7 @@ void FeuCalcReference::resolveReference() {
     }
 }
 
-float FeuCalcReference::getValue() {
+double FeuCalcReference::getValue() {
     FeuThing *procThing;
     // TODO: CLEAN: For constants, use cached value?
 
@@ -173,7 +173,7 @@ float FeuCalcReference::getValue() {
     return procThing->getAttributeValue(mAttribute);
 }
 
-void FeuCalcReference::setValue(float newVal) {
+void FeuCalcReference::setValue(double newVal) {
     FeuThing *procThing;
     // TODO: CLEAN: For constants, use cached value?
 

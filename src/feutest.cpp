@@ -5,7 +5,7 @@ int main(int argc, char **argv)
 {
 	FeuThing *ft1,*ft2,*ft3;
     FeuCalculable  *fc;
-    float fc_result;
+    double fc_result;
 
 #if 0
     // 
@@ -104,7 +104,7 @@ int main(int argc, char **argv)
         try {
         feu->runEvent("onLoad");     // Run the "onLoad" handlers
         feu->runEvent("onActivate"); // Run the "onActivate" handlers
-        for (i=0;i<10;i++) {
+        for (i=0;i<10000;i++) {
             feu->run();  // Run a single frame.
         }
         } catch (FeuException *fe) {
@@ -114,7 +114,7 @@ int main(int argc, char **argv)
         }
 
 
-        FeuLog::i("Ruleset.2 ran 10 frames\n");
+        FeuLog::i("Ruleset.2 ran 1000 frames\n");
         delete feu;
         FeuLog::i("===============================================\n");
     }

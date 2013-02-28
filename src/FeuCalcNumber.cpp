@@ -4,27 +4,27 @@
 
 #include "feu_all.h"
 
-FeuCalcNumber::FeuCalcNumber(FeuCalculable *calc, float initVal) : FeuCalcItem(calc)  {
+FeuCalcNumber::FeuCalcNumber(FeuCalculable *calc, double initVal) : FeuCalcItem(calc)  {
     mValue = initVal;
 }
 
 FeuCalcNumber::FeuCalcNumber(FeuCalculable *calc, int initVal) : FeuCalcItem(calc)  {
-    mValue = (float)initVal;
+    mValue = (double)initVal;
 }
 
 FeuCalcNumber::FeuCalcNumber(FeuCalculable *calc, std::string initVal) : FeuCalcItem(calc)  {
     if (std::string::npos != initVal.find_first_of('.')) {
-        // If the string contains a decimal point, it must be decimal float...
+        // If the string contains a decimal point, it must be decimal double...
         //FeuLog::i("FeuCalcNumber(): Forced decimal for \""+initVal+"\".\n");
-        mValue = floatof(initVal);
+        mValue = doubleof(initVal);
     } else if ((initVal[0] == '#')|| (initVal[0] == '0')) {
         // If the string may have a non-decimal radix, try to convert as integer first...
         //FeuLog::i("FeuCalcNumber(): Trying intof for \""+initVal+"\".\n");
-        mValue = (float)intof(initVal);
+        mValue = (double)intof(initVal);
     } else {
         // Punt.
-        //FeuLog::i("FeuCalcNumber(): Trying floatof for \""+initVal+"\".\n");
-        mValue = floatof(initVal);
+        //FeuLog::i("FeuCalcNumber(): Trying doubleof for \""+initVal+"\".\n");
+        mValue = doubleof(initVal);
     }
 }
 
@@ -39,11 +39,11 @@ FeuCalcItem *FeuCalcNumber::copy() {
     return (FeuCalcItem *)fcn;
 }
 
-float FeuCalcNumber::getValue() {
+double FeuCalcNumber::getValue() {
     return mValue;
 }
 
-void FeuCalcNumber::setValue(float newVal) {
+void FeuCalcNumber::setValue(double newVal) {
     mValue = newVal;
 }
 

@@ -21,19 +21,18 @@ FeuTimer::~FeuTimer() {
 #endif
 
 static inline double tv_to_double(struct timeval *tvp) {
-    return ((double)(tv.tv_sec) + ((double)(tv.tv_usec))/1000000;
+    return (((double)(tvp->tv_sec)) + ((double)(tvp->tv_usec))/1000000);
 }
 
 double FeuTimer::now(void) {
     struct timeval tv;
-    double retval;
 
     gettimeofday(&tv,NULL);
     return tv_to_double(&tv);
 }
 
 double FeuTimer::since(double when) {
-    double nowval;
+    struct timeval nowval;
     gettimeofday(&nowval,NULL);
     return tv_to_double(&nowval) - when;
 }

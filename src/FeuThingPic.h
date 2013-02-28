@@ -20,26 +20,26 @@ public:
     //  Well-known properties
     //    Member        Property  Description
     //------------------------------------------
-    float mXpos;     // "x"       X coordinate of center of gravity
-    float mYpos;     // "y"       Y coordinate of center of gravity
-    float mZpos;     // "z"       Z coordinate of center of gravity
-    float mXrot;     // "rx"      Rotational offset about X axis
-    float mYrot;     // "ry"      Rotational offset about Y axis
-    float mZrot;     // "rz"      Rotational offset about Z axis
-    float mWidth;    // "width"   Width of pic, in FEUs
-    float mHeight;   // "height"  Height of pic, in FEUs
-    float mDepth;    // "depth"   Depth of pic, in FEUs
-    float mAlpha;    // "alpha"   Opacity of pic (0.0=invisible, 1.0=opaque)
-    float mAge;      // "age"     Age of this pic, in frames
-    float mOrdinal;  // "ordinal" Ordinal number of creation in class
+    double mXpos;     // "x"       X coordinate of center of gravity
+    double mYpos;     // "y"       Y coordinate of center of gravity
+    double mZpos;     // "z"       Z coordinate of center of gravity
+    double mXrot;     // "rx"      Rotational offset about X axis
+    double mYrot;     // "ry"      Rotational offset about Y axis
+    double mZrot;     // "rz"      Rotational offset about Z axis
+    double mWidth;    // "width"   Width of pic, in FEUs
+    double mHeight;   // "height"  Height of pic, in FEUs
+    double mDepth;    // "depth"   Depth of pic, in FEUs
+    double mAlpha;    // "alpha"   Opacity of pic (0.0=invisible, 1.0=opaque)
+    double mAge;      // "age"     Age of this pic, in frames
+    double mOrdinal;  // "ordinal" Ordinal number of creation in class
 
     // Constructed properties
-    float mLeft;     //  "left"    X coordinate of leftmost part of pic
-    float mRight;    //  "right"   X coordinate of rightmost part of pic
-    float mTop;      //  "top"     Y coordinate of topmost part of pic
-    float mBottom;   //  "bottom"  Y coordinate of bottommost part of pic
-    float mFront;    //  "front"   Z coordinate of frontmost part of pic
-    float mBack;     //  "back"    Z coordinate of backmost part of pic
+    double mLeft;     //  "left"    X coordinate of leftmost part of pic
+    double mRight;    //  "right"   X coordinate of rightmost part of pic
+    double mTop;      //  "top"     Y coordinate of topmost part of pic
+    double mBottom;   //  "bottom"  Y coordinate of bottommost part of pic
+    double mFront;    //  "front"   Z coordinate of frontmost part of pic
+    double mBack;     //  "back"    Z coordinate of backmost part of pic
 
     FeuThingClass *mParent;  // Class from whence we came...
     FeuThingPath *mPath;     // The path we're currently on.

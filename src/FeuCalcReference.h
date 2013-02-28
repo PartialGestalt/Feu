@@ -25,7 +25,7 @@ private:
     std::string mInitial;
 	FeuThing *mThing;  // Object whose value we're dealing with (if global)
     std::string mAttribute;
-    float mValue;
+    double mValue;
 
 public:
     bool mIsMethod; // true if this is a method
@@ -33,8 +33,8 @@ public:
 public:
 	int proc(FeuStack *);
     FeuCalcItem *copy();
-    float getValue();
-    void setValue(float);
+    double getValue();
+    void setValue(double);
     std::string toString();
     void setContext(FeuThing *);
 

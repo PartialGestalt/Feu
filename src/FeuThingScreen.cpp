@@ -31,14 +31,14 @@ FeuThingScreen::~FeuThingScreen() {
 }
 
 void FeuThingScreen::setWidth(int width) {
-    mWidth = (float)width;
+    mWidth = (double)width;
     mLeft = -mWidth/2;
     mRight = mLeft + mWidth;
     return;
 }
 
 void FeuThingScreen::setHeight(int height) {
-    mHeight = (float)height;
+    mHeight = (double)height;
     mTop = -mHeight/2;
     mBottom = mTop + mHeight;
 }

@@ -414,7 +414,7 @@ void FeuCalculable::rpn() {
 #endif
 }
 
-float FeuCalculable::proc(FeuThing *contextThing) {
+double FeuCalculable::proc(FeuThing *contextThing) {
     FeuList::iterator i;
     FeuCalcItem *fci;
 

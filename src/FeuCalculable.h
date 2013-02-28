@@ -143,7 +143,7 @@ public:
 private:
     Feu *mFeu; // Document to which we belong
     bool mIsConstant; // No extern references, simplifies.
-    float mLastResult;  // Last calculation result
+    double mLastResult;  // Last calculation result
     FeuList *mRPN; // Our RPN list of calcitems
     std::list<std::string *>mTokens; // List of fundamental tokens
     FeuStack mCalcStack; // Stack for calculations
@@ -158,7 +158,7 @@ private:
 
 public:
     void rpn();  // Convert infix to RPN
-	float proc(FeuThing *contextThing = NULL); // Run it, return the result
+	double proc(FeuThing *contextThing = NULL); // Run it, return the result
 
 private:
     feuOpMap *mOpMap;

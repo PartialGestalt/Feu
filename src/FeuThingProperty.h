@@ -15,7 +15,7 @@ class FeuThingProperty;
 struct feuPropInfo {
     FeuThingProperty *propHost; // From whence we came
     std::string *propName;      // Simple name
-    float        propValue;       // Collapsed value
+    double        propValue;       // Collapsed value
 };
 
 class FeuThingProperty : public FeuThing {

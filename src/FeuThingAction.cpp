@@ -22,18 +22,18 @@ FeuThingAction::~FeuThingAction() {
 }
 
 
-float FeuThingAction::getAttributeValue(std::string attr) {
+double FeuThingAction::getAttributeValue(std::string attr) {
     // Basic mode ; just use string from XML and convert
     if (mAttributes.count(attr))  {
         // Has it; convert to return 
-        return floatof(mAttributes[attr]);
+        return doubleof(mAttributes[attr]);
     }
     // Not found?!?!  Warn and return zero.
     FeuLog::w("FeuThingAction:: Attempt to access nonexistent attribute \"" + attr + "\".\n");
     return 0.0;
 }
 
-void FeuThingAction::setAttributeValue(std::string attr, float value) {
+void FeuThingAction::setAttributeValue(std::string attr, double value) {
     // Check for attr to update
     if (0 == mAttributes.count(attr)) {
         FeuLog::w("FeuThingAction:: Attempt to set value of nonexistent attribute \"" + attr + "\".\n");
@@ -46,7 +46,7 @@ void FeuThingAction::setAttributeValue(std::string attr, float value) {
     return;
 }
 
-float FeuThingAction::proc(FeuThing *contextThing) {
+double FeuThingAction::proc(FeuThing *contextThing) {
     // Run our preloaded calculable
     return mWhat->proc(contextThing);
 }

@@ -36,7 +36,7 @@ struct feuMethod {
     std::string name;  // Name of the method
     bool isReturning;  // Does method return a value?
     int argCount;      // Expected # of args
-    float (*func)(FeuThing *contextThing, std::vector<float>*argv); // Implementor
+    double (*func)(FeuThing *contextThing, std::vector<double>*argv); // Implementor
 };
 
 class FeuThing {
@@ -50,7 +50,7 @@ public:
 	FeuThing *mParent;
     std::string mType; // object class name (element type)
     std::map<std::string,std::string> mAttributes; // Raw string attributes from XML
-    std::map<std::string,float *>mValues; // Fast-access values
+    std::map<std::string,double *>mValues; // Fast-access values
     std::list<FeuThing *> mKids; // Child XML element things
     std::string mName; // My own special name
     std::map<std::string,std::list<FeuThingAction *> > mActions; // Actions, indexed by "what"
@@ -72,8 +72,8 @@ public:
     void addProperty(FeuThingProperty *);
     bool hasAttribute(std::string);
     bool hasMethod(std::string);
-    virtual float getAttributeValue(std::string);
-    virtual void setAttributeValue(std::string,float value);
+    virtual double getAttributeValue(std::string);
+    virtual void setAttributeValue(std::string,double value);
 };
 
 

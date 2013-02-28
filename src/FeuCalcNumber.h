@@ -15,16 +15,16 @@ class FeuThing;
 
 class FeuCalcNumber : public FeuCalcItem {
 public:
-    FeuCalcNumber(FeuCalculable *, float);
+    FeuCalcNumber(FeuCalculable *, double);
     FeuCalcNumber(FeuCalculable *, int);
     FeuCalcNumber(FeuCalculable *, std::string);
 private:
-	float mValue; // A single numeric value
+	double mValue; // A single numeric value
 public:
 	int proc(FeuStack *);
     FeuCalcItem *copy();
-    float getValue();
-    void setValue(float);
+    double getValue();
+    void setValue(double);
     std::string toString();
 };
 
