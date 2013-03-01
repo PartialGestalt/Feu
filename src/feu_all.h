@@ -12,6 +12,7 @@
 #include "FeuRefCounted.h"
 #include "FeuTimer.h"
 #include "FeuThing.h"
+#include "FeuGlob.h"
 // Calculables
 #include "FeuCalculable.h"
 #include "FeuCalcItem.h"
