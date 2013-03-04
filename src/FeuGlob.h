@@ -8,7 +8,7 @@
 #ifndef _FEU_GLOB_H_
 #define _FEU_GLOB_H_
 
-#include <glob.h>
+#include <dirent.h>
 
 class FeuGlob {
 public:
@@ -18,15 +18,15 @@ public:
 private:
      bool mIsRecursive; /* Recurse when searching */
      std::string *mBaseDir;
-     std::list<std::string *> mDirs;
      std::list<std::string *> mFiles;
-     void loadDirs(); /* Generate a recursive dir list */
+     static int globDir(const char *dir, const char *pattern, FeuGlob *obj);
 
 public:
      void setRecursive(bool isRecursive); 
      int  addGlob(std::string pattern);
      int  newGlob(std::string pattern); /* Replace entries */
      void clearGlob(); /* Clear existing entries */
+     int dumpGlob();
 };
 
 #endif /* _FEU_GLOB_H_ */

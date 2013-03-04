@@ -7,6 +7,28 @@ int main(int argc, char **argv)
     FeuCalculable  *fc;
     double fc_result;
 
+    //
+    // FileSys.1: Glob test
+    //
+
+    {
+        std::string *tmpstring;
+        FeuGlob *fg;
+
+        FeuLog::i("Glob.1 test starting...\n");
+
+        tmpstring = new std::string("/lv0/inbasket/media/");
+        fg = new FeuGlob(*tmpstring);
+        delete tmpstring;
+        tmpstring = new std::string("*.jpg");
+        fg->addGlob(*tmpstring);
+        tmpstring = new std::string("*.gif");
+        fg->addGlob(*tmpstring);
+        fg->dumpGlob();
+
+        delete fg;
+    }
+
 #if 0
     // 
     // Adoption.1: Test basic FeuThing adoption
