@@ -56,7 +56,7 @@ int FeuGlob::globDir(const char *dir, const char *pattern, FeuGlob *obj) {
         if ((DT_DIR == de.d_type) && obj->mIsRecursive && ('.' != de.d_name[0])) {
             char subdir[1024];
             /* Is this a non-dot directory? Recurse! */
-            snprintf(subdir,1023,"%s%s/",obj->mBaseDir->c_str(),de.d_name);
+            snprintf(subdir,1023,"%s/%s",obj->mBaseDir->c_str(),de.d_name);
             FeuGlob::globDir(subdir,pattern,obj);
         } else {
             /* Not a dir.  Check for match */

@@ -3,6 +3,10 @@
 
 #include <stdio.h>
 #include "xbmc_scr_dll.h"
+#include "xbmc_addon_cpp_dll.h"
+#include "feu_all.h"
+
+DllSetting *presetting = NULL;
 
 /* Force C linkage for the whole dang file */
 
@@ -23,8 +27,15 @@ extern "C" {
 ADDON_STATUS ADDON_Create(void *hdl, void *props)
 {
     SCR_PROPS *scr = (SCR_PROPS *)props;
+    FeuGlob *fg_presets;
 
-    printf("\n[ADDON_Create \"%s\", presets=\"%s\", profile=\"%s\"]",scr->name,scr->presets,scr->profile);fflush(stdout);
+    printf("\n[ADDON_Create \"%s\", presets=\"%s\", profile=\"%s\"]\n",scr->name,scr->presets,scr->profile);fflush(stdout);
+
+    /* Get list of presets */
+    fg_presets = new FeuGlob(scr->presets);
+    fg_presets->addGlob("*.feu");
+
+    /* Set up our additional setting for presets */
     return ADDON_STATUS_NEED_SETTINGS;
 }
 

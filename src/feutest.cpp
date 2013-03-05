@@ -20,6 +20,7 @@ int main(int argc, char **argv)
         tmpstring = new std::string("/lv0/inbasket/media/");
         fg = new FeuGlob(*tmpstring);
         delete tmpstring;
+        fg->setRecursive(false);
         tmpstring = new std::string("*.jpg");
         fg->addGlob(*tmpstring);
         tmpstring = new std::string("*.gif");

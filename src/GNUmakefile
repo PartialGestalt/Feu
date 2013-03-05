@@ -45,9 +45,9 @@ XBMC_SS_SRCS=FeuXBMCScreenSaver.cpp
 
 XBMC_SS_TEMPS=$(XBMC_SS_SRCS:.cpp=.ii) $(XBMC_SS_SRCS:.cpp=.s)
 
-XBMC_SS_OBJS=$(XBMC_SS_SRCS:.cpp=.o)
+XBMC_SS_OBJS=$(XBMC_SS_SRCS:.cpp=.o) $(LIB_OBJS)
 
-XBMC_SS_LDFLAGS=-L . -lFEU
+XBMC_SS_LDFLAGS=
 
 TEST=feutest
 
