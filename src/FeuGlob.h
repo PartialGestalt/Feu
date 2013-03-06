@@ -18,8 +18,10 @@ public:
 private:
      bool mIsRecursive; /* Recurse when searching */
      std::string *mBaseDir;
-     std::list<std::string *> mFiles;
      static int globDir(const char *dir, const char *pattern, FeuGlob *obj);
+
+public:
+     std::list<std::string *> mMatches;
 
 public:
      void setRecursive(bool isRecursive); 

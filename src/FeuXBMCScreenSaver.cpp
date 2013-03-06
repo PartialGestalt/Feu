@@ -6,7 +6,8 @@
 #include "xbmc_addon_cpp_dll.h"
 #include "feu_all.h"
 
-DllSetting *presetting = NULL;
+DllSetting set_preset = DllSetting(DllSetting::SPIN,"preset","Preset");
+std::vector<DllSetting> set_vec;
 
 /* Force C linkage for the whole dang file */
 
@@ -31,9 +32,21 @@ ADDON_STATUS ADDON_Create(void *hdl, void *props)
 
     printf("\n[ADDON_Create \"%s\", presets=\"%s\", profile=\"%s\"]\n",scr->name,scr->presets,scr->profile);fflush(stdout);
 
+    /* Create the setting */
+    //set_preset = DllSetting(DllSetting::SPIN,"preset","Preset");
     /* Get list of presets */
     fg_presets = new FeuGlob(scr->presets);
     fg_presets->addGlob("*.feu");
+    /* Add an entry for each found preset */
+    {
+        std::list<std::string *>::iterator iter;
+        for (iter = fg_presets->mMatches.begin();
+             iter != fg_presets->mMatches.end();
+             iter++) {
+            set_preset.AddEntry((*iter)->c_str());
+        }
+    }
+    set_vec.push_back(set_preset);
 
     /* Set up our additional setting for presets */
     return ADDON_STATUS_NEED_SETTINGS;
@@ -116,6 +129,8 @@ bool ADDON_HasSettings()
 unsigned int ADDON_GetSettings(ADDON_StructSetting ***sSet)
 {
     printf("[ADDON_GetSettings]");fflush(stdout);
+    /* Push our vector into the struct */
+    DllUtils::VecToStruct(set_vec,sSet);
     return 0;
 }
 

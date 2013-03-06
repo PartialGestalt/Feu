@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <strings>
-  <string id="30001">Placeholder</string>
+  <string id="00000">Settings</string>
+  <string id="00001">Choose preset</string>
 </strings>

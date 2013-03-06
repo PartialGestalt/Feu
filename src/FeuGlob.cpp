@@ -15,7 +15,7 @@ FeuGlob::~FeuGlob() {
     std::list<std::string *>::iterator i;
 
     /* Delete all of our entries */
-    for (i = mFiles.begin(); i != mFiles.end(); i++) {
+    for (i = mMatches.begin(); i != mMatches.end(); i++) {
         delete *i;
     }
 }
@@ -28,7 +28,7 @@ void FeuGlob::setRecursive(bool isRecursive) {
 void FeuGlob::clearGlob() {
     std::list<std::string *>::iterator i;
     /* This only clears the files, not the dirs */
-    for (i = mFiles.begin(); i != mFiles.end(); i++) {
+    for (i = mMatches.begin(); i != mMatches.end(); i++) {
         delete *i;
     }
     return;
@@ -63,7 +63,7 @@ int FeuGlob::globDir(const char *dir, const char *pattern, FeuGlob *obj) {
             if (!fnmatch(pattern,de.d_name,FNM_PATHNAME|FNM_CASEFOLD)) {
                 std::string *match = new std::string(de.d_name);
                 /* Match! */
-                obj->mFiles.push_back(match);
+                obj->mMatches.push_back(match);
             }
         }
     }
@@ -75,7 +75,7 @@ int FeuGlob::addGlob(std::string pattern) {
 
 int FeuGlob::dumpGlob() {
     std::list<std::string *>::iterator i;
-    for (i = mFiles.begin(); i != mFiles.end(); i++) {
+    for (i = mMatches.begin(); i != mMatches.end(); i++) {
         FeuLog::i("[GLOB]:  " + **i + stringof("\n"));
     }
 }
