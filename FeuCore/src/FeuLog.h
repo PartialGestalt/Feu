@@ -53,8 +53,8 @@ static inline int charval(char c) {
 static inline int intof(std::string s) {
     unsigned int i;
     unsigned char ch;
-    unsigned int start; // First meaningful digit
-    unsigned int radix; // 2? 10? 16? 8?
+    unsigned int start=0; // First meaningful digit
+    unsigned int radix=10; // 2? 10? 16? 8?
     unsigned int digit;
     int accum = 0;
 

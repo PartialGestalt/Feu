@@ -3,6 +3,6 @@
   <!-- GROUP 1: General settings -->
   <category label="00000">
     <!-- Placeholder -->
-    <setting label="00001" type="fileenum" option="hideext" mask="*.feu" values="presets" id="feu.preset" default="<default>"/>
+    <setting label="00001" type="fileenum" option="hideext" mask="*.feu" values="presets" id="feu.preset" default="&lt;default&gt;"/>
   </category>
 </settings>

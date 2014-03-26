@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ruleset name="ParseTest" author="PartialGestalt" URL=""
+	version="1.0.0" feu-version-min="1"
+	description="This FEU ruleset doesn't do anything useful" 
+	
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.akephart.org"
+	xsi:noNamespaceSchemaLocation="http://www.akephart.org/feu.xsd">
+	<path name="BasePath">
+		<!-- These first two steps initialize the odd images to the left of the 
+			screen -->
+		<!-- and the even images to the right. -->
+		<step type="place" condition="(ordinal%2) == 0" x="Screen.right" />
+		<step type="place" condition="(ordinal%2) == 1" x="Screen.left" />
+		<step type="move" y="20" />
+		<!-- Initialization finished, switch to a new path -->
+		<step type="path" option="RunPath" />
+	</path>
+	<path name="RunPath">
+		<!-- Relative motion by our speed properties -->
+		<step type="move" x="xspeed" y="yspeed" />
+		<!-- Self-destruct if we're older than some random value -->
+		<step type="destroy" condition="age > Random.getrange(10000,10001)" />
+	</path>
+	<class name="DisplaySlides" source="XBMC.pictures(Export)"
+		sequence="random" max-count="3" path="BasePath">
+		<!-- Initialize class-specific properties; this allows each -->
+		<!-- object of this class to get a uniqe set of random values, -->
+		<!-- but have those values constant for the lifetime of the -->
+		<!-- object. When each pic is created, it gets a custom -->
+		<!-- property with the given name. The "value" attribute is -->
+		<!-- calculated only once, at create time. -->
+		<property name="xspeed" value="Random.getrange(1,50)" />
+		<property name="yspeed" value="Random.getrange(1,50)" />
+		<property name="zspeed" value="Random.getrange(1,50)" />
+	</class>
+	<!-- Seed randomizer when the file is loaded -->
+	<action when="onLoad" what="Random.seed(123)" />
+	<!-- Create a couple objects when we start up -->
+	<action when="onActivate" what="DisplaySlides.create()" />
+	<action when="onActivate" what="DisplaySlides.create()" />
+	<action when="onActivate" what="DisplaySlides.create()" />
+	<action when="onActivate" what="DisplaySlides.create()" />
+	<action when="onActivate" what="DisplaySlides.create()" />
+</ruleset>
