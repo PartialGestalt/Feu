@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ruleset 
-	name="ParseTest" 
-	author="PartialGestalt" 
-	url=""
-	version="1.0.0" 
-	feu-version="1111.234"
-	description="This FEU ruleset doesn't do anything useful" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://www.akephart.org" 
-	xsi:schemaLocation="http://www.akephart.org feu.xsd">
+<ruleset name="ParseTest" author="PartialGestalt" url="" version="1.0.0" feu-version="1111.234" description="This FEU ruleset doesn't do anything useful" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.akephart.org" xsi:schemaLocation="http://www.akephart.org http://www.akephart.org/feu.xsd ">
 	
-	<class name="BaseClass">
-	</class>
+	
+	
 </ruleset>

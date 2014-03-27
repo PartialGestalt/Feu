@@ -1,271 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-   targetNamespace="http://www.akephart.org"
-   xmlns="http://www.akephart.org">
+	targetNamespace="http://www.akephart.org" xmlns="http://www.akephart.org"
+	elementFormDefault="qualified">
 
-  <xs:element name="ruleset">
-    <xs:complexType>      
-      <xs:sequence>
-        <xs:element minOccurs="1" maxOccurs="unbounded" name="class" type="class_t"/>
-      </xs:sequence>
-      <xs:attribute name="name" type="xs:string" use="required" />
-      <xs:attribute name="author" type="xs:string" use="required" />
-      <xs:attribute name="url" type="xs:string" use="optional" />
-      <xs:attribute name="version" type="version_t" use="required" />
-      <xs:attribute name="feu-version" type="version_t" use="required" />
-      <xs:attribute name="description" type="xs:string" use="optional" />
+	<xs:element name="ruleset" type="ruleset_t" />
+	
+
+    <xs:complexType name="ruleset_t">
+    	<xs:choice maxOccurs="unbounded">
+    	   <xs:element name="class" type="class_t" />
+    	   <xs:element name="path" type="class_t" />
+    	</xs:choice>
+    	<xs:attribute name="name" type="xs:string" use="required" />
+		<xs:attribute name="author" type="xs:string" use="required" />
+		<xs:attribute name="url" type="xs:string" use="optional" />
+		<xs:attribute name="version" type="version_t" use="required" />
+		<xs:attribute name="feu-version" type="version_t" use="required" />
+		<xs:attribute name="description" type="xs:string" use="optional" />
     </xs:complexType>
-  </xs:element>
 
-  <xs:simpleType name="version_t">
-    <xs:restriction base="xs:string">
-      <xs:pattern value="[0-9]{1,}.[0-9]{1,}.[0-9]{1,}"></xs:pattern>
-    </xs:restriction>
-  </xs:simpleType>
-  
-  <xs:complexType name="class_t">
-    <xs:attribute name="name" type="xs:string" use="required"></xs:attribute>
-  </xs:complexType>
-<!-- 
+	<xs:complexType name="class_t">
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="property"
+				type="property_t" />
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:string" use="required" />
+	</xs:complexType>
 
-  <xs:element minOccurs="1" maxOccurs="1" name="ruleset">
-    <xs:complexType>
-      
-      <xs:sequence>
-        <xs:element minOccurs="1" maxOccurs="unbounded" name="class" type="class_t"/>
-        <xs:element minOccurs="0" maxOccurs="unbounded" name="path" type="path_t"/>
-        <xs:element minOccurs="0" maxOccurs="unbounded" name="action" type="action_t"/>
-        <xs:element minOccurs="0" maxOccurs="unbounded" name="timer" type="timer_t"/>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
+	<xs:simpleType name="version_t">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]{1,}.[0-9]{1,}.[0-9]{1,}"></xs:pattern>
+		</xs:restriction>
+	</xs:simpleType>
 
+	<xs:complexType name="property_t">
+		<xs:attribute name="name" type="xs:string" use="required" />
+		<xs:attribute name="value" type="xs:string" use="required" />
+	</xs:complexType>
 
-
-      <xs:sequence>
-        <xs:element minOccurs="1" name="class" type="class_t">
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element minOccurs="0" maxOccurs="256" name="Allocation">
-                <xs:complexType>
-                  <xs:attribute name="code" type="uint8_t" use="required"/>
-                  <xs:attribute name="name" type="upper_token_t" use="required" />
-                </xs:complexType>
-              </xs:element>
-            </xs:sequence>
-          </xs:complexType>
-        </xs:element>
-        <xs:element minOccurs="1" maxOccurs="1" name="EnumerationTable">
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element minOccurs="0" maxOccurs="unbounded" name="Enumeration">
-                <xs:complexType>
-                  <xs:sequence>
-                    <xs:element name="Description" type="xs:string"/>
-                    <xs:element name="Entry" maxOccurs="unbounded">
-                      <xs:complexType>
-                        <xs:attribute name="name" type="nv_upper_token_t" use="required"/>
-                        <xs:attribute name="value" type="uint32_t" use="optional"/>
-                        <xs:attribute name="hint" type="xs:string" use="optional"/>
-                      </xs:complexType>
-                    </xs:element>
-                  </xs:sequence>
-                  <xs:attribute name="name" type="xs:string" use="required" />
-                  <xs:attribute name="hint" type="xs:string" use="optional"/>
-                  <xs:attribute name="struct" type="enum_token_t" use="optional"/>
-                </xs:complexType>
-              </xs:element>
-            </xs:sequence>
-          </xs:complexType>
-        </xs:element>
-        <xs:element minOccurs="1" maxOccurs="1" name="CodeTable">
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element minOccurs="0" maxOccurs="unbounded" name="Code">
-                <xs:complexType>
-                  <xs:sequence>
-                    <xs:element name="Description" minOccurs="1" maxOccurs="1" type="xs:string" />
-                    <xs:group minOccurs="0" maxOccurs="unbounded" ref="value_group_fixed"/>
-                    <xs:group minOccurs="0" maxOccurs="1" ref="value_group_variable"/>
-                  </xs:sequence>
-                  <xs:attribute name="name" use="required" type="upper_token_t" />
-                  <xs:attribute name="hint" use="required" type="xs:string" />
-                       <token> is the 'name' attribute made canonical and lowercase. 
-                  <xs:attribute name="struct" use="optional" type="struct_token_t"/>
-                  <xs:attribute name="application" use="optional" type="upper_token_t" default="CORE"/>
-                  <xs:attribute name="function" use="optional" type="lower_token_t" default="core"/>
-                </xs:complexType>
-              </xs:element>
-            </xs:sequence>
-          </xs:complexType>
-        </xs:element>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-
-  <xs:complexType name="value_t">
-    <xs:attribute name="name" type="xs:string" use="required"/>
-    <xs:attribute name="sequence" type="uint32_t" use="optional"/>
-    <xs:attribute name="hint" type="xs:string" use="optional"/>
-    <xs:attribute name="composition" use="optional" default="user">
-      <xs:simpleType>
-        <xs:restriction base="xs:string">
-          <xs:enumeration value="user"/>
-          <xs:enumeration value="fixed"/>
-          <xs:enumeration value="unspecified"/>
-          <xs:enumeration value="random"/>
-          <xs:enumeration value="derived"/>
-        </xs:restriction>
-      </xs:simpleType>
-    </xs:attribute>
-
-  </xs:complexType>
-  <xs:complexType name="value_int_t">
-    <xs:complexContent>
-      <xs:extension base="value_t">
-        <xs:attribute name="minArraySize" type="uint32_t" use="optional" default="1"/>
-        <xs:attribute name="maxArraySize" type="uint32_t" use="optional" default="1"/>
-        <xs:attribute name="enumeration" type="xs:string" use="optional"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:complexType name="value8_t">
-    <xs:complexContent>
-      <xs:extension base="value_int_t">
-        <xs:attribute name="default" type="uint8_t"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:complexType name="value16_t">
-    <xs:complexContent>
-      <xs:extension base="value_int_t">
-        <xs:attribute name="default" type="uint16_t"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:complexType name="value24_t">
-    <xs:complexContent>
-      <xs:extension base="value_int_t">
-        <xs:attribute name="default" type="uint24_t"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:complexType name="value32_t">
-    <xs:complexContent>
-      <xs:extension base="value_int_t">
-        <xs:attribute name="default" type="uint32_t"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:complexType name="value64_t">
-    <xs:complexContent>
-      <xs:extension base="value_int_t">
-        <xs:attribute name="default" type="uint64_t"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:complexType name="value_addr16_t">
-    <xs:complexContent>
-      <xs:extension base="value_int_t">
-        <xs:attribute name="default" type="addr16_t"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:complexType name="value_addr32_t">
-    <xs:complexContent>
-      <xs:extension base="value_int_t">
-        <xs:attribute name="default" type="addr32_t"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:complexType name="value_buffer_t">
-    <xs:complexContent>
-      <xs:extension base="value_t">
-        <xs:attribute name="minBytes" type="uint32_t"/>
-        <xs:attribute name="maxBytes" type="uint32_t"/>
-        <xs:attribute name="default" type="hexstring_t"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:complexType name="value_fixed_buffer_t">
-    <xs:complexContent>
-      <xs:extension base="value_t">
-        <xs:attribute name="byteCount" type="uint32_t" use="required"/>
-        <xs:attribute name="default" type="hexstring_t"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:complexType name="value_ascii_t">
-    <xs:complexContent>
-      <xs:extension base="value_t">
-        <xs:attribute name="minChars" use="optional" type="uint32_t" default="1"/>
-        <xs:attribute name="maxChars" use="optional" type="uint32_t" default="32"/>
-        <xs:attribute name="default" use="optional" type="xs:string"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:complexType name="value_fixed_ascii_t">
-    <xs:complexContent>
-      <xs:extension base="value_t">
-        <xs:attribute name="charCount" use="required" type="uint32_t"/>
-        <xs:attribute name="default" use="optional" type="xs:string"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:complexType name="value_string_t">
-    <xs:complexContent>
-      <xs:extension base="value_t">
-        <xs:attribute name="encoding" use="optional" type="xs:string" default="UTF16-LE"/>
-        <xs:attribute name="minBytes" use="optional" type="uint32_t" default="1"/>
-        <xs:attribute name="maxBytes" use="optional" type="uint32_t" default="32"/>
-        <xs:attribute name="default" use="optional" type="xs:string"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:complexType name="value_fixed_string_t">
-    <xs:complexContent>
-      <xs:extension base="value_t">
-        <xs:attribute name="byteCount" use="required" type="uint32_t"/>
-        <xs:attribute name="default" use="optional" type="xs:string"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:complexType name="value_bool_t">
-    <xs:complexContent>
-      <xs:extension base="value_t">
-        <xs:attribute name="default" type="bool_t"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:complexType name="value_eui48_t">
-    <xs:complexContent>
-      <xs:extension base="value_t">
-        <xs:attribute name="default" type="eui48_t"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:group name="value_group_fixed">
-    <xs:choice>
-      <xs:element name="Value8" type="value8_t"/>
-      <xs:element name="Value16" type="value16_t"/>
-      <xs:element name="Value24" type="value24_t"/>
-      <xs:element name="Value32" type="value32_t"/>
-      <xs:element name="Value64" type="value64_t"/>
-      <xs:element name="ValueAddr16" type="value_addr16_t"/>
-      <xs:element name="ValueAddr32" type="value_addr32_t"/>
-      <xs:element name="ValueBoolean" type="value_bool_t"/>
-      <xs:element name="ValueFixedBuffer" type="value_fixed_buffer_t"/>
-      <xs:element name="ValueFixedAscii" type="value_fixed_ascii_t"/>
-      <xs:element name="ValueFixedString" type="value_fixed_string_t"/>
-      <xs:element name="ValueEui48" type="value_eui48_t"/>
-    </xs:choice>
-  </xs:group>
-  <xs:group name="value_group_variable">
-    <xs:choice>
-      <xs:element name="ValueBuffer" type="value_buffer_t"/>
-      <xs:element name="ValueAscii" type="value_ascii_t"/>
-      <xs:element name="ValueString" type="value_string_t"/>
-    </xs:choice>
-  </xs:group>
-  -->
 </xs:schema>

@@ -10,6 +10,9 @@
          version="1.0.0"
          feu-version-min="1"
          description="This FEU ruleset doesn't do anything useful"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.akephart.org" 
+	xsi:schemaLocation="http://www.akephart.org feu.xsd"
 >
   <path name="BasePath">
     <!-- These first two steps initialize the odd images to the left of the screen -->
