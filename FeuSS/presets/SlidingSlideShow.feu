@@ -14,21 +14,21 @@
 <ruleset 
 name="SlidingSlideShow"
          author="PartialGestalt"
-         URL=""
+         url=""
          version="1.0.0"
-         feu-version-min="1"
-         description="This FEU ruleset implements a simple sliding slideshow, where a sequence of images enters the screen from the right and scrolls left."
->
+         feu-version="1.0.0"
+         description="This FEU ruleset implements a simple sliding slideshow, where a sequence of images enters the screen from the right and scrolls left." xmlns="http://www.akephart.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.akephart.org http://www.akephart.org ">
   <path name="SlideLeft">
     <!-- Move it over  -->
     <step type="move" x="-100"/>
     <!-- If we're fully on-screen, start a new one -->
-    <step condition="right&lt;Screen.right" type="action" parameter="SlideSlides.create"/>
+    <step condition="right&lt;Screen.right" type="action" parameter="SlideNew"/>
     <!-- If we're off-screen, destroy ourselves -->
     <step condition="right&lt;Screen.left" type="destroy"/>
   </path>
+  <action name="SlideNew" when="onCall" what="SlideSlides.create"/>
   <path name="SlideSlidesPath">
-    <step type="move" parameter="absolute" x="(width+Screen.width)/2"/>
+    <step type="place"  x="(width+Screen.width)/2"/>
     <step type="setpath" parameter="SlideLeft"/>
   </path>
   <class name="SlideSlides" 

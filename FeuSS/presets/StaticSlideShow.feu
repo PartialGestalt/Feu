@@ -10,11 +10,11 @@
 -->
 <ruleset name="StaticSlideShow"
          author="PartialGestalt"
-         URL=""
+         url=""
          version="1.0.0"
-         feu-version-min="1"
+         feu-version="1.0.0"
          description="This FEU ruleset implements a simple static slideshow, where a picture is fitted and centered, and then replaced with a new picture."
->
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.akephart.org" xsi:schemaLocation="http://www.akephart.org http://www.akephart.org ">
   <path name="DisplaySlidesPath">
     <step type="move" parameter="absolute" x="0" y="0" z="0"/>
   </path>

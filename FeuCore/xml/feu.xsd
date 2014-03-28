@@ -3,39 +3,204 @@
 	targetNamespace="http://www.akephart.org" xmlns="http://www.akephart.org"
 	elementFormDefault="qualified">
 
-	<xs:element name="ruleset" type="ruleset_t" />
-	
+	<!-- formula_t : String for objects and operators -->
+	<xs:simpleType name="formula_t">
+		<xs:annotation>
+			<xs:documentation>String-derived type to contain a number,
+				expression, or object reference.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string" />
+	</xs:simpleType>
 
-    <xs:complexType name="ruleset_t">
-    	<xs:choice maxOccurs="unbounded">
-    	   <xs:element name="class" type="class_t" />
-    	   <xs:element name="path" type="class_t" />
-    	</xs:choice>
-    	<xs:attribute name="name" type="xs:string" use="required" />
+	<!-- label_t : String name for individual object components. Must start 
+		with a letter, can contain only letters and numbers, underscore and hyphen, 
+		and must be at least two characters long. -->
+	<xs:simpleType name="label_t">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[a-zA-Z][a-zA-Z0-9_\-]{1,}" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="object_t">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[a-zA-Z][a-zA-Z0-9_\-\.]{1,}" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<!-- version_t : A strictly-formatted version string with three components. -->
+	<xs:simpleType name="version_t">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]{1,}\.[0-9]{1,}\.[0-9]{1,}"></xs:pattern>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<!-- source_t : Restrictions of source specifications. -->
+	<xs:simpleType name="source_t">
+		<xs:restriction base="xs:string" />
+	</xs:simpleType>
+
+	<xs:simpleType name="step_type_t">
+		<xs:annotation>
+			<xs:documentation>Defined set of available step types.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="place">
+				<xs:annotation>
+					<xs:documentation>Move (absolute) the object to the specified
+						coordinates.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="move">
+				<xs:annotation>
+					<xs:documentation>Move (relative) the object by the specified
+						amount.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="orient" />
+			<xs:enumeration value="spin" />
+			<xs:enumeration value="resize" />
+			<xs:enumeration value="scale" />
+			<xs:enumeration value="destroy" />
+			<xs:enumeration value="setpath" />
+			<xs:enumeration value="action" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<!-- step_t : Definition of a single operational step -->
+	<xs:complexType name="step_t">
+		<xs:attribute name="type" type="step_type_t" use="required" /><!-- 
+			Enumeration of step types -->
+		<xs:attribute name="condition" type="formula_t" use="optional" /><!-- 
+			Determines whether this step is executed -->
+		<xs:attribute name="x" type="formula_t" use="optional" />
+		<xs:attribute name="y" type="formula_t" use="optional" />
+		<xs:attribute name="z" type="formula_t" use="optional" />
+		<xs:attribute name="parameter" type="formula_t" use="optional" />
+	</xs:complexType>
+
+	<!-- path_t : Basic definition of a path object. Paths consist entirely 
+		of a set of steps to execute for each frame. -->
+	<xs:complexType name="path_t">
+		<xs:sequence>
+			<xs:element minOccurs="1" maxOccurs="unbounded" name="step"
+				type="step_t" />
+		</xs:sequence>
+		<xs:attribute name="name" type="label_t" />
+	</xs:complexType>
+
+	<!-- property_t : Define an additional object property. May be applied at 
+		global level, or as a child of class objects. -->
+	<xs:complexType name="property_t">
+		<xs:attribute name="name" type="label_t" use="required" />
+		<xs:attribute name="value" type="xs:string" use="required" />
+	</xs:complexType>
+
+
+	<!-- sequence_t : A label for load/presentation sequence. Enumerated from 
+		the following values. -->
+	<xs:simpleType name="sequence_t">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="random" /><!-- Full random from 
+				all available -->
+			<xs:enumeration value="natural" /><!-- Natural sequence; 
+				e.g. filesystem order -->
+			<xs:enumeration value="sort" /><!-- Sorted by standard 
+				collation rules -->
+			<xs:enumeration value="unweighted" /><!-- Special kind 
+				of random where available tiers are weighted equally, even if available numbers 
+				of images are skewed heavily. -->
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="class_t">
+		<xs:annotation>
+			<xs:documentation>Type definition for all image classes. Specifies
+				from where (and in what order) images are loaded, defines any
+				additional properties of images, and places created entries on a
+				default path.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="property"
+				type="property_t" />
+		</xs:sequence>
+		<xs:attribute name="name" type="label_t" use="required" /><!-- 
+			Name of this class -->
+		<xs:attribute name="path" type="object_t" use="required" /><!-- 
+			Initial path for class images -->
+		<xs:attribute name="source" type="source_t" use="required" /><!-- 
+			Where to get images -->
+		<xs:attribute name="sequence" type="sequence_t" use="optional"
+			default="natural" /><!-- In what order images should be loaded/presented -->
+		<xs:attribute name="max-count" type="xs:positiveInteger"
+			use="optional" default="1000000" /><!-- Max allowable images for this 
+			class at once. -->
+	</xs:complexType>
+
+	<xs:simpleType name="when_event_t">
+		<xs:annotation>
+			<xs:documentation>Enumeration of valid event handlers; the "when" of
+				any actions.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="onTimeout" />
+			<xs:enumeration value="onLoad" />
+			<xs:enumeration value="onActivate" />
+			<xs:enumeration value="onCall" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="action_t">
+		<xs:attribute name="name" type="label_t" use="optional" />
+		<xs:attribute name="when" type="when_event_t" use="required">
+		</xs:attribute>
+		<xs:attribute name="what" type="formula_t" use="required" />
+	</xs:complexType>
+
+	<xs:complexType name="timer_t">
+		<xs:all>
+			<xs:element name="action" type="action_t" minOccurs="1"
+				maxOccurs="1" />
+		</xs:all>
+		<xs:attribute name="name" type="label_t" use="required" />
+		<xs:attribute name="period" type="xs:positiveInteger"
+			use="required" />
+		<xs:attribute name="restart" type="xs:boolean" use="optional"
+			default="false" />
+	</xs:complexType>
+
+	<xs:complexType name="ruleset_t">
+		<xs:annotation>
+			<xs:documentation>Type defining the basic properties of a ruleset;
+				version, author, etc. Container for global objects.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="class" type="class_t" />
+			<xs:element name="action" type="action_t" />
+			<xs:element name="timer" type="timer_t" />
+			<xs:element name="path" type="path_t" />
+			<xs:element name="property" type="property_t" />
+		</xs:choice>
+		<xs:attribute name="name" type="label_t" use="required" />
 		<xs:attribute name="author" type="xs:string" use="required" />
 		<xs:attribute name="url" type="xs:string" use="optional" />
 		<xs:attribute name="version" type="version_t" use="required" />
 		<xs:attribute name="feu-version" type="version_t" use="required" />
 		<xs:attribute name="description" type="xs:string" use="optional" />
-    </xs:complexType>
-
-	<xs:complexType name="class_t">
-		<xs:sequence>
-			<xs:element minOccurs="0" maxOccurs="unbounded" name="property"
-				type="property_t" />
-		</xs:sequence>
-		<xs:attribute name="name" type="xs:string" use="required" />
 	</xs:complexType>
 
-	<xs:simpleType name="version_t">
-		<xs:restriction base="xs:string">
-			<xs:pattern value="[0-9]{1,}.[0-9]{1,}.[0-9]{1,}"></xs:pattern>
-		</xs:restriction>
-	</xs:simpleType>
+	<xs:element name="ruleset" type="ruleset_t">
+		<xs:annotation>
+			<xs:documentation>The only valid root element.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
 
-	<xs:complexType name="property_t">
-		<xs:attribute name="name" type="xs:string" use="required" />
-		<xs:attribute name="value" type="xs:string" use="required" />
-	</xs:complexType>
+
+
 
 </xs:schema>

@@ -6,14 +6,13 @@
 -->
 <ruleset name="ParseTest"
          author="PartialGestalt"
-         URL=""
+         url=""
          version="1.0.0"
-         feu-version-min="1"
-         description="This FEU ruleset doesn't do anything useful"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://www.akephart.org" 
-	xsi:schemaLocation="http://www.akephart.org feu.xsd"
->
+         feu-version="1.0.0"
+         description="This FEU ruleset doesn't do anything useful" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xmlns="http://www.akephart.org" 
+         xsi:schemaLocation="http://www.akephart.org http://www.akephart.org ">
   <path name="BasePath">
     <!-- These first two steps initialize the odd images to the left of the screen -->
     <!-- and the even images to the right.                                         -->
@@ -21,7 +20,7 @@
     <step type="place" condition="(ordinal%2) == 1" x="Screen.left" />
     <step type="move" y="20"/>
     <!-- Initialization finished, switch to a new path -->
-    <step type="path" option="RunPath" />
+    <step type="setpath" parameter="RunPath" />
   </path>
   <path name="RunPath">
     <!-- Relative motion by our speed properties -->
