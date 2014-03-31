@@ -16,6 +16,7 @@ int main(int argc, char **argv) {
 	std::string *preset;  // Ruleset file to load
 	int period;          // milliseconds between frames
 	int frames;          // number of frames to simulate
+	int i;
 	Feu *feu;            // The loaded ruleset
 
 
@@ -28,16 +29,32 @@ int main(int argc, char **argv) {
 	frames = intof(argv[2]);
 	period = intof(argv[3]);
 
-
+	// Step 1: Load and initialize
 	try {
 		feu = new Feu(*preset);
 	} catch (FeuException &fe) {
 		fe.what();
-		if (NULL != feu) delete feu;
 		return -1;
 	}
 
+	// Step 2: Startup events
+	try {
+		feu->runEvent("onLoad");
+		feu->runEvent("onActivate");
+	} catch (FeuException &fe) {
+		fe.what();
+		delete feu;
+		return -2;
+	}
 
+	// Step 3: Loop on frames
+	for (i=1;i<=frames;i++) {
+		// Run main frame
+		feu->run();
+		// Check timers
+		feu->
+
+	}
 
 	return 0;
 }

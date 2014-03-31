@@ -22,7 +22,7 @@ enum {
     FEU_STEP_TYPE_ORIENT,   // Absolution rotational setting
     FEU_STEP_TYPE_SIZE,     // Resize the object
     FEU_STEP_TYPE_SCALE,    // Scale the object
-    FEU_STEP_TYPE_PATH,     // Change the object's path
+    FEU_STEP_TYPE_SETPATH,  // Change the object's path
     FEU_STEP_TYPE_DESTROY,  // Destroy ourselves
     FEU_STEP_TYPE_MAX  // Mark the end of the list
 };

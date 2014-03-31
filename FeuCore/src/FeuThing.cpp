@@ -27,7 +27,7 @@ FeuThing::FeuThing(Feu *feu, TiXmlElement *ele, FeuThing *parent) {
     while (attr != NULL) {
         name = stringof(attr->Name());
         value = attr->ValueStr();
-        FeuLog::i("   \"" + name + "\"  ==>  \"" + value + "\"\n");
+        info("   \"" + name + "\"  ==>  \"" + value + "\"\n");
         mAttributes[name] = value; // Store in our map
         if (name == "name") mName = value;
 

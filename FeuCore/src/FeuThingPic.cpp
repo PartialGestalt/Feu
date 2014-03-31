@@ -85,7 +85,7 @@ void FeuThingPic::runFrame() {
         switch (step->mStepType) {
             case FEU_STEP_TYPE_MOVE:  doStep_move(step); break;
             case FEU_STEP_TYPE_PLACE: doStep_place(step); break;
-            case FEU_STEP_TYPE_PATH:  doStep_path(step); done=true; break;
+            case FEU_STEP_TYPE_SETPATH:  doStep_path(step); done=true; break;
             case FEU_STEP_TYPE_DESTROY: {
                 // We can't delete here, since the main Feu is walking the list of
                 // registered pics.  Instead, put ourselves on the kill list and

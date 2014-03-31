@@ -50,6 +50,7 @@ public:
 
 public:
     // Action handlers
+    void runTimers(); // Check for and run any timers that have expired
     void runEvent(std::string); // Handle an event
     void run(); // Run one frame
 };

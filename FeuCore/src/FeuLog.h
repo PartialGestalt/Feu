@@ -11,6 +11,7 @@
 #include <sstream>
 #include <climits>
 
+
 class FeuLog {
 public:
 	FeuLog();
@@ -20,7 +21,8 @@ public:
     static void d(std::string); // Debug message; may or may not show
     static void d(std::string,std::string); 
     static void d(std::string,std::string,std::string); 
-    static void i(std::string); // Informational string (stdout)
+    static void i(const char *file, std::string); // Informational string (stdout)
+    static void i(std::string);
     static void i(std::string,std::string);
     static void i(std::string,std::string,std::string);
     static void w(std::string); // Warning notice (stderr)
@@ -31,6 +33,8 @@ public:
     static void e(std::string,std::string,std::string);
 
 };
+
+#define info(__string) FeuLog::i((const char *)__FILE__, __string)
 
 template <typename T> std::string stringof(T t) { std::ostringstream os; os << t; return os.str(); }
 

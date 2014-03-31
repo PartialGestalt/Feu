@@ -16,6 +16,9 @@ FeuLog::~FeuLog() {
 void FeuLog::i(std::string msg) {
     std::cout << "[FEU Info]: " << msg;
 }
+void FeuLog::i(const char *tag, std::string msg) {
+    std::cout << "[FEU Info (" << tag << ")]: " << msg;
+}
 
 void FeuLog::i(std::string msg1, std::string msg2) {
     std::cout << "[FEU Info]: " << msg1 << msg2;
