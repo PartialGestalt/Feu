@@ -447,7 +447,7 @@ double FeuCalculable::proc(FeuThing *contextThing) {
         if (0 != fci->proc(&mCalcStack)) {
             //  Something failed.
             FeuLog::e("Error in arithmetic processing.\n");
-            throw (new FeuException("ARITH",fci->toString()));
+            throw (FeuException("ARITH",fci->toString()));
             break;
         }
     }

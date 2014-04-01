@@ -116,7 +116,7 @@ void FeuThingPic::doStep_path(FeuThingStep *step) {
     // Step 1: lookup new path
     newPath = findGlobalThing(mFeu,step->mAttributes["option"]);
     if (!newPath) {
-        throw (new FeuException("Step error","Invalid path name \"" + step->mAttributes["option"] + "\"\n"));
+        throw (FeuException("Step error","Invalid path name \"" + step->mAttributes["option"] + "\"\n"));
     } else {
         //FeuLog::i("Switched displayable \"" + mName + "\" to new path \"" + step->mAttributes["option"] + "\".\n");
     }

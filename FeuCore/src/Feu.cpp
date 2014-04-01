@@ -19,6 +19,7 @@
 #include "FeuThingRandom.h"
 #include "FeuThingScreen.h"
 #include "FeuThingStep.h"
+#include "FeuThingTimer.h"
 #include "FeuTimer.h"
 
 Feu *lastRuleset = NULL;

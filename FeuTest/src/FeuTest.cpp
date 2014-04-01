@@ -50,9 +50,14 @@ int main(int argc, char **argv) {
 	// Step 3: Loop on frames
 	for (i=1;i<=frames;i++) {
 		// Run main frame
+		try {
 		feu->run();
+		} catch (FeuException &fe) {
+			fe.what();
+			delete feu;
+			return -3;
+		}
 		// Check timers
-		feu->
 
 	}
 

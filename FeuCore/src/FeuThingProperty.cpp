@@ -17,7 +17,7 @@ FeuThingProperty::FeuThingProperty(Feu *feu, TiXmlElement *ele, FeuThing *parent
     // Properties _MUST_ define both a "name" attribute, and it must not contain a dot.
     if (!mAttributes.count("name") || !mAttributes.count("value")) {
         FeuLog::w("(" + feu->mFilename + ":" + stringof(ele->Row()) + "): Property declared with missing \"name\" or \"value\" attributes.\n");
-        throw (new FeuException("Syntax Error","property definition"));
+        throw (FeuException("Syntax Error","property definition"));
     }
     // Create specials from attributes 
     mPropCalc = new FeuCalculable(feu,mAttributes["value"],this);
