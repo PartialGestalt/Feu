@@ -21,6 +21,8 @@ public:
 public:
     FeuThingPath *mDefaultPath;
     int mSeqNum;  // Sequence ordinal.
+    int mActiveMax; // Max number of active images from this class.
+    std::list<FeuThingPic *>mPics; // The list of pics from this class
 
 public:
     void harvestPic(FeuThingPic *pic);

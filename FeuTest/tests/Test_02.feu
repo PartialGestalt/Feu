@@ -34,7 +34,8 @@ name="SlidingSlideShow"
   <class name="SlideSlides" 
          source="XBMC.pictures(Export)" 
          sequence="random" 
-         path="SlideSlidesPath" >
+         path="SlideSlidesPath" 
+         max-count="2">
   </class>
   <!-- Start the first one -->
   <action when="onActivate" what="SlideSlides.create"/>
