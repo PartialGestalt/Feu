@@ -15,7 +15,7 @@ class FeuThingPath;
 class TiXmlElement;
 
 
-enum {
+enum FEU_STEP_TYPE {
     FEU_STEP_TYPE_MOVE = 0, // Relative motion
     FEU_STEP_TYPE_PLACE,    // Absolute positioning
     FEU_STEP_TYPE_ROTATE,   // Relative rotation
