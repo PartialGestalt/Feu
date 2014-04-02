@@ -35,6 +35,7 @@ FeuThingStep::FeuThingStep(Feu *feu, TiXmlElement *ele, FeuThing *parent) : FeuT
         //else if (stype == "size") mStepType = FEU_STEP_TYPE_SIZE;
         //else if (stype == "scale") mStepType = FEU_STEP_TYPE_SCALE;
         else if (stype == "setpath") mStepType = FEU_STEP_TYPE_SETPATH;
+        else if (stype == "action") mStepType = FEU_STEP_TYPE_ACTION;
         else if (stype == "destroy") mStepType = FEU_STEP_TYPE_DESTROY;
         else {
             FeuLog::e("Unknown step type, \"" + stype + "\" in step at line " + stringof(ele->Row()) + "\n");
@@ -42,7 +43,7 @@ FeuThingStep::FeuThingStep(Feu *feu, TiXmlElement *ele, FeuThing *parent) : FeuT
         }
     }
 
-    // Create calculables from attributes 
+    // Create calculables from attributes
     if (mAttributes.count("condition"))  {
         mCondition = new FeuCalculable(feu,mAttributes["condition"],this);
         hasCondition = true;

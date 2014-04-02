@@ -2,7 +2,7 @@
  * FeuThingPic.h
  *
  * FeuThingPic is the fundamental thing that can be displayed.
- * It may or may not actually be a picture, but it will be 
+ * It may or may not actually be a picture, but it will be
  * displayable.
  */
 
@@ -63,6 +63,7 @@ private:  // Step types.
     void doStep_move(FeuThingStep *step);
     void doStep_place(FeuThingStep *step);
     void doStep_path(FeuThingStep *step);
+    void doStep_action(FeuThingStep *step);
 
 public:
     void runFrame();

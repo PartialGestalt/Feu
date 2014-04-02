@@ -21,7 +21,7 @@
 	<class name="DisplaySlides" source="XBMC.pictures(Export)"
 		sequence="random" max-count="3" path="BasePath">
 		<!-- Initialize class-specific properties; this allows each -->
-		<!-- object of this class to get a uniqe set of random values, -->
+		<!-- object of this class to get a unique set of random values, -->
 		<!-- but have those values constant for the lifetime of the -->
 		<!-- object. When each pic is created, it gets a custom -->
 		<!-- property with the given name. The "value" attribute is -->
@@ -34,8 +34,5 @@
 	<action when="onLoad" what="Random.seed(123)" />
 	<!-- Create a couple objects when we start up -->
 	<action when="onActivate" what="DisplaySlides.create()" />
-	<action when="onActivate" what="DisplaySlides.create()" />
-	<action when="onActivate" what="DisplaySlides.create()" />
-	<action when="onActivate" what="DisplaySlides.create()" />
-	<action when="onActivate" what="DisplaySlides.create()" />
+	
 </ruleset>
