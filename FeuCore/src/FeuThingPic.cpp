@@ -143,7 +143,7 @@ void FeuThingPic::doStep_path(FeuThingStep *step) {
                 "Invalid path name \"" + step->mAttributes["parameter"]
                         + "\"\n"));
     } else {
-        //FeuLog::i("Switched displayable \"" + mName + "\" to new path \"" + step->mAttributes["option"] + "\".\n");
+        FeuLog::i("Switched displayable \"" + mName + "\" to new path \"" + step->mAttributes["parameter"] + "\".\n");
     }
 
     // Step 2: Set it up
@@ -226,7 +226,9 @@ void FeuThingPic::dump() {
 #ifndef DUMP_FULL
     FeuLog::i(
             "FeuThingPic: \"" + mName + ": " + stringof(mWidth) + "x"
-                    + stringof(mHeight) + "@(" + stringof(mXpos) + ","
+                    + stringof(mHeight) + "@("
+                    + stringof(mLeft) + "/" + stringof(mXpos) + "/" + stringof(mRight)
+                    + ","
                     + stringof(mYpos) + "," + stringof(mZpos) + ")" + "ROT("
                     + stringof(mXrot) + "," + stringof(mYrot) + ","
                     + stringof(mZrot) + ")\n");

@@ -43,7 +43,7 @@ FeuThingClass::FeuThingClass(Feu *feu, TiXmlElement *ele, FeuThing *parent) :
 	FeuLog::i(
 			"Setup class \"" + mName + "\" with default path \""
 					+ mAttributes["path"] + "\" and max active count "
-					+ stringof(mActiveMax));
+					+ stringof(mActiveMax) + "\n");
 
 }
 

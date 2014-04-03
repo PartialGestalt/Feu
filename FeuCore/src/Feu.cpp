@@ -40,7 +40,7 @@ Feu::Feu(std::string filename) : mRoot(NULL),mFilename(filename) {
         mRoot = convertElement(this,mDoc->RootElement(),NULL);
     }
     // Create superglobals (at the front of the list)
-    mScreen = new FeuThingScreen(this,1280,1024);
+    mScreen = new FeuThingScreen(this,1920,1080);
     mRoot->adopt_front(mScreen);
     mRandom = new FeuThingRandom(this,(int)time(NULL));
     mRoot->adopt_front(mRandom);
