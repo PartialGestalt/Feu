@@ -7,7 +7,8 @@
 	<xs:simpleType name="formula_t">
 		<xs:annotation>
 			<xs:documentation>String-derived type to contain a number,
-				expression, or object reference.</xs:documentation>
+				expression, or object reference.
+			</xs:documentation>
 		</xs:annotation>
 		<xs:restriction base="xs:string" />
 	</xs:simpleType>
@@ -32,11 +33,6 @@
 		<xs:restriction base="xs:string">
 			<xs:pattern value="[0-9]{1,}\.[0-9]{1,}\.[0-9]{1,}"></xs:pattern>
 		</xs:restriction>
-	</xs:simpleType>
-
-	<!-- source_t : Restrictions of source specifications. -->
-	<xs:simpleType name="source_t">
-		<xs:restriction base="xs:string" />
 	</xs:simpleType>
 
 	<xs:simpleType name="step_type_t">
@@ -118,26 +114,30 @@
 	<xs:complexType name="class_t">
 		<xs:annotation>
 			<xs:documentation>Type definition for all image classes. Specifies
-				from where (and in what order) images are loaded, defines any
-				additional properties of images, and places created entries on a
-				default path.
+				images loader (and parameters), defines any additional properties of
+				images, and places created entries on a default path.
 			</xs:documentation>
 		</xs:annotation>
-		<xs:sequence>
-			<xs:element minOccurs="0" maxOccurs="unbounded" name="property"
-				type="property_t" />
-		</xs:sequence>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="property" type="property_t" />
+
+		</xs:choice>
 		<xs:attribute name="name" type="label_t" use="required" /><!-- 
 			Name of this class -->
 		<xs:attribute name="path" type="object_t" use="required" /><!-- 
 			Initial path for class images -->
-		<xs:attribute name="source" type="source_t" use="required" /><!-- 
-			Where to get images -->
-		<xs:attribute name="sequence" type="sequence_t" use="optional"
-			default="natural" /><!-- In what order images should be loaded/presented -->
 		<xs:attribute name="max-count" type="xs:positiveInteger"
-			use="optional" default="1000000" /><!-- Max allowable images for this 
-			class at once. -->
+			use="optional" default="8" /><!-- Max allowable images for this class 
+			at once. -->
+		<xs:attribute name="source" type="label_t" use="required">
+			<xs:annotation>
+				<xs:documentation>
+					Name of image source, which must be defined at the
+					global level. Overriding or additional parameters may be set with
+					'parameter' elements.
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 
 	<xs:simpleType name="when_event_t">
@@ -173,6 +173,32 @@
 			default="false" />
 	</xs:complexType>
 
+	<xs:complexType name="source_t">
+		<xs:annotation>
+			<xs:documentation>
+				Element that defines an image source and any
+				default parameter. This may
+				represent a built-in loader or an
+				external shared library
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence></xs:sequence>
+		<xs:attribute name="type" type="source_type_t" use="optional">
+			<xs:annotation>
+				<xs:documentation>Attribute defining the type of loader, whether a
+					builtin, external library or script, or other.
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="loader" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>The actual loader, e.g. the name of the builtin or
+					the path to the script or shared library.
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+
 	<xs:complexType name="ruleset_t">
 		<xs:annotation>
 			<xs:documentation>Type defining the basic properties of a ruleset;
@@ -185,6 +211,11 @@
 			<xs:element name="timer" type="timer_t" />
 			<xs:element name="path" type="path_t" />
 			<xs:element name="property" type="property_t" />
+			<xs:element name="source" type="source_t"
+		
+		
+		
+		
 		</xs:choice>
 		<xs:attribute name="name" type="label_t" use="required" />
 		<xs:attribute name="author" type="xs:string" use="required" />

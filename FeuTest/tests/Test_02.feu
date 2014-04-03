@@ -33,7 +33,7 @@
 	</path>
 	<action name="SlideNew" when="onCall" what="SlideSlides.create" />
 
-	<!-- This paths moves the image left unti it is offscreen, and then self-destructs. -->
+	<!-- This paths moves the image left until it is offscreen, and then self-destructs. -->
 	<path name="SlideLeft">
 		<!-- Move it over -->
 		<step type="move" x="-128"/>
