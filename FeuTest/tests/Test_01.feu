@@ -18,8 +18,14 @@
 		<!-- Self-destruct if we're older than some random value -->
 		<step type="destroy" condition="age > Random.getrange(10000,10001)" />
 	</path>
-	<class name="DisplaySlides" source="XBMC.pictures(Export)"
-		sequence="random" max-count="3" path="BasePath">
+	<source type="builtin" name="BaseFiles" loader="folder">
+		<source-parameter name="sequence" value="natural"/>
+		<source-parameter name="recursive" value="true"/>
+		<!-- Pull path from "Settings" superglobal -->
+		<source-parameter name="path" value="Settings.path"/>
+	</source>
+	<class name="DisplaySlides" source="BaseFiles"
+		 max-count="3" path="BasePath">
 		<!-- Initialize class-specific properties; this allows each -->
 		<!-- object of this class to get a unique set of random values, -->
 		<!-- but have those values constant for the lifetime of the -->
@@ -29,6 +35,7 @@
 		<property name="xspeed" value="Random.getrange(1,50)" />
 		<property name="yspeed" value="Random.getrange(1,50)" />
 		<property name="zspeed" value="Random.getrange(1,50)" />
+		<source-parameter name="sequence" value="random"/>
 	</class>
 	<!-- Seed randomizer when the file is loaded -->
 	<action when="onLoad" what="Random.seed(123)" />
