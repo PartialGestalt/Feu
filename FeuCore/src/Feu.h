@@ -20,6 +20,7 @@ class FeuThingRandom;
 class FeuCalculable;
 class FeuThingPic;
 class FeuThingProperty;
+class FeuThingSettings;
 
 class Feu {
 public:
@@ -38,6 +39,7 @@ public:
     std::list<FeuThingPic *>mDeadPics; // Pics that are self-destructing
     FeuThingRandom *mRandom;
     FeuThingScreen *mScreen;
+    FeuThingSettings *mSettings;
 
 
 public:
@@ -47,6 +49,7 @@ public:
     void registerCalculable(FeuCalculable *);
     int registerPic(FeuThingPic *);
     int unregisterPic(FeuThingPic *);
+    void setSetting(std::string,double);
 
 public:
     // Action handlers
