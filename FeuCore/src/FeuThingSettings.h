@@ -14,6 +14,8 @@ class FeuThingSettings: public FeuThing {
 public:
 	FeuThingSettings(Feu *,int);
 	virtual ~FeuThingSettings();
+private:
+	std::map<std::string,double> mCache;  // Cache of settings values.
 
 public:
 	void setSetting(std::string,double);

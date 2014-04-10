@@ -20,8 +20,10 @@ FeuThingSettings::~FeuThingSettings() {
 	// TODO Auto-generated destructor stub
 }
 
+
 void FeuThingSettings::setSetting(std::string name, double value) {
 	// Simply write into our values map
-	mValues[name] = value;
+    mCache[name] = value;
+	mValues[name] = &(mCache[name]);
 }
 
