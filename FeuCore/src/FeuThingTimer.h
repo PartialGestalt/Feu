@@ -14,6 +14,9 @@ class FeuThingTimer: public FeuThing {
 public:
 	FeuThingTimer(Feu *feu, TiXmlElement *ele, FeuThing *parent);
 	virtual ~FeuThingTimer();
+
+private:
+	FeuTimer *mTimer; // Actual timer object
 };
 
 #endif /* FEUTHINGTIMER_H_ */

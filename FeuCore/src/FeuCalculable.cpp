@@ -47,7 +47,7 @@ struct feuOpInfo feuOpInfoTable[] = {
     { FEU_OP_ID_MULT, "*", 5, true, feu_op_mult },
     { FEU_OP_ID_DIV, "/", 5, true, feu_op_div },
     { FEU_OP_ID_MOD, "%", 5, true, feu_op_modulo },
-    { FEU_OP_ID_EXPONENT, "^^", 4, false, feu_op_exponent }, 
+    { FEU_OP_ID_EXPONENT, "^^", 4, false, feu_op_exponent },
     { FEU_OP_ID_INCR, "++", 3, false, NULL },
     { FEU_OP_ID_DECR, "--", 3, false, NULL },
     { FEU_OP_ID_NOTLOGIC, "!", 3, false, NULL },
@@ -176,7 +176,7 @@ void FeuCalculable::tokenize(std::string formula) {
                     // Possible additional character, but it
                     // may also be two operators jammed up against
                     // each other.  Test to see if the additional char
-                    // would make an invalid operator, and force 
+                    // would make an invalid operator, and force
                     // a restart if so.
                     jamtest->append(1,ch);
                     if (0 == feuOperators.count(*jamtest)) {
@@ -200,7 +200,7 @@ void FeuCalculable::tokenize(std::string formula) {
                     // Heading into an operator
                     tokenState = FEU_TOKEN_OP;
                     startAccum = true;
-                } 
+                }
                 break;
             }
         }
@@ -262,7 +262,7 @@ void FeuCalculable::rpn() {
             lastTokenType = FEU_TOKEN_REF;
         } else {
             // Anything else should be an operator
-            fcop = new FeuCalcOperator(this,**i); 
+            fcop = new FeuCalcOperator(this,**i);
             // How we handle the operator depends on precedence rules...
             switch(fcop->getID()) {
                 // Left-grouping gets pushed onto shunt, unless we're starting
@@ -272,7 +272,7 @@ void FeuCalculable::rpn() {
                     // paren means that we should treat the previous token
                     // as a function call.  Pop it from the output list and
                     // create an Operator-compatible container to put it on
-                    // the opstack; then, push an ENDARG marker and the 
+                    // the opstack; then, push an ENDARG marker and the
                     // LPAREN onto the opstack.
                     if (lastTokenType == FEU_TOKEN_REF) {
                         FeuCalcReference *methodRef;
@@ -286,7 +286,7 @@ void FeuCalculable::rpn() {
                         // Create/push a pseudo-operator
                         methodOp = new FeuCalcMethod(this,methodRef);
                         opstack.push(methodOp);
-                        // Not that we have one (more) function on the stack
+                        // Note that we have one (more) function on the stack
                         funcDepth++;
                     }
                     opstack.push(fcop);
@@ -296,7 +296,7 @@ void FeuCalculable::rpn() {
                     opstack.push(fcop);
                     break;
                 // Right-grouping pops until left grouper is found
-                case FEU_OP_ID_RPAREN:  
+                case FEU_OP_ID_RPAREN:
                 case FEU_OP_ID_RSUBSCRIPT: {
                     // CLEAN: TODO: This treats square brackets as pure
                     // grouping, rather than as a subscript selector, and
@@ -317,10 +317,10 @@ void FeuCalculable::rpn() {
                             done = true;
                             // Destroy the left grouper
                             delete fco_top;
-                            
+
                             // If the target was a left paren, and
                             // there are more ops, and the next
-                            // top is a function, pull it off and 
+                            // top is a function, pull it off and
                             // push to the output list
                             if (!opstack.empty()) {
                                 fco_top = opstack.top();
@@ -330,7 +330,7 @@ void FeuCalculable::rpn() {
                                     FeuCalcReference *fcRef;
 
                                     // Pull from opstack
-                                    opstack.pop(); 
+                                    opstack.pop();
                                     funcDepth--;
                                     // Extract FeuCalcReference
                                     fcMeth = (FeuCalcMethod *)fco_top;
@@ -341,7 +341,7 @@ void FeuCalculable::rpn() {
                                 }
                             }
                         } else {
-                            // Move it to output 
+                            // Move it to output
                             mRPN->push_back(fco_top);
                         }
                     }
@@ -364,7 +364,7 @@ void FeuCalculable::rpn() {
                             // What we're looking for!
                             done = true;
                         } else {
-                            // Move it to output 
+                            // Move it to output
                             opstack.pop();
                             mRPN->push_back(fco_top);
                         }
@@ -378,10 +378,10 @@ void FeuCalculable::rpn() {
                     done = false;
                     // Start with any special handling (eg: operator overload):
                     //
-                    // Based on previous token type, determine if a SUB is 
-                    // really a unary minus.  
-                    // A '-' that follows an operator or at the beginning 
-                    // is a unary minus.  
+                    // Based on previous token type, determine if a SUB is
+                    // really a unary minus.
+                    // A '-' that follows an operator or at the beginning
+                    // is a unary minus.
                     // A '-' that follows a number or an object is a subtraction.
                     if (fcop->getID() == FEU_OP_ID_SUB) {
                         if (lastTokenType == FEU_TOKEN_NONE ||
@@ -409,7 +409,7 @@ void FeuCalculable::rpn() {
             lastTokenType = FEU_TOKEN_OP;
         }
     }
-    // Pop anything left onto output 
+    // Pop anything left onto output
     while (!opstack.empty()) {
         mRPN->push_back(opstack.top());
         opstack.pop();
@@ -439,7 +439,7 @@ double FeuCalculable::proc(FeuThing *contextThing) {
         return mLastResult;
     }
 
-    // Walk list of calc items, calling each proc() routine.  
+    // Walk list of calc items, calling each proc() routine.
     // The result should be left on the stack at the end.
     for (i=mRPN->begin(); i != mRPN->end(); i++) {
         fci = (FeuCalcItem *)*i;
