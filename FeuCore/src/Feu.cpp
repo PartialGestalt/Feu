@@ -98,9 +98,11 @@ FeuThing *Feu::convertElement(Feu *feu, TiXmlElement *ele, FeuThing *parent) {
         return new FeuThingPath(feu, ele, parent);
     } else if (eletype == "property") {
         return new FeuThingProperty(feu, ele, parent);
+    } else if (eletype == "source") {
+        return new FeuThingSource(feu, ele, parent);
     } else if (eletype == "timer") {
-        return new FeuThingTimer(feu, ele, parent);
-    } else {
+           return new FeuThingTimer(feu, ele, parent);
+       } else {
         // Anything unknown gets a plain FeuThing
         return new FeuThing(feu, ele, parent);
     }
